@@ -52,6 +52,7 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state) => {
         state.loading = false;
+        state.sessionId = Cookies.get("sessionId");
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
