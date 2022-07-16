@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signup as signupAsync } from "../redux/userSlice";
+import { signin as signinAsync } from "../redux/authSlice";
 import Button from "./Button";
-import styles from "./JoinForm.module.scss";
+import styles from "./SignUpForm.module.scss";
 
 const initialState = {
   name: "",
@@ -12,15 +13,22 @@ const initialState = {
   passwordConfirm: "",
 };
 
-function JoinForm() {
+function SignUpForm() {
   const [values, setValues] = useState(initialState);
+  const { loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const { auth, user } = useAppSelector((state) => state);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    const { name, email, password } = values;
-    dispatch(signupAsync({ name, email, password }));
+    try {
+      const { name, email, password } = values;
+      await dispatch(signupAsync({ name, email, password }));
+      await dispatch(signinAsync({ email, password }));
+      navigate("/");
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -38,8 +46,6 @@ function JoinForm() {
   const handleBlur = (): void => {
     return;
   };
-
-  if (auth.sessionId) return <Navigate to="/" />;
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -96,7 +102,7 @@ function JoinForm() {
         className={undefined}
         as={undefined}
         type="submit"
-        disabled={user.loading}
+        disabled={loading}
       >
         회원 가입
       </Button>
@@ -104,4 +110,4 @@ function JoinForm() {
   );
 }
 
-export default JoinForm;
+export default SignUpForm;

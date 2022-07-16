@@ -1,23 +1,29 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import Button from "./Button";
-import styles from "./LoginForm.module.scss";
-import { login as loginAsync } from "../redux/authSlice";
+import styles from "./SignInForm.module.scss";
+import { signin as signinAsync } from "../redux/authSlice";
 
 const initialState = {
   email: "",
   password: "",
 };
 
-function LoginForm() {
+function SignInForm() {
   const [values, setValues] = useState(initialState);
+  const { loading } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const { sessionId, loading } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginAsync(values));
+    try {
+      await dispatch(signinAsync(values));
+      navigate("/");
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,8 +33,6 @@ function LoginForm() {
       [name]: value,
     }));
   };
-
-  if (sessionId) return <Navigate to="/" />;
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -59,4 +63,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default SignInForm;

@@ -5,20 +5,17 @@ import {
 } from "@reduxjs/toolkit";
 import { SignupReqData, UserData } from "../types/api";
 import User from "../api/User";
-import { login } from "./authSlice";
 
 export const signup = createAsyncThunk(
   "user/signup",
-  async (signupData: SignupReqData, { rejectWithValue, dispatch }) => {
-    try {
-      await User.signup(signupData);
-      const { email, password } = signupData;
-      await dispatch(login({ email, password }));
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
+  async (signupData: SignupReqData) => {
+    return await User.signup(signupData);
   }
 );
+
+export const getMe = createAsyncThunk("user/getMe", async () => {
+  return await User.getMe();
+});
 
 interface UserState {
   loading: boolean;
@@ -45,6 +42,17 @@ export const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(signup.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(getMe.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload;
+      })
+      .addCase(getMe.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });

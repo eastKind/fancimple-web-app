@@ -5,29 +5,18 @@ import {
 } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import Auth from "../api/Auth";
-import { LoginReqData } from "../types/api";
+import { SigninReqData } from "../types/api";
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async (loginData: LoginReqData, { rejectWithValue }) => {
-    try {
-      return await Auth.login(loginData);
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
+export const signin = createAsyncThunk(
+  "auth/signin",
+  async (loginData: SigninReqData) => {
+    return await Auth.signin(loginData);
   }
 );
 
-export const logout = createAsyncThunk(
-  "auth/logout",
-  async (_, { rejectWithValue }) => {
-    try {
-      return await Auth.logout();
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+export const signout = createAsyncThunk("auth/signout", async () => {
+  return await Auth.signout();
+});
 
 interface AuthState {
   loading: boolean;
@@ -47,28 +36,28 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {
+      .addCase(signin.pending, (state) => {
         state.loading = true;
       })
-      .addCase(login.fulfilled, (state) => {
+      .addCase(signin.fulfilled, (state) => {
         state.loading = false;
         state.sessionId = Cookies.get("sessionId");
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(signin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       })
-      .addCase(logout.pending, (state) => {
+      .addCase(signout.pending, (state) => {
         state.loading = true;
       })
-      .addCase(logout.rejected, (state, action) => {
-        state.error = action.error;
+      .addCase(signout.fulfilled, (state) => {
+        state.loading = false;
+        Cookies.remove("sessionId");
       })
-      .addDefaultCase((state, action) => {
-        if (/^.*\/logout\/.*$/.test(action.type)) {
-          state.loading = false;
-          Cookies.remove("sessionId");
-        }
+      .addCase(signout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+        Cookies.remove("sessionId");
       });
   },
 });

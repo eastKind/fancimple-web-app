@@ -1,14 +1,12 @@
-import axios from "axios";
-import { LoginReqData } from "../types/api";
-
-const BASE_URL = "http://localhost:5000/api/session";
+import axiosInstance from "./axios";
+import { SigninReqData } from "../types/api";
 
 export default class Auth {
-  public static async login(reqData: LoginReqData): Promise<void> {
-    await axios.post(BASE_URL, reqData, { withCredentials: true });
+  public static async signin(reqData: SigninReqData): Promise<void> {
+    await axiosInstance.post("/session", reqData, { withCredentials: true });
   }
 
-  public static async logout(): Promise<void> {
-    await axios.delete(BASE_URL);
+  public static async signout(): Promise<void> {
+    await axiosInstance.delete("/session");
   }
 }
