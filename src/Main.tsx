@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Me from "./pages/Me";
 import Other from "./pages/Other";
 import SignIn from "./pages/SignIn";
-import SingUp from "./pages/SingUp";
+import SignUp from "./pages/SignUp";
 
 function Main() {
   return (
@@ -19,7 +19,7 @@ function Main() {
             <Route path="me" element={<Me />} />
             <Route path=":id" element={<Other />} />
             <Route path="signin" element={<SignIn />} />
-            <Route path="signup" element={<SingUp />} />
+            <Route path="signup" element={<SignUp />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,5 +1,5 @@
 import axiosInstance from "./axios";
-import { SignupReqData, UserData } from "../types/api";
+import { SignupReqData, UserData } from "../types";
 
 export default class User {
   public static async signup(reqData: SignupReqData): Promise<void> {

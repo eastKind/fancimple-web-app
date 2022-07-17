@@ -9,11 +9,25 @@ export type SignupReqData = {
   password: string;
 };
 
+export interface Post {
+  id: string;
+  thumbnail: string;
+  likeCount: number;
+  commentCount: number;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  photoUrl: string;
+}
+
 export type UserData = {
   id: string;
   name: string;
   email: string;
-  followers: string[];
-  followings: string[];
+  followers: User[];
+  followings: User[];
   photoUrl: string;
+  posts: Post[];
 };

@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   SerializedError,
 } from "@reduxjs/toolkit";
-import { SignupReqData, UserData } from "../types/api";
+import { SignupReqData, UserData } from "../types";
 import User from "../api/User";
 
 export const signup = createAsyncThunk(

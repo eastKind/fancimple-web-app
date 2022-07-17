@@ -50,7 +50,7 @@ function SignUpForm() {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.inputContainer}>
-        <label htmlFor="name"></label>
+        <label htmlFor="name">이름</label>
         <input
           id="name"
           type="text"
@@ -62,7 +62,7 @@ function SignUpForm() {
         />
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor="email"></label>
+        <label htmlFor="email">이메일</label>
         <input
           id="email"
           type="email"
@@ -74,7 +74,7 @@ function SignUpForm() {
         />
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor="password"></label>
+        <label htmlFor="password">비밀번호</label>
         <input
           id="password"
           type="password"
@@ -86,7 +86,7 @@ function SignUpForm() {
         />
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor="passwordConfirm"></label>
+        <label htmlFor="passwordConfirm">비밀번호 확인</label>
         <input
           id="passwordConfirm"
           type="password"

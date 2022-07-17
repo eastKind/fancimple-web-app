@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import Auth from "../api/Auth";
-import { SigninReqData } from "../types/api";
+import { SigninReqData } from "../types";
 
 export const signin = createAsyncThunk(
   "auth/signin",
