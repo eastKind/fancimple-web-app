@@ -8,8 +8,8 @@ import User from "../api/User";
 
 export const signup = createAsyncThunk(
   "user/signup",
-  async (signupData: SignupReqData) => {
-    return await User.signup(signupData);
+  async (arg: SignupReqData) => {
+    return await User.signup(arg);
   }
 );
 
@@ -35,26 +35,21 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(signup.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(signup.fulfilled, (state) => {
         state.loading = false;
-      })
-      .addCase(signup.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error;
-      })
-      .addCase(getMe.pending, (state) => {
-        state.loading = true;
       })
       .addCase(getMe.fulfilled, (state, action) => {
         state.loading = false;
         state.userData = action.payload;
       })
-      .addCase(getMe.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error;
+      .addDefaultCase((state, action) => {
+        if (action.type.endsWith("/pending")) {
+          state.loading = true;
+        }
+        if (action.type.endsWith("/rejected")) {
+          state.loading = false;
+          state.error = action.error;
+        }
       });
   },
 });

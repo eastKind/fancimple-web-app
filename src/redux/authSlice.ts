@@ -9,8 +9,8 @@ import { SigninReqData } from "../types";
 
 export const signin = createAsyncThunk(
   "auth/signin",
-  async (loginData: SigninReqData) => {
-    return await Auth.signin(loginData);
+  async (arg: SigninReqData) => {
+    return await Auth.signin(arg);
   }
 );
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import PostForm from "../components/PostForm";
+import PostList from "../components/PostList";
 
 function Home() {
   const { sessionId } = useAppSelector((state) => state.auth);
@@ -10,7 +11,9 @@ function Home() {
 
   return (
     <div>
-      Home <PostForm />
+      <h1>Home</h1>
+      <PostList />
+      <PostForm />
     </div>
   );
 }

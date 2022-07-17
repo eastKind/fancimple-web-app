@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAppDispatch } from "../redux/hooks";
+import { create as createPostAsync } from "../redux/postSlice";
 import Button from "./Button";
 import FileInput from "./FileInput";
 import styles from "./PostForm.module.scss";
@@ -17,14 +19,25 @@ const initialState: Values = {
 
 function PostForm() {
   const [values, setValues] = useState(initialState);
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // try {
-
-    // } catch (error: any) {
-    //   alert(error.message);
-    // }
+    try {
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("contents", values.contents);
+      if (values.files !== null) {
+        [...values.files].forEach((file) => {
+          formData.append("image", file);
+        });
+      }
+      await dispatch(createPostAsync(formData));
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setValues(initialState);
+    }
   };
 
   const handleChange = <T extends string, K>(name: T, value: K): void => {
