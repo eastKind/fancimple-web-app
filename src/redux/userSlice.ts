@@ -2,6 +2,7 @@ import {
   createSlice,
   createAsyncThunk,
   SerializedError,
+  AnyAction,
 } from "@reduxjs/toolkit";
 import { SignupReqData, UserData } from "../types";
 import User from "../api/User";
@@ -16,6 +17,16 @@ export const signup = createAsyncThunk(
 export const getMe = createAsyncThunk("user/getMe", async () => {
   return await User.getMe();
 });
+
+function isPendingAction(action: AnyAction) {
+  return /^user\/.*\/pending$/.test(action.type);
+}
+function isFulfilledAction(action: AnyAction) {
+  return /^user\/.*\/fulfilled$/.test(action.type);
+}
+function isRejectedAction(action: AnyAction) {
+  return /^user\/.*\/rejected$/.test(action.type);
+}
 
 interface UserState {
   loading: boolean;
@@ -35,21 +46,19 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(signup.fulfilled, (state) => {
-        state.loading = false;
-      })
       .addCase(getMe.fulfilled, (state, action) => {
-        state.loading = false;
         state.userData = action.payload;
       })
-      .addDefaultCase((state, action) => {
-        if (action.type.endsWith("/pending")) {
-          state.loading = true;
-        }
-        if (action.type.endsWith("/rejected")) {
-          state.loading = false;
-          state.error = action.error;
-        }
+      .addMatcher(isPendingAction, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addMatcher(isFulfilledAction, (state) => {
+        state.loading = false;
+      })
+      .addMatcher(isRejectedAction, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
       });
   },
 });

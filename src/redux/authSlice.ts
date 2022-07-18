@@ -2,6 +2,7 @@ import {
   createSlice,
   createAsyncThunk,
   SerializedError,
+  AnyAction,
 } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import Auth from "../api/Auth";
@@ -18,16 +19,26 @@ export const signout = createAsyncThunk("auth/signout", async () => {
   return await Auth.signout();
 });
 
+function isPendingAction(action: AnyAction) {
+  return /^auth\/.*\/pending$/.test(action.type);
+}
+function isFulfilledAction(action: AnyAction) {
+  return /^auth\/.*\/fulfilled$/.test(action.type);
+}
+function isRejectedAction(action: AnyAction) {
+  return /^auth\/.*\/rejected$/.test(action.type);
+}
+
 interface AuthState {
   loading: boolean;
-  sessionId: string | undefined;
   error: SerializedError | null;
+  sessionId: string | undefined;
 }
 
 const initialState: AuthState = {
   loading: false,
-  sessionId: Cookies.get("sessionId"),
   error: null,
+  sessionId: Cookies.get("sessionId"),
 };
 
 export const authSlice = createSlice({
@@ -36,25 +47,20 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(signin.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(signin.fulfilled, (state) => {
-        state.loading = false;
         state.sessionId = Cookies.get("sessionId");
       })
-      .addCase(signin.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error;
-      })
-      .addCase(signout.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(signout.fulfilled, (state) => {
-        state.loading = false;
+      .addCase(signout.fulfilled, () => {
         Cookies.remove("sessionId");
       })
-      .addCase(signout.rejected, (state, action) => {
+      .addMatcher(isPendingAction, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addMatcher(isFulfilledAction, (state) => {
+        state.loading = false;
+      })
+      .addMatcher(isRejectedAction, (state, action) => {
         state.loading = false;
         state.error = action.error;
         Cookies.remove("sessionId");

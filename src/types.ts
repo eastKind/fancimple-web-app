@@ -9,27 +9,32 @@ export type SignupReqData = {
   password: string;
 };
 
+export type GetPostsQuery = {
+  cursor: string;
+  limit: number;
+};
+
 export interface Post {
-  id: string;
+  _id: string;
   thumbnail: string;
   likeCount: number;
   commentCount: number;
 }
 
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   photoUrl: string;
 }
 
 export interface Image {
-  id: string;
+  _id: string;
   url: string;
   key: string;
 }
 
 export type UserData = {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   followers: User[];
@@ -39,7 +44,7 @@ export type UserData = {
 };
 
 export type PostData = {
-  id: string;
+  _id: string;
   title: string;
   contents: string | null;
   images: Image[] | null;
@@ -47,4 +52,9 @@ export type PostData = {
   createdAt: string;
   likeCount: number;
   commentCount: number;
+};
+
+export type GetPostsResData = {
+  hasNext: boolean;
+  posts: PostData[];
 };
