@@ -50,13 +50,7 @@ function SignInForm() {
         value={values.password}
         onChange={handleChange}
       />
-      <Button
-        variant={undefined}
-        className={undefined}
-        as={undefined}
-        type="submit"
-        disabled={loading}
-      >
+      <Button type="submit" disabled={loading}>
         로그인
       </Button>
     </form>

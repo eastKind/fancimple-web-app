@@ -5,14 +5,7 @@ import {
   AnyAction,
 } from "@reduxjs/toolkit";
 import Post from "../api/Post";
-import { PostData, GetPostsQuery } from "../types";
-
-export const createPost = createAsyncThunk(
-  "post/create",
-  async (arg: FormData) => {
-    return await Post.create(arg);
-  }
-);
+import { PostData, GetPostsQuery, UpdatePostReqData } from "../types";
 
 export const getPosts = createAsyncThunk(
   "post/get",
@@ -22,6 +15,20 @@ export const getPosts = createAsyncThunk(
     dispatch(setCursor(nextCursor));
     dispatch(setHasNext(hasNext));
     return posts;
+  }
+);
+
+export const createPost = createAsyncThunk(
+  "post/create",
+  async (arg: FormData) => {
+    return await Post.create(arg);
+  }
+);
+
+export const updatePost = createAsyncThunk(
+  "post/update",
+  async (arg: UpdatePostReqData) => {
+    return await Post.update(arg);
   }
 );
 
@@ -76,6 +83,12 @@ export const postSlice = createSlice({
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts.unshift(action.payload);
+      })
+      .addCase(updatePost.fulfilled, (state, { payload: updatedPost }) => {
+        const index = state.posts.findIndex(
+          (post) => post._id === updatedPost._id
+        );
+        state.posts.splice(index, 1, updatedPost);
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         state.posts = state.posts.filter((post) => post._id !== action.payload);

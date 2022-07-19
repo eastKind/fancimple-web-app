@@ -28,14 +28,8 @@ function ListItem({ post }: ListItemProps) {
       <p>{post.contents}</p>
       <p>{post.createdAt}</p>
       <p>{post.writer.name}</p>
-      <Button
-        variant={undefined}
-        className={undefined}
-        as={undefined}
-        onClick={handleDeleteClick}
-      >
-        삭제
-      </Button>
+      <Button onClick={handleDeleteClick}>삭제</Button>
+      <Button onClick={handleDeleteClick}>수정</Button>
     </li>
   );
 }

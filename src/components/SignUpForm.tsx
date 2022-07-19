@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { signup as signupAsync } from "../redux/userSlice";
-import { signin as signinAsync } from "../redux/authSlice";
+import { signup } from "../redux/userSlice";
+import { signin } from "../redux/authSlice";
 import Button from "./Button";
 import styles from "./SignUpForm.module.scss";
 
@@ -23,8 +23,8 @@ function SignUpForm() {
     e.preventDefault();
     try {
       const { name, email, password } = values;
-      await dispatch(signupAsync({ name, email, password }));
-      await dispatch(signinAsync({ email, password }));
+      await dispatch(signup({ name, email, password }));
+      await dispatch(signin({ email, password }));
       navigate("/");
     } catch (error: any) {
       alert(error.message);
@@ -97,13 +97,7 @@ function SignUpForm() {
           onBlur={handleBlur}
         />
       </div>
-      <Button
-        variant={undefined}
-        className={undefined}
-        as={undefined}
-        type="submit"
-        disabled={loading}
-      >
+      <Button type="submit" disabled={loading}>
         회원 가입
       </Button>
     </form>

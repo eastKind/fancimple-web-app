@@ -14,6 +14,13 @@ export type GetPostsQuery = {
   limit: number;
 };
 
+export type UpdatePostReqData = {
+  _id: string;
+  title: string;
+  contents: string;
+  deletedKeys: string[];
+};
+
 export interface Post {
   _id: string;
   thumbnail: string;
@@ -33,6 +40,13 @@ export interface Image {
   key: string;
 }
 
+export interface Comment {
+  _id: string;
+  contents: string;
+  writer: User;
+  likeCount: number;
+}
+
 export type UserData = {
   _id: string;
   name: string;
@@ -46,12 +60,14 @@ export type UserData = {
 export type PostData = {
   _id: string;
   title: string;
-  contents: string | null;
-  images: Image[] | null;
+  contents: string;
+  images: Image[];
   writer: User;
   createdAt: string;
+  updatedAt: string;
   likeCount: number;
   commentCount: number;
+  comments: Comment[];
 };
 
 export type GetPostsResData = {

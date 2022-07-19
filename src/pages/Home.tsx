@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import { getMe as getMeAsync } from "../redux/userSlice";
+import { getMe } from "../redux/userSlice";
 import { GetPostsQuery } from "../types";
-import { getPosts as getPostsAsync } from "../redux/postSlice";
+import { getPosts } from "../redux/postSlice";
 import PostForm from "../components/PostForm";
 import PostList from "../components/PostList";
 
@@ -12,8 +12,8 @@ function Home() {
   const dispatch = useAppDispatch();
 
   const handleLoad = useCallback(async (arg: GetPostsQuery) => {
-    await dispatch(getMeAsync());
-    await dispatch(getPostsAsync(arg));
+    await dispatch(getMe());
+    await dispatch(getPosts(arg));
   }, []);
 
   useEffect(() => {

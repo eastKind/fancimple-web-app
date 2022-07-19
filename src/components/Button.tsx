@@ -3,9 +3,9 @@ import classNames from "classnames";
 import styles from "./Button.module.scss";
 
 interface ButtonProps {
-  variant: string | undefined;
-  className: string | undefined;
-  as: string | undefined;
+  variant?: string;
+  className?: string;
+  as?: string;
   [key: string]: any;
 }
 

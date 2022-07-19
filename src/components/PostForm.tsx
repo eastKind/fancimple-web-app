@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
-import { createPost as createPostAsync } from "../redux/postSlice";
+import { createPost } from "../redux/postSlice";
 import Button from "./Button";
 import FileInput from "./FileInput";
 import styles from "./PostForm.module.scss";
@@ -32,7 +32,7 @@ function PostForm() {
           formData.append("image", file);
         });
       }
-      await dispatch(createPostAsync(formData));
+      await dispatch(createPost(formData));
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -80,14 +80,7 @@ function PostForm() {
         onChange={handleChange}
         initialPreviews={undefined}
       />
-      <Button
-        variant={undefined}
-        className={undefined}
-        as={undefined}
-        type="submit"
-      >
-        등록
-      </Button>
+      <Button type="submit">등록</Button>
     </form>
   );
 }
