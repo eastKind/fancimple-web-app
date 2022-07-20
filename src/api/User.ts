@@ -10,4 +10,9 @@ export default class User {
     const response = await axiosInstance.get("/user");
     return response.data.user;
   }
+
+  public static async getUser(id: string): Promise<UserData> {
+    const response = await axiosInstance.get(`/user/${id}`);
+    return response.data.user;
+  }
 }

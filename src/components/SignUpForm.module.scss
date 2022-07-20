@@ -1,0 +1,16 @@
+.form {
+  .inputContainer {
+    position: relative;
+    label {
+      background-color: #fff;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      transition: 0.2s ease-in-out;
+      cursor: unset;
+      &.focused {
+        transform: translateY(-20px) scale(1.2);
+      }
+    }
+  }
+}

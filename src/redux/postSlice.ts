@@ -17,21 +17,18 @@ export const getPosts = createAsyncThunk(
     return posts;
   }
 );
-
 export const createPost = createAsyncThunk(
   "post/create",
   async (arg: FormData) => {
     return await Post.create(arg);
   }
 );
-
 export const updatePost = createAsyncThunk(
   "post/update",
   async (arg: UpdatePostReqData) => {
     return await Post.update(arg);
   }
 );
-
 export const deletePost = createAsyncThunk(
   "post/delete",
   async (id: string) => {
@@ -79,7 +76,12 @@ export const postSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getPosts.fulfilled, (state, action) => {
-        state.posts.push(...action.payload);
+        const { cursor } = action.meta.arg;
+        if (cursor) {
+          state.posts.push(...action.payload);
+        } else {
+          state.posts = action.payload;
+        }
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts.unshift(action.payload);

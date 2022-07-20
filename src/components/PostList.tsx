@@ -5,6 +5,7 @@ import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { PostData, GetPostsQuery } from "../types";
 import Button from "./Button";
 import styles from "./PostList.module.scss";
+import { Link } from "react-router-dom";
 
 interface ListItemProps {
   post: PostData;
@@ -27,7 +28,7 @@ function ListItem({ post }: ListItemProps) {
       </div>
       <p>{post.contents}</p>
       <p>{post.createdAt}</p>
-      <p>{post.writer.name}</p>
+      <Link to={post.writer._id}>{post.writer.name}</Link>
       <Button onClick={handleDeleteClick}>삭제</Button>
       <Button onClick={handleDeleteClick}>수정</Button>
     </li>
@@ -40,12 +41,12 @@ function PostList() {
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
 
-  const handleLoad = async (arg: GetPostsQuery) => {
+  const handleLoadMore = async (arg: GetPostsQuery) => {
     await dispatch(getPosts(arg));
   };
 
   useEffect(() => {
-    if (isInterSecting && hasNext) handleLoad({ cursor, limit: 10 });
+    if (isInterSecting && hasNext) handleLoadMore({ cursor, limit: 10 });
   }, [isInterSecting]);
 
   return (

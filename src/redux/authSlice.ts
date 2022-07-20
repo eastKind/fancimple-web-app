@@ -6,14 +6,23 @@ import {
 } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import Auth from "../api/Auth";
-import { SigninReqData } from "../types";
+import User from "../api/User";
+import { SigninReqData, UserData } from "../types";
 
 export const signin = createAsyncThunk(
   "auth/signin",
-  async (arg: SigninReqData) => {
-    return await Auth.signin(arg);
+  async (arg: SigninReqData, { rejectWithValue }) => {
+    try {
+      return await Auth.signin(arg);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
+
+export const getMe = createAsyncThunk("auth/getMe", async () => {
+  return await User.getMe();
+});
 
 export const signout = createAsyncThunk("auth/signout", async () => {
   return await Auth.signout();
@@ -32,13 +41,15 @@ function isRejectedAction(action: AnyAction) {
 interface AuthState {
   loading: boolean;
   error: SerializedError | null;
-  sessionId: string | undefined;
+  sessionId?: string;
+  userData: UserData | null;
 }
 
 const initialState: AuthState = {
   loading: false,
   error: null,
   sessionId: Cookies.get("sessionId"),
+  userData: null,
 };
 
 export const authSlice = createSlice({
@@ -47,11 +58,16 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(signin.fulfilled, (state) => {
+      .addCase(signin.fulfilled, (state, action) => {
         state.sessionId = Cookies.get("sessionId");
+        state.userData = action.payload;
       })
-      .addCase(signout.fulfilled, () => {
-        Cookies.remove("sessionId");
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.userData = action.payload;
+      })
+      .addCase(signout.fulfilled, (state) => {
+        state.sessionId = undefined;
+        state.userData = null;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
@@ -63,7 +79,6 @@ export const authSlice = createSlice({
       .addMatcher(isRejectedAction, (state, action) => {
         state.loading = false;
         state.error = action.error;
-        Cookies.remove("sessionId");
       });
   },
 });

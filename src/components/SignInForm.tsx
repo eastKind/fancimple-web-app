@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import Button from "./Button";
 import styles from "./SignInForm.module.scss";
-import { signin as signinAsync } from "../redux/authSlice";
+import { signin } from "../redux/authSlice";
 
 const initialState = {
   email: "",
@@ -19,7 +19,7 @@ function SignInForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(signinAsync(values));
+      await dispatch(signin(values)).unwrap();
       navigate("/");
     } catch (error: any) {
       alert(error.message);

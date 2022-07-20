@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import { getMe } from "../redux/userSlice";
 import { GetPostsQuery } from "../types";
 import { getPosts } from "../redux/postSlice";
 import PostForm from "../components/PostForm";
@@ -12,11 +11,11 @@ function Home() {
   const dispatch = useAppDispatch();
 
   const handleLoad = useCallback(async (arg: GetPostsQuery) => {
-    await dispatch(getMe());
     await dispatch(getPosts(arg));
   }, []);
 
   useEffect(() => {
+    if (!sessionId) return;
     handleLoad({ cursor: "", limit: 10 });
   }, [handleLoad]);
 

@@ -74,3 +74,11 @@ export type GetPostsResData = {
   hasNext: boolean;
   posts: PostData[];
 };
+
+export type MyParams = {
+  id: string;
+};
+
+export interface ValidateFn {
+  (arg1: string, arg2: string): { [key: string]: string };
+}

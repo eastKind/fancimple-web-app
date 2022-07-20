@@ -9,13 +9,13 @@ import User from "../api/User";
 
 export const signup = createAsyncThunk(
   "user/signup",
-  async (arg: SignupReqData) => {
-    return await User.signup(arg);
+  async (reqData: SignupReqData) => {
+    return await User.signup(reqData);
   }
 );
 
-export const getMe = createAsyncThunk("user/getMe", async () => {
-  return await User.getMe();
+export const getUser = createAsyncThunk("user/getUser", async (id: string) => {
+  return await User.getUser(id);
 });
 
 function isPendingAction(action: AnyAction) {
@@ -46,7 +46,7 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getMe.fulfilled, (state, action) => {
+      .addCase(getUser.fulfilled, (state, action) => {
         state.userData = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {

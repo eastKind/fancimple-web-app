@@ -1,31 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signup } from "../redux/userSlice";
 import { signin } from "../redux/authSlice";
+import { validate, validatePw } from "../utils/validate";
+import { ValidateFn } from "../types";
 import Button from "./Button";
 import styles from "./SignUpForm.module.scss";
 
-const initialState = {
+interface InitialState {
+  [key: string]: string;
+}
+
+const initialState: InitialState = {
   name: "",
   email: "",
   password: "",
-  passwordConfirm: "",
+  password2: "",
 };
 
 function SignUpForm() {
-  const [values, setValues] = useState(initialState);
   const { loading } = useAppSelector((state) => state.user);
+  const [values, setValues] = useState(initialState);
+  const [cautions, setCautions] = useState(initialState);
+  const [focus, setFocus] = useState(initialState);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const handleValidate = (
+    validateFn: ValidateFn,
+    ...options: [string, string]
+  ) => {
+    setCautions((prev) => ({
+      ...prev,
+      ...validateFn(...options),
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     try {
-      const { name, email, password } = values;
-      await dispatch(signup({ name, email, password }));
-      await dispatch(signin({ email, password }));
-      navigate("/");
+      const invalidKey = Object.keys(cautions).find((key) => {
+        return !(cautions[key] === "" && values[key]);
+      });
+      if (!invalidKey) {
+        const { name, email, password } = values;
+        await dispatch(signup({ name, email, password }));
+        await dispatch(signin({ email, password }));
+        return navigate("/");
+      }
+      if (invalidKey !== "password2") {
+        handleValidate(validate, invalidKey, values[invalidKey]);
+      }
     } catch (error: any) {
       alert(error.message);
     }
@@ -39,18 +65,36 @@ function SignUpForm() {
     }));
   };
 
-  const handleFocus = (): void => {
-    return;
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>): void => {
+    setFocus((prev) => ({
+      ...prev,
+      [e.target.name]: "focus",
+    }));
   };
 
-  const handleBlur = (): void => {
-    return;
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    if (name !== "password2") {
+      handleValidate(validate, name, value);
+    }
+    if (!value) {
+      setFocus((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
+
+  useEffect(() => {
+    handleValidate(validatePw, values.password, values.password2);
+  }, [values.password, values.password2]);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.inputContainer}>
-        <label htmlFor="name">이름</label>
+        <label htmlFor="name" className={focus.name ? styles.focused : ""}>
+          이름
+        </label>
         <input
           id="name"
           type="text"
@@ -60,9 +104,12 @@ function SignUpForm() {
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
+        {cautions.name && <p>{cautions.name}</p>}
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor="email">이메일</label>
+        <label htmlFor="email" className={focus.email ? styles.focused : ""}>
+          이메일
+        </label>
         <input
           id="email"
           type="email"
@@ -72,9 +119,15 @@ function SignUpForm() {
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
+        {cautions.email && <p>{cautions.email}</p>}
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor="password">비밀번호</label>
+        <label
+          htmlFor="password"
+          className={focus.password ? styles.focused : ""}
+        >
+          비밀번호
+        </label>
         <input
           id="password"
           type="password"
@@ -84,18 +137,25 @@ function SignUpForm() {
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
+        {cautions.password && <p>{cautions.password}</p>}
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor="passwordConfirm">비밀번호 확인</label>
+        <label
+          htmlFor="password2"
+          className={focus.password2 ? styles.focused : ""}
+        >
+          비밀번호 확인
+        </label>
         <input
-          id="passwordConfirm"
+          id="password2"
           type="password"
-          name="passwordConfirm"
-          value={values.passwordConfirm}
+          name="password2"
+          value={values.password2}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
+        {cautions.password2 && <p>{cautions.password2}</p>}
       </div>
       <Button type="submit" disabled={loading}>
         회원 가입
