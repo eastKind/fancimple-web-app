@@ -20,7 +20,9 @@ function ListItem({ post }: ListItemProps) {
 
   return (
     <li className={styles.listItem}>
-      <h2>{post.title}</h2>
+      <h2>
+        <Link to={`/post/${post._id}`}>{post.title}</Link>
+      </h2>
       <div className={styles.imageContainer}>
         {post.images?.map((image) => (
           <img key={image._id} src={image.url} alt="" width="75" />

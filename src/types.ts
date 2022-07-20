@@ -9,6 +9,12 @@ export type SignupReqData = {
   password: string;
 };
 
+export type GetCommentsQuery = {
+  id: string;
+  cursor: string;
+  limit: number;
+};
+
 export type GetPostsQuery = {
   cursor: string;
   limit: number;
@@ -19,6 +25,11 @@ export type UpdatePostReqData = {
   title: string;
   contents: string;
   deletedKeys: string[];
+};
+
+export type CreateCommentReqData = {
+  id: string;
+  contents: string;
 };
 
 export interface Post {
@@ -40,12 +51,14 @@ export interface Image {
   key: string;
 }
 
-export interface Comment {
+export type CommentData = {
   _id: string;
   contents: string;
   writer: User;
   likeCount: number;
-}
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type UserData = {
   _id: string;
@@ -67,7 +80,11 @@ export type PostData = {
   updatedAt: string;
   likeCount: number;
   commentCount: number;
-  comments: Comment[];
+};
+
+export type GetCommentResData = {
+  hasNext: boolean;
+  comments: CommentData[];
 };
 
 export type GetPostsResData = {
