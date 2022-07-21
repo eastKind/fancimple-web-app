@@ -5,7 +5,7 @@ import {
   AnyAction,
 } from "@reduxjs/toolkit";
 import Comment from "../api/Comment";
-import { CommentData, GetCommentsQuery, CreateCommentReqData } from "../types";
+import { CommentData, GetCommentsQuery, CommentReqData } from "../types";
 
 export const getComments = createAsyncThunk(
   "comment/get",
@@ -20,22 +20,22 @@ export const getComments = createAsyncThunk(
 );
 export const createComment = createAsyncThunk(
   "comment/create",
-  async (arg: CreateCommentReqData) => {
+  async (arg: CommentReqData) => {
     return await Comment.create(arg);
   }
 );
-// export const updateComment = createAsyncThunk(
-//   "comment/update",
-//   async (arg: UpdatePostReqData) => {
-//     return await Comment.update(arg);
-//   }
-// );
-// export const deleteComment = createAsyncThunk(
-//   "comment/delete",
-//   async (id: string) => {
-//     return await Comment.delete(id);
-//   }
-// );
+export const updateComment = createAsyncThunk(
+  "comment/update",
+  async (arg: CommentReqData) => {
+    return await Comment.update(arg);
+  }
+);
+export const deleteComment = createAsyncThunk(
+  "comment/delete",
+  async (id: string) => {
+    return await Comment.delete(id);
+  }
+);
 
 function isPendingAction(action: AnyAction) {
   return /^comment\/.*\/pending$/.test(action.type);
@@ -87,15 +87,20 @@ export const commentSlice = createSlice({
       .addCase(createComment.fulfilled, (state, action) => {
         state.comments.unshift(action.payload);
       })
-      // .addCase(updateComment.fulfilled, (state, { payload: updatedComment }) => {
-      //   const index = state.comments.findIndex(
-      //     (comment) => comment._id === updatedComment._id
-      //   );
-      //   state.comments.splice(index, 1, updatedPost);
-      // })
-      // .addCase(deleteComment.fulfilled, (state, action) => {
-      //   state.comments = state.comments.filter((comment) => comment._id !== action.payload);
-      // })
+      .addCase(
+        updateComment.fulfilled,
+        (state, { payload: updatedComment }) => {
+          const index = state.comments.findIndex(
+            (comment) => comment._id === updatedComment._id
+          );
+          state.comments.splice(index, 1, updatedComment);
+        }
+      )
+      .addCase(deleteComment.fulfilled, (state, { payload: deletedPostId }) => {
+        state.comments = state.comments.filter(
+          (comment) => comment._id !== deletedPostId
+        );
+      })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
         state.error = null;

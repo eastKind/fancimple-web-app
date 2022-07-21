@@ -6,7 +6,7 @@ import { signin } from "../redux/authSlice";
 import { validate, validatePw } from "../utils/validate";
 import { ValidateFn } from "../types";
 import Button from "./Button";
-import styles from "./SignUpForm.module.scss";
+import styles from "../essets/scss/SignUpForm.module.scss";
 
 interface InitialState {
   [key: string]: string;

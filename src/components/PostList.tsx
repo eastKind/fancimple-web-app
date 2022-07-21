@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { deletePost, getPosts } from "../redux/postSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { PostData, GetPostsQuery } from "../types";
 import Button from "./Button";
-import styles from "./PostList.module.scss";
-import { Link } from "react-router-dom";
+import styles from "../essets/scss/PostList.module.scss";
 
 interface ListItemProps {
   post: PostData;
@@ -32,7 +32,7 @@ function ListItem({ post }: ListItemProps) {
       <p>{post.createdAt}</p>
       <Link to={post.writer._id}>{post.writer.name}</Link>
       <Button onClick={handleDeleteClick}>삭제</Button>
-      <Button onClick={handleDeleteClick}>수정</Button>
+      {/* <Button onClick={handleDeleteClick}>수정</Button> */}
     </li>
   );
 }

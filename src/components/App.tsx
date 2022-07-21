@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getMe } from "../redux/authSlice";
 import Nav from "./Nav";
-import styles from "./App.module.scss";
+import styles from "../essets/scss/App.module.scss";
 
 function App() {
   const dispatch = useAppDispatch();

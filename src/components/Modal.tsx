@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, Dispatch, SetStateAction } from "react";
 import Portal from "../Portal";
-import styles from "./Modal.module.scss";
+import styles from "../essets/scss/Modal.module.scss";
 
 interface ModalProps {
   children: React.ReactNode;

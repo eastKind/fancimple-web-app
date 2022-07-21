@@ -3,7 +3,7 @@ import { useAppDispatch } from "../redux/hooks";
 import { createPost } from "../redux/postSlice";
 import Button from "./Button";
 import FileInput from "./FileInput";
-import styles from "./PostForm.module.scss";
+import styles from "../essets/scss/PostForm.module.scss";
 
 type Values = {
   title: string;

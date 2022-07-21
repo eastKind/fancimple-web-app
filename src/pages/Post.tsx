@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../redux/hooks";
-import { getComments } from "../redux/commentSlice";
+import { getComments, createComment } from "../redux/commentSlice";
 import { MyParams } from "../types";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
@@ -21,7 +21,7 @@ function Post() {
   return (
     <div>
       {id}
-      <CommentForm />
+      <CommentForm onSubmit={createComment} />
       <CommentList />
     </div>
   );

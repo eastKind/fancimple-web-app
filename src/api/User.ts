@@ -7,7 +7,7 @@ export default class User {
   }
 
   public static async getMe(): Promise<UserData> {
-    const response = await axiosInstance.get("/user");
+    const response = await axiosInstance.get("/user/me");
     return response.data.user;
   }
 

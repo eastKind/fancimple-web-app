@@ -9,12 +9,6 @@ export type SignupReqData = {
   password: string;
 };
 
-export type GetCommentsQuery = {
-  id: string;
-  cursor: string;
-  limit: number;
-};
-
 export type GetPostsQuery = {
   cursor: string;
   limit: number;
@@ -27,7 +21,13 @@ export type UpdatePostReqData = {
   deletedKeys: string[];
 };
 
-export type CreateCommentReqData = {
+export type GetCommentsQuery = {
+  id: string;
+  cursor: string;
+  limit: number;
+};
+
+export type CommentReqData = {
   id: string;
   contents: string;
 };

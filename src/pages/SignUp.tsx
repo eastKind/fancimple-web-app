@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import SignUpForm from "../components/SignUpForm";
-import styles from "./SignUp.module.scss";
+import styles from "../essets/scss/SignUp.module.scss";
 
 function SingUp() {
   const { sessionId } = useAppSelector((state) => state.auth);

@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import SignInForm from "../components/SignInForm";
-import styles from "./SignIn.module.scss";
+import styles from "../essets/scss/SignIn.module.scss";
 
 function SignIn() {
   const { sessionId } = useAppSelector((state) => state.auth);

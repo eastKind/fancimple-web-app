@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import styles from "./FileInput.module.scss";
+import styles from "../essets/scss/FileInput.module.scss";
 
 interface FileInputProps {
   name: string;

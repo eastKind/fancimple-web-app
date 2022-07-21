@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signout } from "../redux/authSlice";
-import styles from "./Nav.module.scss";
+import styles from "../essets/scss/Nav.module.scss";
 
 function Nav() {
   const { sessionId } = useAppSelector((state) => state.auth);
