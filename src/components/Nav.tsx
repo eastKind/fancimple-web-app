@@ -1,10 +1,15 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
+import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signout } from "../redux/authSlice";
 import styles from "../essets/scss/Nav.module.scss";
 
-function Nav() {
+interface NavProps {
+  className?: string;
+}
+
+function Nav({ className }: NavProps) {
   const { sessionId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -15,7 +20,7 @@ function Nav() {
   };
 
   return (
-    <div className={styles.nav}>
+    <div className={classNames(styles.nav, className)}>
       Nav
       {sessionId ? (
         <button onClick={handleClick}>로그아웃</button>

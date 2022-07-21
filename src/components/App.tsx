@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getMe } from "../redux/authSlice";
 import Nav from "./Nav";
 import styles from "../essets/scss/App.module.scss";
+import "../essets/scss/App.font.scss";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ function App() {
 
   return (
     <>
-      <Nav />
+      <Nav className={styles.nav} />
       <div className={styles.body}>
         <Outlet />
       </div>
