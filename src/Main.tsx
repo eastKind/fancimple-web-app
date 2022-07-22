@@ -19,8 +19,8 @@ function Main() {
             <Route path=":id" element={<Profile />} />
             <Route path="post/:id" element={<Post />} />
           </Route>
-          <Route path="signin" element={<SignIn />} />
-          <Route path="signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>

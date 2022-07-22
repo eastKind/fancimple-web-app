@@ -5,7 +5,7 @@ import { deletePost, getPosts } from "../redux/postSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { PostData, GetPostsQuery } from "../types";
 import Button from "./Button";
-import Spinner from "react-bootstrap/Spinner";
+import Spinner from "./Spinner";
 import styles from "../essets/scss/PostList.module.scss";
 
 interface ListItemProps {
@@ -56,11 +56,12 @@ function PostList() {
 
   return (
     <ul className={styles.list}>
+      <Spinner size="30px" />
       {posts?.map((post) => (
         <ListItem key={post._id} post={post} />
       ))}
       <div className={styles.loadMore} ref={targetRef}></div>
-      {loading && <Spinner animation={"border"} />}
+      {loading && <Spinner size="30px" />}
     </ul>
   );
 }

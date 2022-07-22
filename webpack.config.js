@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
 
 module.exports = {
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "bundle.js",
+    filename: "[name].[hash].js",
     publicPath: "/",
+    clean: true,
   },
   devtool: "inline-source-map",
   module: {
@@ -16,7 +18,7 @@ module.exports = {
       {
         test: /\.scss$/i,
         use: [
-          "style-loader",
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -45,16 +47,16 @@ module.exports = {
         exclude: /node_modules/,
         use: ["ts-loader"],
       },
-      // {
-      //   test: /\.js$/,
-      //   enforce: "pre",
-      //   use: ["source-map-loader"],
-      // },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: "public/index.html",
+      favicon: "public/favicon.ico",
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].[hash].css",
+      chunkFilename: "[id]-[hash].css",
     }),
   ],
   resolve: {
@@ -62,6 +64,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    hot: true,
+    port: 3000,
+    open: true,
   },
 };

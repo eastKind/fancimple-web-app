@@ -3,11 +3,10 @@
 }
 
 html {
-  // background-color: $bg-color;
+  background-color: $bg-color;
 }
 
 body {
-  background-color: $bg-color;
   overflow-y: scroll;
   margin: 0;
 }
@@ -20,14 +19,17 @@ a:visited {
   color: $font-color;
 }
 
-button {
-  border: 0.5px solid $font-color;
-}
-
 :global(#root) {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 40;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 40;
 }
 
 .nav {
