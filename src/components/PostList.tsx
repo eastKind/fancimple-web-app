@@ -5,6 +5,7 @@ import { deletePost, getPosts } from "../redux/postSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { PostData, GetPostsQuery } from "../types";
 import Button from "./Button";
+import Spinner from "react-bootstrap/Spinner";
 import styles from "../essets/scss/PostList.module.scss";
 
 interface ListItemProps {
@@ -38,7 +39,9 @@ function ListItem({ post }: ListItemProps) {
 }
 
 function PostList() {
-  const { posts, cursor, hasNext } = useAppSelector((state) => state.post);
+  const { posts, cursor, hasNext, loading } = useAppSelector(
+    (state) => state.post
+  );
   const dispatch = useAppDispatch();
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
@@ -57,6 +60,7 @@ function PostList() {
         <ListItem key={post._id} post={post} />
       ))}
       <div className={styles.loadMore} ref={targetRef}></div>
+      {loading && <Spinner animation={"border"} />}
     </ul>
   );
 }

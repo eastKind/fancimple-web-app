@@ -39,7 +39,7 @@ function FileInput({ name, value, onChange, initialPreviews }: FileInputProps) {
   return (
     <div className={styles.inputContainer}>
       {previews?.map((preview, index) => (
-        <img key={index} src={preview} alt="preview" />
+        <img key={index} src={preview} alt="preview" width="75" />
       ))}
       <label htmlFor="files">이미지</label>
       <input

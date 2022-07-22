@@ -3,10 +3,11 @@
 }
 
 html {
-  background-color: $bg-color;
+  // background-color: $bg-color;
 }
 
 body {
+  background-color: $bg-color;
   overflow-y: scroll;
   margin: 0;
 }
@@ -17,6 +18,10 @@ a:active,
 a:visited {
   text-decoration: none;
   color: $font-color;
+}
+
+button {
+  border: 0.5px solid $font-color;
 }
 
 :global(#root) {

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signin } from "../redux/authSlice";
 import Button from "./Button";
+import Spinner from "react-bootstrap/Spinner";
 import styles from "../essets/scss/SignInForm.module.scss";
 
 const initialState = {
@@ -51,7 +52,11 @@ function SignInForm() {
         onChange={handleChange}
       />
       <Button type="submit" disabled={loading}>
-        로그인
+        {loading ? (
+          <Spinner as="span" animation="border" size="sm" />
+        ) : (
+          "로그인"
+        )}
       </Button>
     </form>
   );

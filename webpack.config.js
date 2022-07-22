@@ -7,9 +7,10 @@ module.exports = {
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "[name].js",
+    filename: "bundle.js",
     publicPath: "/",
   },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -44,11 +45,11 @@ module.exports = {
         exclude: /node_modules/,
         use: ["ts-loader"],
       },
-      {
-        test: /\.js$/,
-        enforce: "pre",
-        use: ["source-map-loader"],
-      },
+      // {
+      //   test: /\.js$/,
+      //   enforce: "pre",
+      //   use: ["source-map-loader"],
+      // },
     ],
   },
   plugins: [
@@ -61,5 +62,6 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    hot: true,
   },
 };
