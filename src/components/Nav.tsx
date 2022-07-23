@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signout } from "../redux/authSlice";
+import Container from "./Container";
 import styles from "../essets/scss/Nav.module.scss";
 
 interface NavProps {
@@ -21,12 +22,14 @@ function Nav({ className }: NavProps) {
 
   return (
     <div className={classNames(styles.nav, className)}>
-      Nav
-      {sessionId ? (
-        <button onClick={handleClick}>로그아웃</button>
-      ) : (
-        <Link to="/signin">로그인</Link>
-      )}
+      <Container>
+        Nav
+        {sessionId ? (
+          <button onClick={handleClick}>로그아웃</button>
+        ) : (
+          <Link to="/signin">로그인</Link>
+        )}
+      </Container>
     </div>
   );
 }

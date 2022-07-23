@@ -5,13 +5,18 @@ import styles from "../essets/scss/Slide.module.scss";
 
 interface SlideProps {
   images: Image[];
+  className?: string;
 }
 
-function Slide({ images }: SlideProps) {
+function Slide({ images, className }: SlideProps) {
   const [index, setIndex] = useState(0);
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(images.length > 1 ? true : false);
   const slideRef = useRef<HTMLDivElement>(null);
+
+  const style = {
+    transform: `translateX(-${index}00%)`,
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLSpanElement;
@@ -32,8 +37,8 @@ function Slide({ images }: SlideProps) {
   }, [index, images.length]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.slide} ref={slideRef}>
+    <div className={classNames(styles.container, className)}>
+      <div className={styles.slide} ref={slideRef} style={style}>
         {images.map((image) => (
           <img key={image._id} src={image.url} alt="" />
         ))}
@@ -67,7 +72,7 @@ function Slide({ images }: SlideProps) {
           onClick={handleClick}
           className={classNames(
             styles.arrow,
-            styles.left,
+            styles.right,
             "material-symbols-outlined"
           )}
         >

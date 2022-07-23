@@ -19,6 +19,10 @@ a:visited {
   color: $font-color;
 }
 
+ul {
+  list-style: none;
+}
+
 :global(#root) {
   display: flex;
   flex-direction: column;

@@ -6,6 +6,7 @@ import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { PostData, GetPostsQuery } from "../types";
 import Button from "./Button";
 import Spinner from "./Spinner";
+import Slide from "./Slide";
 import styles from "../essets/scss/PostList.module.scss";
 
 interface ListItemProps {
@@ -24,16 +25,11 @@ function ListItem({ post }: ListItemProps) {
       <h2>
         <Link to={`/post/${post._id}`}>{post.title}</Link>
       </h2>
-      <div className={styles.imageContainer}>
-        {post.images?.map((image) => (
-          <img key={image._id} src={image.url} alt="" width="75" />
-        ))}
-      </div>
+      <Slide images={post.images} />
       <p>{post.contents}</p>
       <p>{post.createdAt}</p>
       <Link to={post.writer._id}>{post.writer.name}</Link>
       <Button onClick={handleDeleteClick}>삭제</Button>
-      {/* <Button onClick={handleDeleteClick}>수정</Button> */}
     </li>
   );
 }
@@ -56,7 +52,6 @@ function PostList() {
 
   return (
     <ul className={styles.list}>
-      <Spinner size="30px" />
       {posts?.map((post) => (
         <ListItem key={post._id} post={post} />
       ))}

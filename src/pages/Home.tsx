@@ -1,10 +1,13 @@
 import React, { useEffect, useCallback } from "react";
 import { Navigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { GetPostsQuery } from "../types";
 import { getPosts } from "../redux/postSlice";
+import Container from "../components/Container";
 import PostForm from "../components/PostForm";
 import PostList from "../components/PostList";
+import styles from "../essets/scss/Home.module.scss";
 
 function Home() {
   const { sessionId } = useAppSelector((state) => state.auth);
@@ -22,11 +25,16 @@ function Home() {
   if (!sessionId) return <Navigate to="/signin" />;
 
   return (
-    <div>
-      <h1>Home</h1>
-      <PostForm />
-      <PostList />
-    </div>
+    <>
+      <Helmet>
+        <title>추억은 다이내믹, 포스팅은 심플</title>
+      </Helmet>
+      <Container className={styles.container}>
+        <h1>Home</h1>
+        <PostForm />
+        <PostList />
+      </Container>
+    </>
   );
 }
 
