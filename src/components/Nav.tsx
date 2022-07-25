@@ -23,7 +23,7 @@ function Nav({ className }: NavProps) {
   return (
     <div className={classNames(styles.nav, className)}>
       <Container>
-        Nav
+        FANCIMPLE
         {sessionId ? (
           <button onClick={handleClick}>로그아웃</button>
         ) : (

@@ -1,16 +1,67 @@
 .form {
+  padding: 0 20px;
+
   .inputContainer {
     position: relative;
+
     label {
-      background-color: #fff;
+      padding: 0 5px;
       position: absolute;
-      top: 4px;
-      left: 4px;
+      top: calc(50% - 15px - 0.5rem);
+      left: 10px;
       transition: 0.2s ease-in-out;
+      background-color: #fff;
+      font-size: 1.1rem;
       cursor: unset;
-      &.focused {
-        transform: translateY(-20px) scale(1.2);
+    }
+
+    input {
+      width: 100%;
+      padding: 20px 15px;
+      border-radius: 5px;
+      border: 1px solid $font-color-opacity;
+      outline: none;
+      font-size: 1.2rem;
+      transition: box-shadow 0.2s ease-in-out;
+
+      &:hover {
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
       }
     }
+
+    .cautions {
+      margin: 0;
+      height: 20px;
+      color: $warning-color;
+    }
+
+    &.invalid {
+      label {
+        color: $warning-color !important;
+      }
+      input {
+        border-color: $warning-color !important;
+      }
+    }
+
+    &.focused {
+      label {
+        color: $blue;
+        top: calc(0% - 0.8rem);
+        transform: scale(0.9);
+      }
+      input {
+        border-color: $blue;
+      }
+    }
+  }
+
+  .btn {
+    width: 100%;
+    font-size: 1.2rem;
+  }
+
+  > * {
+    margin-bottom: 12px;
   }
 }

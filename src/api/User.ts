@@ -15,4 +15,9 @@ export default class User {
     const response = await axiosInstance.get(`/user/${id}`);
     return response.data.user;
   }
+
+  public static async editPhoto(reqData: FormData): Promise<UserData> {
+    const response = await axiosInstance.patch("/user/photo", reqData);
+    return response.data.user;
+  }
 }

@@ -11,9 +11,9 @@ function SignIn() {
 
   return (
     <div className={styles.container}>
-      <Link to="/">LOGO</Link>
+      <div className={styles.logo}>FANCIMPLE</div>
       <div className={styles.signup}>
-        <span>아직 회원이 아니신가요?</span>
+        <span>아직 회원이 아니신가요? </span>
         <Link to="/signup">회원가입 하기</Link>
       </div>
       <SignInForm />

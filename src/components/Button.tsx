@@ -15,7 +15,7 @@ function Button({ variant, className, as, ...restProps }: ButtonProps) {
       <div
         {...restProps}
         className={classNames(
-          styles.button,
+          styles.btn,
           variant && styles[variant],
           className
         )}
@@ -26,11 +26,7 @@ function Button({ variant, className, as, ...restProps }: ButtonProps) {
   return (
     <button
       {...restProps}
-      className={classNames(
-        styles.button,
-        variant && styles[variant],
-        className
-      )}
+      className={classNames(styles.btn, variant && styles[variant], className)}
     />
   );
 }

@@ -18,6 +18,13 @@ export const getUser = createAsyncThunk("user/getUser", async (id: string) => {
   return await User.getUser(id);
 });
 
+export const editPhoto = createAsyncThunk(
+  "user/editPhoto",
+  async (reqData: FormData) => {
+    return await User.editPhoto(reqData);
+  }
+);
+
 function isPendingAction(action: AnyAction) {
   return /^user\/.*\/pending$/.test(action.type);
 }
@@ -47,6 +54,9 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUser.fulfilled, (state, action) => {
+        state.userData = action.payload;
+      })
+      .addCase(editPhoto.fulfilled, (state, action) => {
         state.userData = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {

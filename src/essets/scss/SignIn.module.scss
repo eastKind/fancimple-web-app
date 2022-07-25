@@ -1,0 +1,31 @@
+.container {
+  width: 100%;
+  max-width: 400px;
+  margin: 150px auto 0;
+  padding: 20px 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: $box-shadow;
+
+  .logo {
+    padding-bottom: 20px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    border-bottom: 1px solid $font-color-opacity;
+  }
+
+  .signup {
+    text-align: center;
+  }
+
+  .find {
+    padding: 0 20px;
+    text-align: right;
+    opacity: 0.7;
+  }
+
+  > :not(:last-child) {
+    margin-bottom: 20px;
+  }
+}

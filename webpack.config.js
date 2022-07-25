@@ -47,6 +47,10 @@ module.exports = {
         exclude: /node_modules/,
         use: ["ts-loader"],
       },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: ["file-loader"],
+      },
     ],
   },
   plugins: [

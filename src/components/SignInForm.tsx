@@ -13,15 +13,42 @@ const initialState = {
 
 function SignInForm() {
   const [values, setValues] = useState(initialState);
+  const [cautions, setCautions] = useState(initialState);
   const { loading } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const handleValidate = () => {
+    let isPass = true;
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (!value) {
+        setCautions((prev) => ({
+          ...prev,
+          [key]:
+            key === "email"
+              ? "이메일을 확인해주세요"
+              : "비밀번호를 확인해주세요",
+        }));
+        isPass = false;
+      }
+    });
+
+    setTimeout(() => {
+      setCautions(initialState);
+    }, 3000);
+
+    return isPass;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(signin(values)).unwrap();
-      navigate("/");
+      const isPass = handleValidate();
+      if (isPass) {
+        await dispatch(signin(values)).unwrap();
+        navigate("/");
+      }
     } catch (error: any) {
       alert(error.message);
     }
@@ -37,22 +64,32 @@ function SignInForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <label>이메일</label>
-      <input
-        type="email"
-        name="email"
-        value={values.email}
-        onChange={handleChange}
-      />
-      <label>비밀번호</label>
-      <input
-        type="password"
-        name="password"
-        value={values.password}
-        onChange={handleChange}
-      />
-      <Button type="submit" disabled={loading}>
-        {loading ? <Spinner size="14px" /> : "로그인"}
+      <div className={styles.inputContainer}>
+        <label>이메일</label>
+        <input
+          type="email"
+          name="email"
+          value={values.email}
+          onChange={handleChange}
+          placeholder="이메일을 입력해 주세요."
+        />
+        {cautions.email && <p className={styles.cautions}>{cautions.email}</p>}
+      </div>
+      <div className={styles.inputContainer}>
+        <label>비밀번호</label>
+        <input
+          type="password"
+          name="password"
+          value={values.password}
+          onChange={handleChange}
+          placeholder="비밀번호를 입력해 주세요."
+        />
+        {cautions.password && (
+          <p className={styles.cautions}>{cautions.password}</p>
+        )}
+      </div>
+      <Button type="submit" disabled={loading} className={styles.btn}>
+        {loading ? <Spinner size="21.6px" variant="white" /> : "로그인"}
       </Button>
     </form>
   );

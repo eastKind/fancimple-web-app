@@ -7,6 +7,7 @@ import { getPosts } from "../redux/postSlice";
 import Container from "../components/Container";
 import PostForm from "../components/PostForm";
 import PostList from "../components/PostList";
+import Editor from "../components/Editor";
 import styles from "../essets/scss/Home.module.scss";
 
 function Home() {
@@ -27,10 +28,10 @@ function Home() {
   return (
     <>
       <Helmet>
-        <title>추억은 다이내믹, 포스팅은 심플</title>
+        <title>추억은 FANCY, 포스팅은 SIMPLE</title>
       </Helmet>
       <Container className={styles.container}>
-        <h1>Home</h1>
+        <Editor />
         <PostForm />
         <PostList />
       </Container>

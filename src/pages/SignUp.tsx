@@ -11,9 +11,9 @@ function SingUp() {
 
   return (
     <div className={styles.container}>
-      <Link to="/">LOGO</Link>
+      <div className={styles.logo}>FANCIMPLE</div>
       <div className={styles.signin}>
-        <span>이미 회원이신가요?</span>
+        <span>이미 회원이신가요? </span>
         <Link to="/signin">로그인 하기</Link>
       </div>
       <SignUpForm />

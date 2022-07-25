@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { Image } from "../types";
 import styles from "../essets/scss/Slide.module.scss";
@@ -12,7 +12,6 @@ function Slide({ images, className }: SlideProps) {
   const [index, setIndex] = useState(0);
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(images.length > 1 ? true : false);
-  const slideRef = useRef<HTMLDivElement>(null);
 
   const style = {
     transform: `translateX(-${index}00%)`,
@@ -38,7 +37,7 @@ function Slide({ images, className }: SlideProps) {
 
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.slide} ref={slideRef} style={style}>
+      <div className={styles.slide} style={style}>
         {images.map((image) => (
           <img key={image._id} src={image.url} alt="" />
         ))}

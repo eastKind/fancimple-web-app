@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signup } from "../redux/userSlice";
 import { signin } from "../redux/authSlice";
 import { validate, validatePw } from "../utils/validate";
 import { ValidateFn } from "../types";
 import Button from "./Button";
+import Spinner from "./Spinner";
 import styles from "../essets/scss/SignUpForm.module.scss";
 
 interface InitialState {
@@ -58,29 +60,29 @@ function SignUpForm() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
+    const { id, value } = e.target;
     setValues((prev) => ({
       ...prev,
-      [name]: value,
+      [id]: value,
     }));
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>): void => {
     setFocus((prev) => ({
       ...prev,
-      [e.target.name]: "focus",
+      [e.target.id]: "focus",
     }));
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    if (name !== "password2") {
-      handleValidate(validate, name, value);
+    const { id, value } = e.target;
+    if (id !== "password2") {
+      handleValidate(validate, id, value);
     }
     if (!value) {
       setFocus((prev) => ({
         ...prev,
-        [name]: "",
+        [id]: "",
       }));
     }
   };
@@ -91,74 +93,84 @@ function SignUpForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.inputContainer}>
-        <label htmlFor="name" className={focus.name ? styles.focused : ""}>
-          이름
-        </label>
+      <div
+        className={classNames(
+          styles.inputContainer,
+          cautions.name && styles.invalid,
+          focus.name && styles.focused
+        )}
+      >
+        <label htmlFor="name">이름</label>
         <input
           id="name"
           type="text"
-          name="name"
           value={values.name}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          autoComplete="off"
         />
-        {cautions.name && <p>{cautions.name}</p>}
+        <p className={styles.cautions}>{cautions.name}</p>
       </div>
-      <div className={styles.inputContainer}>
-        <label htmlFor="email" className={focus.email ? styles.focused : ""}>
-          이메일
-        </label>
+      <div
+        className={classNames(
+          styles.inputContainer,
+          cautions.email && styles.invalid,
+          focus.email && styles.focused
+        )}
+      >
+        <label htmlFor="email">이메일</label>
         <input
           id="email"
           type="email"
-          name="email"
           value={values.email}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          autoComplete="off"
         />
-        {cautions.email && <p>{cautions.email}</p>}
+        <p className={styles.cautions}>{cautions.email}</p>
       </div>
-      <div className={styles.inputContainer}>
-        <label
-          htmlFor="password"
-          className={focus.password ? styles.focused : ""}
-        >
-          비밀번호
-        </label>
+      <div
+        className={classNames(
+          styles.inputContainer,
+          cautions.password && styles.invalid,
+          focus.password && styles.focused
+        )}
+      >
+        <label htmlFor="password">비밀번호</label>
         <input
           id="password"
           type="password"
-          name="password"
           value={values.password}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          autoComplete="off"
         />
-        {cautions.password && <p>{cautions.password}</p>}
+        <p className={styles.cautions}>{cautions.password}</p>
       </div>
-      <div className={styles.inputContainer}>
-        <label
-          htmlFor="password2"
-          className={focus.password2 ? styles.focused : ""}
-        >
-          비밀번호 확인
-        </label>
+      <div
+        className={classNames(
+          styles.inputContainer,
+          cautions.password2 && styles.invalid,
+          focus.password2 && styles.focused
+        )}
+      >
+        <label htmlFor="password2">비밀번호 확인</label>
         <input
           id="password2"
           type="password"
-          name="password2"
           value={values.password2}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          autoComplete="off"
         />
-        {cautions.password2 && <p>{cautions.password2}</p>}
+        <p className={styles.cautions}>{cautions.password2}</p>
       </div>
-      <Button type="submit" disabled={loading}>
-        회원 가입
+      <Button type="submit" disabled={loading} className={styles.btn}>
+        {loading ? <Spinner size="25.6px" variant="white" /> : "회원 가입"}
       </Button>
     </form>
   );
