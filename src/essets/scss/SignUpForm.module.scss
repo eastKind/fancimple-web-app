@@ -19,7 +19,7 @@
       width: 100%;
       padding: 20px 15px;
       border-radius: 5px;
-      border: 1px solid $font-color-opacity;
+      border: 1px solid rgba($black, 0.35);
       outline: none;
       font-size: 1.2rem;
       transition: box-shadow 0.2s ease-in-out;
@@ -32,15 +32,15 @@
     .cautions {
       margin: 0;
       height: 20px;
-      color: $warning-color;
+      color: $red;
     }
 
     &.invalid {
       label {
-        color: $warning-color !important;
+        color: $red !important;
       }
       input {
-        border-color: $warning-color !important;
+        border-color: $red !important;
       }
     }
 

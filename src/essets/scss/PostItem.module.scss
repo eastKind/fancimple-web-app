@@ -1,0 +1,81 @@
+.listItem {
+  padding: 10px 0;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba($black, 0.2);
+  box-shadow: $box-shadow;
+
+  .header {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    a {
+      margin-right: 7px;
+    }
+
+    .name {
+      color: $black;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .moreBtn {
+      position: absolute;
+      top: 0;
+      right: 20px;
+      font-size: 2rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }
+
+  .slide {
+    border-top: 1px solid rgba($black, 0.2);
+    border-bottom: 1px solid rgba($black, 0.2);
+  }
+
+  .main {
+    padding: 0 20px;
+
+    .interactions {
+      span {
+        font-size: 2rem;
+      }
+
+      :not(:last-child) {
+        margin-right: 5px;
+      }
+
+      :last-child {
+        float: right;
+      }
+    }
+
+    .contents {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      margin: 10px 0 0;
+      // font-size: 1.1rem;
+    }
+  }
+
+  .footer {
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba($black, 0.2);
+
+    .createdAt {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  }
+
+  > :not(:last-child) {
+    margin-bottom: 10px;
+  }
+}

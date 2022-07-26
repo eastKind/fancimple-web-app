@@ -7,13 +7,14 @@
     flex-direction: column;
 
     label {
+      color: $black;
       margin-bottom: 5px;
     }
 
     input {
       padding: 10px 15px;
       border-radius: 5px;
-      border: 1px solid $font-color-opacity;
+      border: 1px solid rgba($black, 0.35);
       outline: none;
       font-size: 1.2rem;
       transition: box-shadow 0.2s ease-in-out;
@@ -31,7 +32,7 @@
       position: absolute;
       bottom: -35px;
       right: 0;
-      color: $warning-color;
+      color: $red;
     }
   }
 

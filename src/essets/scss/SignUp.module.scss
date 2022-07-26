@@ -8,11 +8,10 @@
   box-shadow: $box-shadow;
 
   .logo {
-    padding-bottom: 20px;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 700;
-    border-bottom: 1px solid $font-color-opacity;
+    width: 100%;
+    max-width: 200px;
+    display: block;
+    margin: 0 auto;
   }
 
   .signin {

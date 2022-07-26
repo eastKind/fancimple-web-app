@@ -5,9 +5,9 @@ import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { GetPostsQuery } from "../types";
 import { getPosts } from "../redux/postSlice";
 import Container from "../components/Container";
-import PostForm from "../components/PostForm";
+
 import PostList from "../components/PostList";
-import Editor from "../components/Editor";
+
 import styles from "../essets/scss/Home.module.scss";
 
 function Home() {
@@ -31,8 +31,6 @@ function Home() {
         <title>추억은 FANCY, 포스팅은 SIMPLE</title>
       </Helmet>
       <Container className={styles.container}>
-        <Editor />
-        <PostForm />
         <PostList />
       </Container>
     </>

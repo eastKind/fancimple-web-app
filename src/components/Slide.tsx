@@ -42,17 +42,19 @@ function Slide({ images, className }: SlideProps) {
           <img key={image._id} src={image.url} alt="" />
         ))}
       </div>
-      <div className={styles.bulletContainer}>
-        {images.map((image, bulletIndex) => (
-          <span
-            key={image._id}
-            className={classNames(
-              styles.bullets,
-              bulletIndex === index && styles.selected
-            )}
-          ></span>
-        ))}
-      </div>
+      {images.length > 1 && (
+        <div className={styles.bulletContainer}>
+          {images.map((image, bulletIndex) => (
+            <span
+              key={image._id}
+              className={classNames(
+                styles.bullets,
+                bulletIndex === index && styles.selected
+              )}
+            ></span>
+          ))}
+        </div>
+      )}
       {hasLeft && (
         <span
           id="left"

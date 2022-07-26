@@ -64,10 +64,9 @@ export type UserData = {
   _id: string;
   name: string;
   email: string;
-  followers: User[];
-  followings: User[];
   photoUrl: string;
-  posts: Post[];
+  followerCount: number;
+  followingCount: number;
 };
 
 export type PostData = {
