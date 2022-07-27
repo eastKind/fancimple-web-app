@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  a {
+    margin-right: 7px;
+  }
+
+  .name {
+    color: $black;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .moreBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}

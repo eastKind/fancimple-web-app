@@ -1,28 +1,73 @@
-import React, { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useCallback, CSSProperties } from "react";
 import { useAppDispatch } from "../redux/hooks";
-import { getComments, createComment } from "../redux/commentSlice";
-import { MyParams } from "../types";
+import { getComments } from "../redux/commentSlice";
+import useWindowSize from "../hooks/useWindowSize";
+import { GetCommentsQuery, PostData } from "../types";
+import rtf from "../utils/rtf";
+import Slide from "../components/Slide";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
+import PostHeader from "../components/PostHeader";
+import Interactions from "../components/Interactions";
+import styles from "../essets/scss/Post.module.scss";
 
-function Post() {
-  const { id } = useParams<keyof MyParams>() as MyParams;
+interface PostProps {
+  post: PostData;
+}
+
+function Post({ post }: PostProps) {
+  const { _id, images, writer, contents, likeCount, createdAt } = post;
+  const [style, setStyle] = useState({});
+  const { height } = useWindowSize();
   const dispatch = useAppDispatch();
 
-  const handleLoad = useCallback(async () => {
-    await dispatch(getComments({ id, cursor: "", limit: 10 }));
+  const handleStyle = (height: number, aspectRatio: string) => {
+    const ratio = Number(aspectRatio);
+    const maxHeight = height * 0.9;
+    const maxWidth = ratio > 1 ? maxHeight / ratio : maxHeight;
+    const nextStyle: CSSProperties = { maxHeight, maxWidth, aspectRatio };
+    setStyle(nextStyle);
+  };
+
+  const handleLoad = useCallback(async (options: GetCommentsQuery) => {
+    await dispatch(getComments(options));
   }, []);
 
   useEffect(() => {
-    handleLoad();
+    handleStyle(height, "1");
+  }, [height]);
+
+  useEffect(() => {
+    handleLoad({ id: _id, cursor: "", limit: 10 });
   }, [handleLoad]);
 
   return (
-    <div>
-      {id}
-      <CommentForm onSubmit={createComment} />
-      <CommentList />
+    <div className={styles.container}>
+      <div className={styles.slide} style={style}>
+        <Slide images={images} />
+      </div>
+      <div className={styles.texts}>
+        <div className={styles.header}>
+          <PostHeader writer={writer} />
+        </div>
+        <div className={styles.body}>
+          <p className={styles.contents}>
+            {contents}
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad quo
+            molestias officiis! Earum dicta esse minus mollitia magni at rerum
+            illum! Adipisci at voluptatibus hic nostrum quasi dolore et ipsa.
+          </p>
+          <CommentList id={_id} />
+        </div>
+        <div className={styles.footer}>
+          <Interactions onComment={() => console.log("hi")} />
+          <span>좋아요 {likeCount}개</span>
+          <span className={styles.createdAt}>{rtf(createdAt)}</span>
+        </div>
+        <div className={styles.commentForm}>
+          <CommentForm id={_id} />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,25 @@
+.form {
+  display: flex;
+  align-items: center;
+  height: 50px;
+
+  textarea {
+    flex-grow: 1;
+    height: 100%;
+    padding: 15px;
+    outline: none;
+    border: 1px solid rgba($black, 0.5);
+    border-radius: 5px 0 0 5px;
+    font-size: 1.1rem;
+    resize: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  button {
+    border-radius: 0 5px 5px 0;
+    height: 100%;
+  }
+}

@@ -1,14 +1,31 @@
 .container {
-  position: absolute;
-  padding: 0;
-  background-color: #fff;
-  border-radius: 5px;
-  border: 1px solid rgba($black, 0.2);
-  box-shadow: $box-shadow;
-  text-align: center;
-  word-break: keep-all;
+  position: relative;
 
-  > :not(:last-child) {
-    border-bottom: 1px solid rgba($black, 0.2);
+  ul {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    padding: 0;
+    background-color: #fff;
+    box-shadow: $box-shadow;
+    border-radius: 5px;
+    border: 1px solid rgba($black, 0.2);
+    text-align: center;
+    word-break: keep-all;
+
+    li {
+      font-family: $gmarket-sans;
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba($black, 0.2);
+      cursor: pointer;
+
+      &:hover {
+        background-color: $bg-color;
+      }
+    }
+
+    > :last-child {
+      border: none;
+    }
   }
 }

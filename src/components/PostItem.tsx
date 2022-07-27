@@ -1,68 +1,62 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import classNames from "classnames";
+import React, { useState } from "react";
 import { PostData } from "../types";
 import rtf from "../utils/rtf";
 import Slide from "./Slide";
-import Avatar from "./Avatar";
 import styles from "../essets/scss/PostItem.module.scss";
+import Modal from "./Modal";
+import Post from "../pages/Post";
+import PostHeader from "./PostHeader";
+import Interactions from "./Interactions";
 
 interface PostItemProps {
   post: PostData;
 }
 
 function PostItem({ post }: PostItemProps) {
-  const { _id, images, writer, contents, commentCount, likeCount, createdAt } =
-    post;
+  const [show, setShow] = useState(false);
+  const { images, writer, contents, commentCount, likeCount, createdAt } = post;
+
+  const handleComment = () => setShow((prev) => !prev);
 
   return (
-    <li className={styles.listItem}>
-      {/* Header */}
-      <div className={styles.header}>
-        <Link to={`/${writer._id}`}>
-          <Avatar photo={writer.photoUrl} name={writer.name} />
-        </Link>
-        <Link to={`/${writer._id}`}>
-          <span className={styles.name}>{writer.name}</span>
-        </Link>
-        <span
-          className={classNames("material-symbols-rounded", styles.moreBtn)}
-        >
-          more_horiz
-        </span>
-      </div>
-
-      {/* Slide */}
-      <Slide images={images} className={styles.slide} />
-
-      {/* Main */}
-      <div className={styles.main}>
-        <div className={styles.interactions}>
-          <span className="material-symbols-rounded">favorite</span>
-          <span className="material-symbols-rounded">mode_comment</span>
-          <span className="material-symbols-rounded">bookmark</span>
+    <>
+      <li className={styles.listItem}>
+        {/* Header */}
+        <div className={styles.header}>
+          <PostHeader writer={writer} />
         </div>
-        <span>좋아요 {likeCount}개</span>
-        <p className={styles.contents}>
-          {contents}
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad quo
-          molestias officiis! Earum dicta esse minus mollitia magni at rerum
-          illum! Adipisci at voluptatibus hic nostrum quasi dolore et ipsa.
-        </p>
-      </div>
 
-      {/* Footer */}
-      <div className={styles.footer}>
-        <Link to={`/post/${_id}`}>
-          <p>
+        {/* Slide */}
+        <Slide images={images} className={styles.slide} />
+
+        {/* Body */}
+        <div className={styles.body}>
+          <Interactions onComment={handleComment} />
+          <span>좋아요 {likeCount}개</span>
+          <p className={styles.contents}>
+            {contents}
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad quo
+            molestias officiis! Earum dicta esse minus mollitia magni at rerum
+            illum! Adipisci at voluptatibus hic nostrum quasi dolore et ipsa.
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className={styles.footer}>
+          <p onClick={handleComment} className={styles.comment}>
             {commentCount > 1
               ? `댓글 ${commentCount}개 모두 보기`
               : "댓글 쓰러가기"}
           </p>
-        </Link>
-        <p className={styles.createdAt}>{rtf(createdAt)}</p>
-      </div>
-    </li>
+          <p className={styles.createdAt}>{rtf(createdAt)}</p>
+        </div>
+      </li>
+
+      {/* Modal */}
+      <Modal show={show} setShow={setShow}>
+        <Post post={post} />
+      </Modal>
+    </>
   );
 }
 

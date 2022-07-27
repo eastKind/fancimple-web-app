@@ -1,0 +1,14 @@
+.interactions {
+  span {
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  :not(:last-child) {
+    margin-right: 5px;
+  }
+
+  :last-child {
+    float: right;
+  }
+}

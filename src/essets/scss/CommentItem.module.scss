@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+
+  .avatar {
+    padding-top: 5px;
+  }
+
+  .body {
+    margin-left: 10px;
+    flex-grow: 1;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .moreBtn {
+        font-size: 18px;
+        cursor: pointer;
+      }
+    }
+
+    .contents {
+      margin: 10px 0;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+
+      .likeBtn {
+        font-size: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+
+      .likeCount,
+      .createdAt {
+        font-size: 0.9rem;
+        opacity: 0.7;
+      }
+
+      .createdAt {
+        flex-grow: 1;
+        text-align: right;
+      }
+    }
+  }
+}

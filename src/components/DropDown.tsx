@@ -10,7 +10,7 @@ interface DropDownProps {
 }
 
 function DropDown({ children, show, setShow, className }: DropDownProps) {
-  const ref = useRef<HTMLUListElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const dropNode = ref.current;
@@ -26,13 +26,9 @@ function DropDown({ children, show, setShow, className }: DropDownProps) {
   }, [show]);
 
   return (
-    <>
-      {show && (
-        <ul className={classNames(styles.container, className)} ref={ref}>
-          {children}
-        </ul>
-      )}
-    </>
+    <div className={classNames(styles.container, className)} ref={ref}>
+      {show && children}
+    </div>
   );
 }
 

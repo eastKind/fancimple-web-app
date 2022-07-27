@@ -19,8 +19,10 @@ function Modal({ children, show, setShow }: ModalProps) {
       if (e.target === containerNode) setShow((prev) => !prev);
     };
     containerNode.addEventListener("click", handleClickOutside);
+    document.body.style.overflowY = "hidden";
     return () => {
       containerNode.removeEventListener("click", handleClickOutside);
+      document.body.style.overflowY = "scroll";
     };
   }, [show]);
 
