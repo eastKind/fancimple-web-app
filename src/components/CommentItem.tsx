@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { deleteComment } from "../redux/commentSlice";
 import { CommentData } from "../types";
 import rtf from "../utils/rtf";
@@ -13,11 +13,13 @@ interface ListItemProps {
 }
 
 function CommentItem({ comment }: ListItemProps) {
-  const { writer, contents, createdAt, likeCount } = comment;
+  const { _id, postId, writer, contents, createdAt, likeCount } = comment;
   const dispatch = useAppDispatch();
+  const { userData: user } = useAppSelector((state) => state.auth);
+  const isMe = writer._id === user?._id;
 
   const handleDeleteClick = async () => {
-    await dispatch(deleteComment(comment._id));
+    await dispatch(deleteComment({ commentId: _id, postId }));
   };
 
   return (
@@ -30,11 +32,17 @@ function CommentItem({ comment }: ListItemProps) {
           <Link to={writer._id}>
             <span>{writer.name}</span>
           </Link>
-          <span
-            className={classNames("material-symbols-rounded", styles.moreBtn)}
-          >
-            more_horiz
-          </span>
+          {isMe && (
+            <span
+              onClick={handleDeleteClick}
+              className={classNames(
+                "material-symbols-rounded",
+                styles.removeBtn
+              )}
+            >
+              remove
+            </span>
+          )}
         </div>
         <div className={styles.contents}>{contents}</div>
         <div className={styles.footer}>

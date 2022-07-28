@@ -5,10 +5,10 @@ import styles from "../essets/scss/CommentForm.module.scss";
 import { createComment } from "../redux/commentSlice";
 
 interface CommentFormProps {
-  id: string;
+  postId: string;
 }
 
-function CommentForm({ id }: CommentFormProps) {
+function CommentForm({ postId }: CommentFormProps) {
   const [value, setValue] = useState("");
   const { loading } = useAppSelector((state) => state.comment);
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ function CommentForm({ id }: CommentFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(createComment({ id, contents: value }));
+      await dispatch(createComment({ postId, contents: value }));
     } catch (error: any) {
       alert(error.message);
     } finally {

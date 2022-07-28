@@ -5,11 +5,16 @@ import {
   AnyAction,
 } from "@reduxjs/toolkit";
 import Comment from "../api/Comment";
-import { CommentData, GetCommentsQuery, CommentReqData } from "../types";
+import {
+  CommentData,
+  GetCommentsReqData,
+  CreateCommentReqData,
+  DeleteCommentReqData,
+} from "../types";
 
 export const getComments = createAsyncThunk(
   "comment/get",
-  async ({ id, cursor, limit }: GetCommentsQuery, { dispatch }) => {
+  async ({ id, cursor, limit }: GetCommentsReqData, { dispatch }) => {
     const { comments, hasNext } = await Comment.get({ id, cursor, limit });
     const nextCursor =
       comments.length > 0 ? comments[comments.length - 1]._id : "";
@@ -20,20 +25,20 @@ export const getComments = createAsyncThunk(
 );
 export const createComment = createAsyncThunk(
   "comment/create",
-  async (arg: CommentReqData) => {
+  async (arg: CreateCommentReqData) => {
     return await Comment.create(arg);
   }
 );
-export const updateComment = createAsyncThunk(
-  "comment/update",
-  async (arg: CommentReqData) => {
-    return await Comment.update(arg);
-  }
-);
+// export const updateComment = createAsyncThunk(
+//   "comment/update",
+//   async (arg: CreateCommentReqData) => {
+//     return await Comment.update(arg);
+//   }
+// );
 export const deleteComment = createAsyncThunk(
   "comment/delete",
-  async (id: string) => {
-    return await Comment.delete(id);
+  async (arg: DeleteCommentReqData) => {
+    return await Comment.delete(arg);
   }
 );
 
@@ -87,15 +92,15 @@ export const commentSlice = createSlice({
       .addCase(createComment.fulfilled, (state, action) => {
         state.comments.unshift(action.payload);
       })
-      .addCase(
-        updateComment.fulfilled,
-        (state, { payload: updatedComment }) => {
-          const index = state.comments.findIndex(
-            (comment) => comment._id === updatedComment._id
-          );
-          state.comments.splice(index, 1, updatedComment);
-        }
-      )
+      // .addCase(
+      //   updateComment.fulfilled,
+      //   (state, { payload: updatedComment }) => {
+      //     const index = state.comments.findIndex(
+      //       (comment) => comment._id === updatedComment._id
+      //     );
+      //     state.comments.splice(index, 1, updatedComment);
+      //   }
+      // )
       .addCase(deleteComment.fulfilled, (state, { payload: deletedPostId }) => {
         state.comments = state.comments.filter(
           (comment) => comment._id !== deletedPostId

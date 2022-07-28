@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import { GetPostsQuery } from "../types";
+import { GetPostsReqData } from "../types";
 import { getPosts } from "../redux/postSlice";
 import Container from "../components/Container";
 
@@ -14,7 +14,7 @@ function Home() {
   const { sessionId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const handleLoad = useCallback(async (arg: GetPostsQuery) => {
+  const handleLoad = useCallback(async (arg: GetPostsReqData) => {
     await dispatch(getPosts(arg));
   }, []);
 

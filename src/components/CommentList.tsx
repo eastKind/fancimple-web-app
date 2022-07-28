@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { getComments } from "../redux/commentSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import { GetCommentsQuery } from "../types";
+import { GetCommentsReqData } from "../types";
 import CommentItem from "./CommentItem";
 import Spinner from "./Spinner";
 import styles from "../essets/scss/CommentList.module.scss";
@@ -19,7 +19,7 @@ function CommentList({ id }: CommentListProps) {
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
 
-  const handleLoadMore = async (arg: GetCommentsQuery) => {
+  const handleLoadMore = async (arg: GetCommentsReqData) => {
     await dispatch(getComments(arg));
   };
 

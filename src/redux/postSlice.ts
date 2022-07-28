@@ -5,11 +5,11 @@ import {
   AnyAction,
 } from "@reduxjs/toolkit";
 import Post from "../api/Post";
-import { PostData, GetPostsQuery, UpdatePostReqData } from "../types";
+import { PostData, GetPostsReqData, UpdatePostReqData } from "../types";
 
 export const getPosts = createAsyncThunk(
   "post/get",
-  async ({ cursor, limit }: GetPostsQuery, { dispatch }) => {
+  async ({ cursor, limit }: GetPostsReqData, { dispatch }) => {
     const { posts, hasNext } = await Post.get({ cursor, limit });
     const nextCursor = posts[posts.length - 1]._id;
     dispatch(setCursor(nextCursor));

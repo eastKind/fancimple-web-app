@@ -1,8 +1,9 @@
 import axiosInstance from "./axios";
 import {
-  GetCommentResData,
-  GetCommentsQuery,
-  CommentReqData,
+  GetCommentsResData,
+  GetCommentsReqData,
+  CreateCommentReqData,
+  DeleteCommentReqData,
   CommentData,
 } from "../types";
 
@@ -11,25 +12,33 @@ export default class Comment {
     id,
     cursor,
     limit,
-  }: GetCommentsQuery): Promise<GetCommentResData> {
+  }: GetCommentsReqData): Promise<GetCommentsResData> {
     const query = `id=${id}&cursor=${cursor}&limit=${limit}`;
     const response = await axiosInstance.get(`/comment?${query}`);
     return response.data;
   }
 
-  public static async create(reqData: CommentReqData): Promise<CommentData> {
+  public static async create(
+    reqData: CreateCommentReqData
+  ): Promise<CommentData> {
     const response = await axiosInstance.post("/comment", reqData);
     return response.data.comment;
   }
 
-  public static async update(reqData: CommentReqData): Promise<CommentData> {
-    const { id, contents } = reqData;
-    const response = await axiosInstance.patch(`/comment/${id}`, { contents });
-    return response.data.comment;
-  }
+  // public static async update(reqData: CreateCommentReqData): Promise<CommentData> {
+  //   const { id, contents } = reqData;
+  //   const response = await axiosInstance.patch(`/comment/${id}`, { contents });
+  //   return response.data.comment;
+  // }
 
-  public static async delete(id: string): Promise<string> {
-    const response = await axiosInstance.delete(`/comment/${id}`);
-    return response.data.id;
+  public static async delete({
+    commentId,
+    postId,
+  }: DeleteCommentReqData): Promise<string> {
+    const query = `postId=${postId}`;
+    const response = await axiosInstance.delete(
+      `/comment/${commentId}?${query}`
+    );
+    return response.data.commentId;
   }
 }

@@ -2,7 +2,7 @@ import axiosInstance from "./axios";
 import {
   GetPostsResData,
   PostData,
-  GetPostsQuery,
+  GetPostsReqData,
   UpdatePostReqData,
 } from "../types";
 
@@ -10,7 +10,7 @@ export default class Post {
   public static async get({
     cursor,
     limit = 10,
-  }: GetPostsQuery): Promise<GetPostsResData> {
+  }: GetPostsReqData): Promise<GetPostsResData> {
     const query = `cursor=${cursor}&limit=${limit}`;
     const response = await axiosInstance.get(`/post?${query}`);
     return response.data;

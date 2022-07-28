@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, CSSProperties } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { getComments } from "../redux/commentSlice";
 import useWindowSize from "../hooks/useWindowSize";
-import { GetCommentsQuery, PostData } from "../types";
+import { GetCommentsReqData, PostData } from "../types";
 import rtf from "../utils/rtf";
 import Slide from "../components/Slide";
 import CommentForm from "../components/CommentForm";
@@ -29,7 +29,7 @@ function Post({ post }: PostProps) {
     setStyle(nextStyle);
   };
 
-  const handleLoad = useCallback(async (options: GetCommentsQuery) => {
+  const handleLoad = useCallback(async (options: GetCommentsReqData) => {
     await dispatch(getComments(options));
   }, []);
 
@@ -65,7 +65,7 @@ function Post({ post }: PostProps) {
           <span className={styles.createdAt}>{rtf(createdAt)}</span>
         </div>
         <div className={styles.commentForm}>
-          <CommentForm id={_id} />
+          <CommentForm postId={_id} />
         </div>
       </div>
     </div>

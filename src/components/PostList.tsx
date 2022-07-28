@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { getPosts } from "../redux/postSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import { GetPostsQuery } from "../types";
+import { GetPostsReqData } from "../types";
 import Spinner from "./Spinner";
 import PostItem from "./PostItem";
 import styles from "../essets/scss/PostList.module.scss";
@@ -15,7 +15,7 @@ function PostList() {
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
 
-  const handleLoadMore = async (arg: GetPostsQuery) => {
+  const handleLoadMore = async (arg: GetPostsReqData) => {
     await dispatch(getPosts(arg));
   };
 
