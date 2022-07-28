@@ -24,14 +24,23 @@ export type UpdatePostReqData = {
   deletedKeys: string[];
 };
 
+export type DeletePostReqData = {
+  postId: string;
+};
+
 export type GetPostsResData = {
   hasNext: boolean;
   posts: PostData[];
 };
 
+export type LikesPostReqData = {
+  postId: string;
+  isLiked: boolean;
+};
+
 //// Comment
 export type GetCommentsReqData = {
-  id: string;
+  postId: string;
   cursor: string;
   limit: number;
 };
@@ -52,13 +61,6 @@ export type GetCommentsResData = {
 };
 
 // Redux Data Types
-export interface Post {
-  _id: string;
-  thumbnail: string;
-  likeCount: number;
-  commentCount: number;
-}
-
 export interface User {
   _id: string;
   name: string;
@@ -86,8 +88,9 @@ export type UserData = {
   name: string;
   email: string;
   photoUrl: string;
-  followerCount: number;
-  followingCount: number;
+  followers: string[];
+  followings: string[];
+  likedPosts: string[];
 };
 
 export type PostData = {
@@ -100,6 +103,7 @@ export type PostData = {
   updatedAt: string;
   likeCount: number;
   commentCount: number;
+  likeUsers: string[];
 };
 
 // Other Types

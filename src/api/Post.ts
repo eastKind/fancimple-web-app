@@ -1,9 +1,11 @@
 import axiosInstance from "./axios";
 import {
-  GetPostsResData,
   PostData,
+  GetPostsResData,
   GetPostsReqData,
   UpdatePostReqData,
+  DeletePostReqData,
+  LikesPostReqData,
 } from "../types";
 
 export default class Post {
@@ -35,8 +37,18 @@ export default class Post {
     return response.data.post;
   }
 
-  public static async delete(id: string): Promise<string> {
-    const response = await axiosInstance.delete(`/post/${id}`);
+  public static async delete({ postId }: DeletePostReqData): Promise<string> {
+    const response = await axiosInstance.delete(`/post/${postId}`);
     return response.data.id;
+  }
+
+  public static async likes({
+    postId,
+    isLiked,
+  }: LikesPostReqData): Promise<PostData> {
+    const response = await axiosInstance.patch(`/post/${postId}/like`, {
+      isLiked,
+    });
+    return response.data.post;
   }
 }

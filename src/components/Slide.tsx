@@ -62,7 +62,7 @@ function Slide({ images, className }: SlideProps) {
           className={classNames(
             styles.arrow,
             styles.left,
-            "material-symbols-outlined"
+            "material-symbols-rounded"
           )}
         >
           chevron_left
@@ -74,7 +74,7 @@ function Slide({ images, className }: SlideProps) {
           className={classNames(
             styles.arrow,
             styles.right,
-            "material-symbols-outlined"
+            "material-symbols-rounded"
           )}
         >
           chevron_right

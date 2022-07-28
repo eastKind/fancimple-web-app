@@ -14,7 +14,8 @@ interface PostItemProps {
 
 function PostItem({ post }: PostItemProps) {
   const [show, setShow] = useState(false);
-  const { images, writer, contents, commentCount, likeCount, createdAt } = post;
+  const { _id, images, writer, contents, commentCount, likeCount, createdAt } =
+    post;
 
   const handleComment = () => setShow((prev) => !prev);
 
@@ -23,7 +24,7 @@ function PostItem({ post }: PostItemProps) {
       <li className={styles.listItem}>
         {/* Header */}
         <div className={styles.header}>
-          <PostHeader writer={writer} />
+          <PostHeader postId={_id} writer={writer} />
         </div>
 
         {/* Slide */}
@@ -31,7 +32,7 @@ function PostItem({ post }: PostItemProps) {
 
         {/* Body */}
         <div className={styles.body}>
-          <Interactions onComment={handleComment} />
+          <Interactions post={post} onComment={handleComment} />
           <span>좋아요 {likeCount}개</span>
           <p className={styles.contents}>
             {contents}

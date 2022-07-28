@@ -42,14 +42,22 @@ interface AuthState {
   loading: boolean;
   error: SerializedError | null;
   sessionId?: string;
-  userData: UserData | null;
+  userData: UserData;
 }
 
 const initialState: AuthState = {
   loading: false,
   error: null,
   sessionId: Cookies.get("sessionId"),
-  userData: null,
+  userData: {
+    _id: "",
+    name: "",
+    email: "",
+    photoUrl: "",
+    followers: [],
+    followings: [],
+    likedPosts: [],
+  },
 };
 
 export const authSlice = createSlice({
@@ -67,7 +75,7 @@ export const authSlice = createSlice({
       })
       .addCase(signout.fulfilled, (state) => {
         state.sessionId = undefined;
-        state.userData = null;
+        state.userData = initialState.userData;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

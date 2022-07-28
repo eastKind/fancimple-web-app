@@ -38,13 +38,21 @@ function isRejectedAction(action: AnyAction) {
 interface UserState {
   loading: boolean;
   error: SerializedError | null;
-  userData: UserData | null;
+  userData: UserData;
 }
 
 const initialState: UserState = {
   loading: false,
   error: null,
-  userData: null,
+  userData: {
+    _id: "",
+    name: "",
+    email: "",
+    photoUrl: "",
+    followers: [],
+    followings: [],
+    likedPosts: [],
+  },
 };
 
 export const userSlice = createSlice({

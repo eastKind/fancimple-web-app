@@ -5,7 +5,13 @@ import {
   AnyAction,
 } from "@reduxjs/toolkit";
 import Post from "../api/Post";
-import { PostData, GetPostsReqData, UpdatePostReqData } from "../types";
+import {
+  PostData,
+  GetPostsReqData,
+  UpdatePostReqData,
+  DeletePostReqData,
+  LikesPostReqData,
+} from "../types";
 
 export const getPosts = createAsyncThunk(
   "post/get",
@@ -31,8 +37,14 @@ export const updatePost = createAsyncThunk(
 );
 export const deletePost = createAsyncThunk(
   "post/delete",
-  async (id: string) => {
-    return await Post.delete(id);
+  async (arg: DeletePostReqData) => {
+    return await Post.delete(arg);
+  }
+);
+export const likesPost = createAsyncThunk(
+  "post/likes",
+  async (arg: LikesPostReqData) => {
+    return await Post.likes(arg);
   }
 );
 
@@ -92,8 +104,14 @@ export const postSlice = createSlice({
         );
         state.posts.splice(index, 1, updatedPost);
       })
-      .addCase(deletePost.fulfilled, (state, action) => {
-        state.posts = state.posts.filter((post) => post._id !== action.payload);
+      .addCase(deletePost.fulfilled, (state, { payload: deletedPostId }) => {
+        state.posts = state.posts.filter((post) => post._id !== deletedPostId);
+      })
+      .addCase(likesPost.fulfilled, (state, { payload: updatedPost }) => {
+        const index = state.posts.findIndex(
+          (post) => post._id === updatedPost._id
+        );
+        state.posts.splice(index, 1, updatedPost);
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

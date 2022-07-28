@@ -9,11 +9,11 @@ import {
 
 export default class Comment {
   public static async get({
-    id,
+    postId,
     cursor,
     limit,
   }: GetCommentsReqData): Promise<GetCommentsResData> {
-    const query = `id=${id}&cursor=${cursor}&limit=${limit}`;
+    const query = `postId=${postId}&cursor=${cursor}&limit=${limit}`;
     const response = await axiosInstance.get(`/comment?${query}`);
     return response.data;
   }
@@ -25,12 +25,6 @@ export default class Comment {
     return response.data.comment;
   }
 
-  // public static async update(reqData: CreateCommentReqData): Promise<CommentData> {
-  //   const { id, contents } = reqData;
-  //   const response = await axiosInstance.patch(`/comment/${id}`, { contents });
-  //   return response.data.comment;
-  // }
-
   public static async delete({
     commentId,
     postId,
@@ -39,6 +33,12 @@ export default class Comment {
     const response = await axiosInstance.delete(
       `/comment/${commentId}?${query}`
     );
-    return response.data.commentId;
+    return response.data.id;
   }
+
+  // public static async update(reqData: CreateCommentReqData): Promise<CommentData> {
+  //   const { id, contents } = reqData;
+  //   const response = await axiosInstance.patch(`/comment/${id}`, { contents });
+  //   return response.data.comment;
+  // }
 }

@@ -8,10 +8,10 @@ import Spinner from "./Spinner";
 import styles from "../essets/scss/CommentList.module.scss";
 
 interface CommentListProps {
-  id: string;
+  postId: string;
 }
 
-function CommentList({ id }: CommentListProps) {
+function CommentList({ postId }: CommentListProps) {
   const { loading, comments, cursor, hasNext } = useAppSelector(
     (state) => state.comment
   );
@@ -24,7 +24,8 @@ function CommentList({ id }: CommentListProps) {
   };
 
   useEffect(() => {
-    if (isInterSecting && hasNext) handleLoadMore({ id, cursor, limit: 10 });
+    if (isInterSecting && hasNext)
+      handleLoadMore({ postId, cursor, limit: 10 });
   }, [isInterSecting]);
 
   return (

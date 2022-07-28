@@ -14,8 +14,8 @@ import {
 
 export const getComments = createAsyncThunk(
   "comment/get",
-  async ({ id, cursor, limit }: GetCommentsReqData, { dispatch }) => {
-    const { comments, hasNext } = await Comment.get({ id, cursor, limit });
+  async ({ postId, cursor, limit }: GetCommentsReqData, { dispatch }) => {
+    const { comments, hasNext } = await Comment.get({ postId, cursor, limit });
     const nextCursor =
       comments.length > 0 ? comments[comments.length - 1]._id : "";
     dispatch(setCursor(nextCursor));
@@ -29,12 +29,7 @@ export const createComment = createAsyncThunk(
     return await Comment.create(arg);
   }
 );
-// export const updateComment = createAsyncThunk(
-//   "comment/update",
-//   async (arg: CreateCommentReqData) => {
-//     return await Comment.update(arg);
-//   }
-// );
+
 export const deleteComment = createAsyncThunk(
   "comment/delete",
   async (arg: DeleteCommentReqData) => {
@@ -92,20 +87,14 @@ export const commentSlice = createSlice({
       .addCase(createComment.fulfilled, (state, action) => {
         state.comments.unshift(action.payload);
       })
-      // .addCase(
-      //   updateComment.fulfilled,
-      //   (state, { payload: updatedComment }) => {
-      //     const index = state.comments.findIndex(
-      //       (comment) => comment._id === updatedComment._id
-      //     );
-      //     state.comments.splice(index, 1, updatedComment);
-      //   }
-      // )
-      .addCase(deleteComment.fulfilled, (state, { payload: deletedPostId }) => {
-        state.comments = state.comments.filter(
-          (comment) => comment._id !== deletedPostId
-        );
-      })
+      .addCase(
+        deleteComment.fulfilled,
+        (state, { payload: deletedCommentId }) => {
+          state.comments = state.comments.filter(
+            (comment) => comment._id !== deletedCommentId
+          );
+        }
+      )
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
         state.error = null;

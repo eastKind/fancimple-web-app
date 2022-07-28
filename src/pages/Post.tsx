@@ -38,7 +38,7 @@ function Post({ post }: PostProps) {
   }, [height]);
 
   useEffect(() => {
-    handleLoad({ id: _id, cursor: "", limit: 10 });
+    handleLoad({ postId: _id, cursor: "", limit: 10 });
   }, [handleLoad]);
 
   return (
@@ -48,7 +48,7 @@ function Post({ post }: PostProps) {
       </div>
       <div className={styles.texts}>
         <div className={styles.header}>
-          <PostHeader writer={writer} />
+          <PostHeader postId={_id} writer={writer} />
         </div>
         <div className={styles.body}>
           <p className={styles.contents}>
@@ -57,10 +57,10 @@ function Post({ post }: PostProps) {
             molestias officiis! Earum dicta esse minus mollitia magni at rerum
             illum! Adipisci at voluptatibus hic nostrum quasi dolore et ipsa.
           </p>
-          <CommentList id={_id} />
+          <CommentList postId={_id} />
         </div>
         <div className={styles.footer}>
-          <Interactions onComment={() => console.log("hi")} />
+          <Interactions post={post} onComment={() => console.log("hi")} />
           <span>좋아요 {likeCount}개</span>
           <span className={styles.createdAt}>{rtf(createdAt)}</span>
         </div>

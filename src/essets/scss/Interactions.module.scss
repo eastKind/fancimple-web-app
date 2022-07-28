@@ -4,6 +4,10 @@
     cursor: pointer;
   }
 
+  .liked {
+    font-variation-settings: "fill" 1;
+  }
+
   :not(:last-child) {
     margin-right: 5px;
   }
