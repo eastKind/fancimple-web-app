@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getUser } from "../redux/userSlice";
+import { getUser } from "../redux/thunks/user";
 import { MyParams } from "../types";
 
 function Profile() {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { likesPost } from "../redux/postSlice";
+import { likesPost } from "../redux/thunks/post";
 import { PostData } from "../types";
 import styles from "../essets/scss/Interactions.module.scss";
 

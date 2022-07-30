@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { signin } from "../redux/authSlice";
+import { signin } from "../redux/thunks/auth";
 import Button from "./Button";
 import Spinner from "./Spinner";
 import styles from "../essets/scss/SignInForm.module.scss";

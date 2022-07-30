@@ -1,52 +1,12 @@
+import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
 import {
-  createSlice,
-  createAsyncThunk,
-  SerializedError,
-  AnyAction,
-} from "@reduxjs/toolkit";
-import Post from "../api/Post";
-import {
-  PostData,
-  GetPostsReqData,
-  UpdatePostReqData,
-  DeletePostReqData,
-  LikesPostReqData,
-} from "../types";
-
-export const getPosts = createAsyncThunk(
-  "post/get",
-  async ({ cursor, limit }: GetPostsReqData, { dispatch }) => {
-    const { posts, hasNext } = await Post.get({ cursor, limit });
-    const nextCursor = posts[posts.length - 1]._id;
-    dispatch(setCursor(nextCursor));
-    dispatch(setHasNext(hasNext));
-    return posts;
-  }
-);
-export const createPost = createAsyncThunk(
-  "post/create",
-  async (arg: FormData) => {
-    return await Post.create(arg);
-  }
-);
-export const updatePost = createAsyncThunk(
-  "post/update",
-  async (arg: UpdatePostReqData) => {
-    return await Post.update(arg);
-  }
-);
-export const deletePost = createAsyncThunk(
-  "post/delete",
-  async (arg: DeletePostReqData) => {
-    return await Post.delete(arg);
-  }
-);
-export const likesPost = createAsyncThunk(
-  "post/likes",
-  async (arg: LikesPostReqData) => {
-    return await Post.likes(arg);
-  }
-);
+  getPosts,
+  createPost,
+  deletePost,
+  updatePost,
+  likesPost,
+} from "../thunks/post";
+import { PostData } from "../../types";
 
 function isPendingAction(action: AnyAction) {
   return /^post\/.*\/pending$/.test(action.type);

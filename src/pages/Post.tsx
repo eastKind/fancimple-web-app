@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, CSSProperties } from "react";
 import { useAppDispatch } from "../redux/hooks";
-import { getComments } from "../redux/commentSlice";
+import { getComments } from "../redux/thunks/comment";
 import useWindowSize from "../hooks/useWindowSize";
 import { GetCommentsReqData, PostData } from "../types";
 import rtf from "../utils/rtf";

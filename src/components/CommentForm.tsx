@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import Button from "./Button";
 import styles from "../essets/scss/CommentForm.module.scss";
-import { createComment } from "../redux/commentSlice";
+import { createComment } from "../redux/thunks/comment";
 
 interface CommentFormProps {
   postId: string;

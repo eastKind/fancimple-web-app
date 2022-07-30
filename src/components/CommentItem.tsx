@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { deleteComment } from "../redux/commentSlice";
+import { deleteComment } from "../redux/thunks/comment";
 import { CommentData } from "../types";
 import rtf from "../utils/rtf";
 import Avatar from "./Avatar";

@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { GetPostsReqData } from "../types";
-import { getPosts } from "../redux/postSlice";
+import { getPosts } from "../redux/thunks/post";
 import Container from "../components/Container";
 
 import PostList from "../components/PostList";

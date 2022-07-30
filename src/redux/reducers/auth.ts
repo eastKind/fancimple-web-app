@@ -1,32 +1,7 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  SerializedError,
-  AnyAction,
-} from "@reduxjs/toolkit";
+import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import Auth from "../api/Auth";
-import User from "../api/User";
-import { SigninReqData, UserData } from "../types";
-
-export const signin = createAsyncThunk(
-  "auth/signin",
-  async (arg: SigninReqData, { rejectWithValue }) => {
-    try {
-      return await Auth.signin(arg);
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const getMe = createAsyncThunk("auth/getMe", async () => {
-  return await User.getMe();
-});
-
-export const signout = createAsyncThunk("auth/signout", async () => {
-  return await Auth.signout();
-});
+import { signin, signout, getMe } from "../thunks/auth";
+import { UserData } from "../../types";
 
 function isPendingAction(action: AnyAction) {
   return /^auth\/.*\/pending$/.test(action.type);

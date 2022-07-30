@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import { getComments } from "../redux/commentSlice";
+import { getComments } from "../redux/thunks/comment";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { GetCommentsReqData } from "../types";
 import CommentItem from "./CommentItem";

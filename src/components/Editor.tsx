@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { useAppDispatch } from "../redux/hooks";
-import { editPhoto } from "../redux/userSlice";
+import { editPhoto } from "../redux/thunks/user";
 import tanguri from "../essets/images/tanguri.png";
 
 function Editor() {

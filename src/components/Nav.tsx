@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { signout } from "../redux/authSlice";
+import { signout } from "../redux/thunks/auth";
 import Container from "./Container";
 import Avatar from "./Avatar";
 import DropDown from "./DropDown";

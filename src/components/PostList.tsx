@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import { getPosts } from "../redux/postSlice";
+import { getPosts } from "../redux/thunks/post";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { GetPostsReqData } from "../types";
 import Spinner from "./Spinner";

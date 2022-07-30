@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
-import { createPost } from "../redux/postSlice";
+import { createPost } from "../redux/thunks/post";
 import Button from "./Button";
 import FileInput from "./FileInput";
 import styles from "../essets/scss/PostForm.module.scss";

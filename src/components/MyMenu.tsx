@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch } from "../redux/hooks";
-import { deletePost } from "../redux/postSlice";
+import { deletePost } from "../redux/thunks/post";
 
 interface MyMenuProps {
   postId: string;

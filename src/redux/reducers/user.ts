@@ -1,29 +1,6 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  SerializedError,
-  AnyAction,
-} from "@reduxjs/toolkit";
-import { SignupReqData, UserData } from "../types";
-import User from "../api/User";
-
-export const signup = createAsyncThunk(
-  "user/signup",
-  async (reqData: SignupReqData) => {
-    return await User.signup(reqData);
-  }
-);
-
-export const getUser = createAsyncThunk("user/getUser", async (id: string) => {
-  return await User.getUser(id);
-});
-
-export const editPhoto = createAsyncThunk(
-  "user/editPhoto",
-  async (reqData: FormData) => {
-    return await User.editPhoto(reqData);
-  }
-);
+import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
+import { getUser, editPhoto } from "../thunks/user";
+import { UserData } from "../../types";
 
 function isPendingAction(action: AnyAction) {
   return /^user\/.*\/pending$/.test(action.type);
