@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getMe } from "../redux/thunks/auth";
+import { getMe } from "../redux/thunks/user";
 import Nav from "./Nav";
 import styles from "../essets/scss/App.module.scss";
 import "../essets/scss/App.font.scss";

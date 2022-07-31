@@ -1,6 +1,7 @@
 import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
-import { getUser, editPhoto } from "../thunks/user";
+import { getUser, getMe, editPhoto } from "../thunks/user";
 import { UserData } from "../../types";
+import photo from "../../essets/images/person.png";
 
 function isPendingAction(action: AnyAction) {
   return /^user\/.*\/pending$/.test(action.type);
@@ -15,34 +16,43 @@ function isRejectedAction(action: AnyAction) {
 interface UserState {
   loading: boolean;
   error: SerializedError | null;
-  userData: UserData;
+  me: UserData;
+  other: UserData;
 }
+
+const INIT_USER = {
+  _id: "",
+  name: "",
+  email: "",
+  photoUrl: photo,
+  followers: [],
+  followings: [],
+  likedPosts: [],
+};
 
 const initialState: UserState = {
   loading: false,
   error: null,
-  userData: {
-    _id: "",
-    name: "",
-    email: "",
-    photoUrl: "",
-    followers: [],
-    followings: [],
-    likedPosts: [],
-  },
+  me: INIT_USER,
+  other: INIT_USER,
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    initUser: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.me = action.payload;
+      })
       .addCase(getUser.fulfilled, (state, action) => {
-        state.userData = action.payload;
+        state.other = action.payload;
       })
       .addCase(editPhoto.fulfilled, (state, action) => {
-        state.userData = action.payload;
+        state.me = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
@@ -57,5 +67,7 @@ export const userSlice = createSlice({
       });
   },
 });
+
+export const { initUser } = userSlice.actions;
 
 export default userSlice.reducer;

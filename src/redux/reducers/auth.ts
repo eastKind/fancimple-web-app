@@ -1,7 +1,6 @@
 import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import { signin, signout, getMe } from "../thunks/auth";
-import { UserData } from "../../types";
+import { signin, signout } from "../thunks/auth";
 
 function isPendingAction(action: AnyAction) {
   return /^auth\/.*\/pending$/.test(action.type);
@@ -17,22 +16,12 @@ interface AuthState {
   loading: boolean;
   error: SerializedError | null;
   sessionId?: string;
-  userData: UserData;
 }
 
 const initialState: AuthState = {
   loading: false,
   error: null,
   sessionId: Cookies.get("sessionId"),
-  userData: {
-    _id: "",
-    name: "",
-    email: "",
-    photoUrl: "",
-    followers: [],
-    followings: [],
-    likedPosts: [],
-  },
 };
 
 export const authSlice = createSlice({
@@ -41,16 +30,11 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(signin.fulfilled, (state, action) => {
+      .addCase(signin.fulfilled, (state) => {
         state.sessionId = Cookies.get("sessionId");
-        state.userData = action.payload;
-      })
-      .addCase(getMe.fulfilled, (state, action) => {
-        state.userData = action.payload;
       })
       .addCase(signout.fulfilled, (state) => {
         state.sessionId = undefined;
-        state.userData = initialState.userData;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

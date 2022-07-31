@@ -14,9 +14,9 @@ interface ListItemProps {
 
 function CommentItem({ comment }: ListItemProps) {
   const { _id, postId, writer, contents, createdAt, likeCount } = comment;
-  const { userData: user } = useAppSelector((state) => state.auth);
+  const { me } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const isMe = writer._id === user?._id;
+  const isMe = writer._id === me._id;
 
   const handleDeleteClick = async () => {
     await dispatch(deleteComment({ commentId: _id, postId }));

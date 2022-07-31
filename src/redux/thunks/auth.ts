@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Auth from "../../api/Auth";
-import User from "../../api/User";
 import { SigninReqData } from "../../types";
+import { initUser } from "../reducers/user";
 
 export const signin = createAsyncThunk(
   "auth/signin",
@@ -14,10 +14,10 @@ export const signin = createAsyncThunk(
   }
 );
 
-export const getMe = createAsyncThunk("auth/getMe", async () => {
-  return await User.getMe();
-});
-
-export const signout = createAsyncThunk("auth/signout", async () => {
-  return await Auth.signout();
-});
+export const signout = createAsyncThunk(
+  "auth/signout",
+  async (_, { dispatch }) => {
+    await Auth.signout();
+    return dispatch(initUser());
+  }
+);

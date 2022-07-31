@@ -5,7 +5,8 @@
   }
 
   .liked {
-    font-variation-settings: "fill" 1;
+    font-variation-settings: "FILL" 1;
+    color: $red;
   }
 
   :not(:last-child) {

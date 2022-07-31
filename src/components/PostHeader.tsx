@@ -15,9 +15,9 @@ interface PostHeaderProps {
 }
 
 function PostHeader({ postId, writer }: PostHeaderProps) {
-  const { userData: user } = useAppSelector((state) => state.auth);
+  const { me } = useAppSelector((state) => state.user);
   const [show, setShow] = useState(false);
-  const isMe = writer._id === user?._id;
+  const isMe = writer._id === me._id;
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -26,10 +26,10 @@ function PostHeader({ postId, writer }: PostHeaderProps) {
 
   return (
     <div className={styles.header}>
-      <Link to={`/${writer._id}`}>
+      <Link to={`/${writer._id}`} state={{ isMe }}>
         <Avatar photo={writer.photoUrl} name={writer.name} />
       </Link>
-      <Link to={`/${writer._id}`}>
+      <Link to={`/${writer._id}`} state={{ isMe }}>
         <span className={styles.name}>{writer.name}</span>
       </Link>
       <span

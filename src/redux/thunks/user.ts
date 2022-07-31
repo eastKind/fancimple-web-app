@@ -9,6 +9,10 @@ export const signup = createAsyncThunk(
   }
 );
 
+export const getMe = createAsyncThunk("user/getMe", async () => {
+  return await User.getMe();
+});
+
 export const getUser = createAsyncThunk("user/getUser", async (id: string) => {
   return await User.getUser(id);
 });

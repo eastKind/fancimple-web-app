@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { likesPost } from "../redux/thunks/post";
@@ -11,22 +11,24 @@ interface InteractionsProps {
 }
 
 function Interactions({ post, onComment }: InteractionsProps) {
-  const { _id, likeUsers } = post;
-  const { userData: user } = useAppSelector((state) => state.auth);
-  const INIT_STATE = likeUsers.includes(user._id);
-  const [isLiked, setIsLiked] = useState(INIT_STATE);
+  const { _id: postId, likeUsers } = post;
+  const { me } = useAppSelector((state) => state.user);
+  const [isLiked, setIsLiked] = useState(likeUsers.includes(me._id));
   const dispatch = useAppDispatch();
 
   const handleComment = () => onComment();
 
   const handleLikes = async () => {
     try {
-      await dispatch(likesPost({ postId: _id, isLiked }));
-      setIsLiked((prev) => !prev);
+      await dispatch(likesPost({ postId, isLiked }));
     } catch (error: any) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    setIsLiked(likeUsers.includes(me._id));
+  }, [likeUsers]);
 
   return (
     <div className={styles.interactions}>

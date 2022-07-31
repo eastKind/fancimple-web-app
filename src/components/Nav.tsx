@@ -15,7 +15,7 @@ interface NavProps {
 
 function Nav({ className }: NavProps) {
   const [drop, setDrop] = useState(false);
-  const { userData: user } = useAppSelector((state) => state.auth);
+  const { me } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -45,13 +45,13 @@ function Nav({ className }: NavProps) {
             <span className="material-symbols-rounded">add_circle</span>
           </li>
           <li onClick={handleClick}>
-            <Avatar photo={user?.photoUrl} name={user?.name} />
+            <Avatar photo={me.photoUrl} name={me.name} />
             <DropDown show={drop} setShow={setDrop}>
               <ul>
-                <Link to={`/${user?._id}`}>
+                <Link to={`/${me._id}`} state={{ isMe: true }}>
                   <li>프로필</li>
                 </Link>
-                <Link to={`/${user?._id}`}>
+                <Link to={`/${me._id}`} state={{ isMe: true }}>
                   <li>북마크</li>
                 </Link>
                 <li onClick={handleLogout}>로그아웃</li>

@@ -28,7 +28,7 @@ function Home() {
   return (
     <>
       <Helmet>
-        <title>추억은 FANCY, 포스팅은 SIMPLE</title>
+        <title>fancimple</title>
       </Helmet>
       <Container className={styles.container}>
         <PostList />
