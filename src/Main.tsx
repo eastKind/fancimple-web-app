@@ -15,7 +15,7 @@ function Main() {
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path=":id" element={<Profile />}>
-            <Route index element={<ProfileHome />} />
+            <Route path="post" element={<ProfileHome />} />
             <Route path="bookmark" element={<Bookmark />} />
           </Route>
         </Route>

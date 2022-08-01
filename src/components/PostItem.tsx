@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { PostData } from "../types";
 import rtf from "../utils/rtf";
 import Slide from "./Slide";
-import styles from "../essets/scss/PostItem.module.scss";
 import Modal from "./Modal";
 import Post from "../pages/Post";
 import PostHeader from "./PostHeader";
 import Interactions from "./Interactions";
+import styles from "../essets/scss/PostItem.module.scss";
 
 interface PostItemProps {
   post: PostData;
@@ -22,15 +22,10 @@ function PostItem({ post }: PostItemProps) {
   return (
     <>
       <li className={styles.listItem}>
-        {/* Header */}
         <div className={styles.header}>
           <PostHeader postId={_id} writer={writer} />
         </div>
-
-        {/* Slide */}
         <Slide images={images} className={styles.slide} />
-
-        {/* Body */}
         <div className={styles.body}>
           <Interactions post={post} onComment={handleComment} />
           <span>좋아요 {likeCount}개</span>
@@ -41,8 +36,6 @@ function PostItem({ post }: PostItemProps) {
             illum! Adipisci at voluptatibus hic nostrum quasi dolore et ipsa.
           </p>
         </div>
-
-        {/* Footer */}
         <div className={styles.footer}>
           <p onClick={handleComment} className={styles.comment}>
             {commentCount > 1
@@ -52,8 +45,6 @@ function PostItem({ post }: PostItemProps) {
           <p className={styles.createdAt}>{rtf(createdAt)}</p>
         </div>
       </li>
-
-      {/* Modal */}
       <Modal show={show} setShow={setShow}>
         <Post post={post} />
       </Modal>
@@ -62,4 +53,3 @@ function PostItem({ post }: PostItemProps) {
 }
 
 export default PostItem;
-1;

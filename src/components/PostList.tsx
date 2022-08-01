@@ -15,12 +15,13 @@ function PostList() {
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
 
-  const handleLoadMore = async (arg: GetPostsReqData) => {
+  const handleLoad = async (arg: GetPostsReqData) => {
     await dispatch(getPosts(arg));
   };
 
   useEffect(() => {
-    if (isInterSecting && hasNext) handleLoadMore({ cursor, limit: 10 });
+    if (isInterSecting && hasNext)
+      handleLoad({ userId: "", cursor, limit: 10 });
   }, [isInterSecting]);
 
   return (

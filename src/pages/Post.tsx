@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback, CSSProperties } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { getComments } from "../redux/thunks/comment";
+import { initComment } from "../redux/reducers/comment";
 import useWindowSize from "../hooks/useWindowSize";
 import { GetCommentsReqData, PostData } from "../types";
 import rtf from "../utils/rtf";
@@ -29,9 +30,10 @@ function Post({ post }: PostProps) {
     setStyle(nextStyle);
   };
 
-  const handleLoad = useCallback(async (options: GetCommentsReqData) => {
+  const handleLoad = async (options: GetCommentsReqData) => {
+    dispatch(initComment());
     await dispatch(getComments(options));
-  }, []);
+  };
 
   useEffect(() => {
     handleStyle(height, "1");
@@ -39,7 +41,7 @@ function Post({ post }: PostProps) {
 
   useEffect(() => {
     handleLoad({ postId: _id, cursor: "", limit: 10 });
-  }, [handleLoad]);
+  }, []);
 
   return (
     <div className={styles.container}>

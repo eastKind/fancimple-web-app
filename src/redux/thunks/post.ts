@@ -10,9 +10,9 @@ import {
 
 export const getPosts = createAsyncThunk(
   "post/get",
-  async ({ cursor, limit }: GetPostsReqData, { dispatch }) => {
-    const { posts, hasNext } = await Post.get({ cursor, limit });
-    const nextCursor = posts[posts.length - 1]._id;
+  async ({ userId, cursor, limit }: GetPostsReqData, { dispatch }) => {
+    const { posts, hasNext } = await Post.get({ userId, cursor, limit });
+    const nextCursor = posts.length > 0 ? posts[posts.length - 1]._id : "";
     dispatch(setCursor(nextCursor));
     dispatch(setHasNext(hasNext));
     return posts;

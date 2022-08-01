@@ -44,6 +44,7 @@ export const postSlice = createSlice({
     setHasNext: (state, action) => {
       state.hasNext = action.payload;
     },
+    initPost: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -87,6 +88,6 @@ export const postSlice = createSlice({
   },
 });
 
-export const { setCursor, setHasNext } = postSlice.actions;
+export const { setCursor, setHasNext, initPost } = postSlice.actions;
 
 export default postSlice.reducer;

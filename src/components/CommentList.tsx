@@ -19,13 +19,13 @@ function CommentList({ postId }: CommentListProps) {
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
 
-  const handleLoadMore = async (arg: GetCommentsReqData) => {
+  const handleLoad = async (arg: GetCommentsReqData) => {
+    console.log("hi");
     await dispatch(getComments(arg));
   };
 
   useEffect(() => {
-    if (isInterSecting && hasNext)
-      handleLoadMore({ postId, cursor, limit: 10 });
+    if (isInterSecting && hasNext) handleLoad({ postId, cursor, limit: 10 });
   }, [isInterSecting]);
 
   return (

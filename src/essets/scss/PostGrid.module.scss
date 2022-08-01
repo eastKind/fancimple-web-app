@@ -1,0 +1,14 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 27px;
+
+  .gridItem {
+    background-color: black;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}

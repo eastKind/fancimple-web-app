@@ -48,10 +48,10 @@ function Nav({ className }: NavProps) {
             <Avatar photo={me.photoUrl} name={me.name} />
             <DropDown show={drop} setShow={setDrop}>
               <ul>
-                <Link to={`/${me._id}`} state={{ isMe: true }}>
+                <Link to={`/${me._id}/post`} state={{ isMe: true }}>
                   <li>프로필</li>
                 </Link>
-                <Link to={`/${me._id}`} state={{ isMe: true }}>
+                <Link to={`/${me._id}/bookmark`} state={{ isMe: true }}>
                   <li>북마크</li>
                 </Link>
                 <li onClick={handleLogout}>로그아웃</li>

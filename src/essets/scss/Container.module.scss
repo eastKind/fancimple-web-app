@@ -1,11 +1,11 @@
 .container {
   width: 100%;
-  max-width: 840px;
+  max-width: 945px;
   margin: 0 auto;
   // border: 1px solid blue;
 }
 
-@media screen and (max-width: 840px) {
+@media screen and (max-width: 945px) {
   .container {
     padding: 0 calc(14px * 5);
   }

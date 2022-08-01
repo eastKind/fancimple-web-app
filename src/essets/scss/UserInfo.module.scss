@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+
+  .infoContainer {
+    flex-grow: 1;
+    margin-left: 20px;
+
+    .name {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .follow {
+      font-size: 1.1rem;
+      font-weight: 500;
+
+      span:not(:last-of-type) {
+        margin-right: 20px;
+      }
+    }
+
+    > :not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+}

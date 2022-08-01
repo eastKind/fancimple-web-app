@@ -1,27 +1,27 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { GetPostsReqData } from "../types";
 import { getPosts } from "../redux/thunks/post";
+import { initPost } from "../redux/reducers/post";
 import Container from "../components/Container";
-
 import PostList from "../components/PostList";
-
 import styles from "../essets/scss/Home.module.scss";
 
 function Home() {
   const { sessionId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const handleLoad = useCallback(async (arg: GetPostsReqData) => {
+  const handleLoad = async (arg: GetPostsReqData) => {
+    dispatch(initPost());
     await dispatch(getPosts(arg));
-  }, []);
+  };
 
   useEffect(() => {
     if (!sessionId) return;
-    handleLoad({ cursor: "", limit: 10 });
-  }, [handleLoad]);
+    handleLoad({ userId: "", cursor: "", limit: 10 });
+  }, []);
 
   if (!sessionId) return <Navigate to="/signin" />;
 

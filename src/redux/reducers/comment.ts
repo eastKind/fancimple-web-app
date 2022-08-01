@@ -38,6 +38,7 @@ export const commentSlice = createSlice({
     setHasNext: (state, action) => {
       state.hasNext = action.payload;
     },
+    initComment: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -52,14 +53,11 @@ export const commentSlice = createSlice({
       .addCase(createComment.fulfilled, (state, action) => {
         state.comments.unshift(action.payload);
       })
-      .addCase(
-        deleteComment.fulfilled,
-        (state, { payload: deletedCommentId }) => {
-          state.comments = state.comments.filter(
-            (comment) => comment._id !== deletedCommentId
-          );
-        }
-      )
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.comments = state.comments.filter(
+          (comment) => comment._id !== action.payload
+        );
+      })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
         state.error = null;
@@ -74,6 +72,6 @@ export const commentSlice = createSlice({
   },
 });
 
-export const { setCursor, setHasNext } = commentSlice.actions;
+export const { setCursor, setHasNext, initComment } = commentSlice.actions;
 
 export default commentSlice.reducer;

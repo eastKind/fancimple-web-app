@@ -13,6 +13,7 @@ export type SignupReqData = {
 
 //// Post
 export type GetPostsReqData = {
+  userId: string;
   cursor: string;
   limit: number;
 };

@@ -10,10 +10,11 @@ import {
 
 export default class Post {
   public static async get({
+    userId,
     cursor,
-    limit = 10,
+    limit,
   }: GetPostsReqData): Promise<GetPostsResData> {
-    const query = `cursor=${cursor}&limit=${limit}`;
+    const query = `writer=${userId}&cursor=${cursor}&limit=${limit}`;
     const response = await axiosInstance.get(`/post?${query}`);
     return response.data;
   }
