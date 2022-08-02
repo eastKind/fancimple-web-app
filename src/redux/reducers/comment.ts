@@ -32,23 +32,21 @@ export const commentSlice = createSlice({
   name: "comment",
   initialState,
   reducers: {
-    setCursor: (state, action) => {
-      state.cursor = action.payload;
-    },
-    setHasNext: (state, action) => {
-      state.hasNext = action.payload;
-    },
     initComment: () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(getComments.fulfilled, (state, action) => {
+        const { comments, hasNext } = action.payload;
         const { cursor } = action.meta.arg;
         if (cursor) {
-          state.comments.push(...action.payload);
+          state.comments.push(...comments);
         } else {
-          state.comments = action.payload;
+          state.comments = comments;
         }
+        state.hasNext = hasNext;
+        state.cursor =
+          comments.length > 0 ? comments[comments.length - 1]._id : "";
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.comments.unshift(action.payload);
@@ -72,6 +70,6 @@ export const commentSlice = createSlice({
   },
 });
 
-export const { setCursor, setHasNext, initComment } = commentSlice.actions;
+export const { initComment } = commentSlice.actions;
 
 export default commentSlice.reducer;

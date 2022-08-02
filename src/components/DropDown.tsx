@@ -23,7 +23,7 @@ function DropDown({ children, show, setShow, className }: DropDownProps) {
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, [show]);
+  }, [show, setShow]);
 
   return (
     <div className={classNames(styles.container, className)} ref={ref}>

@@ -38,23 +38,20 @@ export const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    setCursor: (state, action) => {
-      state.cursor = action.payload;
-    },
-    setHasNext: (state, action) => {
-      state.hasNext = action.payload;
-    },
     initPost: () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(getPosts.fulfilled, (state, action) => {
+        const { posts, hasNext } = action.payload;
         const { cursor } = action.meta.arg;
         if (cursor) {
-          state.posts.push(...action.payload);
+          state.posts.push(...posts);
         } else {
-          state.posts = action.payload;
+          state.posts = posts;
         }
+        state.hasNext = hasNext;
+        state.cursor = posts.length > 0 ? posts[posts.length - 1]._id : "";
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts.unshift(action.payload);
@@ -88,6 +85,6 @@ export const postSlice = createSlice({
   },
 });
 
-export const { setCursor, setHasNext, initPost } = postSlice.actions;
+export const { initPost } = postSlice.actions;
 
 export default postSlice.reducer;

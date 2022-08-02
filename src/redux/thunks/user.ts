@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { SignupReqData } from "../../types";
+import { GetUserReqData, SignupReqData } from "../../types";
 import User from "../../api/User";
 
 export const signup = createAsyncThunk(
@@ -10,12 +10,15 @@ export const signup = createAsyncThunk(
 );
 
 export const getMe = createAsyncThunk("user/getMe", async () => {
-  return await User.getMe();
+  return await User.me();
 });
 
-export const getUser = createAsyncThunk("user/getUser", async (id: string) => {
-  return await User.getUser(id);
-});
+export const getUser = createAsyncThunk(
+  "user/getUser",
+  async (reqData: GetUserReqData) => {
+    return await User.get(reqData);
+  }
+);
 
 export const editPhoto = createAsyncThunk(
   "user/editPhoto",

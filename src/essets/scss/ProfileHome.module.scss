@@ -12,3 +12,11 @@
     }
   }
 }
+
+.observer {
+  display: none;
+
+  &.show {
+    display: block;
+  }
+}

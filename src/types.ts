@@ -11,6 +11,11 @@ export type SignupReqData = {
   password: string;
 };
 
+/// User
+export type GetUserReqData = {
+  id: string;
+};
+
 //// Post
 export type GetPostsReqData = {
   userId: string;

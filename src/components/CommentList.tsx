@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
+import classNames from "classnames";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { getComments } from "../redux/thunks/comment";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
@@ -19,14 +20,16 @@ function CommentList({ postId }: CommentListProps) {
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
 
-  const handleLoad = async (arg: GetCommentsReqData) => {
-    console.log("hi");
-    await dispatch(getComments(arg));
-  };
+  const handleLoad = useCallback(
+    async (options: GetCommentsReqData) => {
+      await dispatch(getComments(options));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (isInterSecting && hasNext) handleLoad({ postId, cursor, limit: 10 });
-  }, [isInterSecting]);
+  }, [isInterSecting, hasNext, postId, cursor, handleLoad]);
 
   return (
     <ul className={styles.list}>
@@ -35,7 +38,10 @@ function CommentList({ postId }: CommentListProps) {
           <CommentItem comment={comment} />
         </li>
       ))}
-      <div className={styles.loadMore} ref={targetRef}>
+      <div
+        className={classNames(styles.observer, hasNext && styles.show)}
+        ref={targetRef}
+      >
         {loading && <Spinner size="18px" />}
       </div>
     </ul>

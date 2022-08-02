@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setCursor, setHasNext } from "../reducers/comment";
 import Comment from "../../api/Comment";
 import {
   GetCommentsReqData,
@@ -10,12 +9,8 @@ import {
 export const getComments = createAsyncThunk(
   "comment/get",
   async ({ postId, cursor, limit }: GetCommentsReqData, { dispatch }) => {
-    const { comments, hasNext } = await Comment.get({ postId, cursor, limit });
-    const nextCursor =
-      comments.length > 0 ? comments[comments.length - 1]._id : "";
-    dispatch(setCursor(nextCursor));
-    dispatch(setHasNext(hasNext));
-    return comments;
+    const responseData = await Comment.get({ postId, cursor, limit });
+    return responseData;
   }
 );
 

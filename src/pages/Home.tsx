@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
@@ -13,15 +13,18 @@ function Home() {
   const { sessionId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const handleLoad = async (arg: GetPostsReqData) => {
-    dispatch(initPost());
-    await dispatch(getPosts(arg));
-  };
+  const handleLoad = useCallback(
+    async (options: GetPostsReqData) => {
+      dispatch(initPost());
+      await dispatch(getPosts(options));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (!sessionId) return;
     handleLoad({ userId: "", cursor: "", limit: 10 });
-  }, []);
+  }, [handleLoad, sessionId]);
 
   if (!sessionId) return <Navigate to="/signin" />;
 

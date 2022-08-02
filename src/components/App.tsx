@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getMe } from "../redux/thunks/user";
@@ -10,14 +10,14 @@ function App() {
   const dispatch = useAppDispatch();
   const { sessionId } = useAppSelector((state) => state.auth);
 
-  const handleLoad = async () => {
+  const handleLoad = useCallback(async () => {
     await dispatch(getMe());
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     if (!sessionId) return;
     handleLoad();
-  }, []);
+  }, [sessionId, handleLoad]);
 
   return (
     <>

@@ -24,7 +24,7 @@ function Modal({ children, show, setShow }: ModalProps) {
       containerNode.removeEventListener("click", handleClickOutside);
       document.body.style.overflowY = "scroll";
     };
-  }, [show]);
+  }, [show, setShow]);
 
   return (
     <Portal>

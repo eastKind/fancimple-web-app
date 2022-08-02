@@ -28,7 +28,7 @@ function Interactions({ post, onComment }: InteractionsProps) {
 
   useEffect(() => {
     setIsLiked(likeUsers.includes(me._id));
-  }, [likeUsers]);
+  }, [likeUsers, me._id]);
 
   return (
     <div className={styles.interactions}>

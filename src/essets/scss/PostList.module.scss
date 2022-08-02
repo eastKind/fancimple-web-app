@@ -2,6 +2,14 @@
   margin: 50px 0 0;
   padding: 0;
 
+  .observer {
+    display: none;
+
+    &.show {
+      display: block;
+    }
+  }
+
   > :not(:last-child) {
     margin-bottom: 20px;
   }

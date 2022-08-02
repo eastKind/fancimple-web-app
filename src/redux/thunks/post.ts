@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setCursor, setHasNext } from "../reducers/post";
 import Post from "../../api/Post";
 import {
   GetPostsReqData,
@@ -10,39 +9,36 @@ import {
 
 export const getPosts = createAsyncThunk(
   "post/get",
-  async ({ userId, cursor, limit }: GetPostsReqData, { dispatch }) => {
-    const { posts, hasNext } = await Post.get({ userId, cursor, limit });
-    const nextCursor = posts.length > 0 ? posts[posts.length - 1]._id : "";
-    dispatch(setCursor(nextCursor));
-    dispatch(setHasNext(hasNext));
-    return posts;
+  async (reqData: GetPostsReqData) => {
+    const data = await Post.get(reqData);
+    return data;
   }
 );
 
 export const createPost = createAsyncThunk(
   "post/create",
-  async (arg: FormData) => {
-    return await Post.create(arg);
+  async (reqData: FormData) => {
+    return await Post.create(reqData);
   }
 );
 
 export const updatePost = createAsyncThunk(
   "post/update",
-  async (arg: UpdatePostReqData) => {
-    return await Post.update(arg);
+  async (reqData: UpdatePostReqData) => {
+    return await Post.update(reqData);
   }
 );
 
 export const deletePost = createAsyncThunk(
   "post/delete",
-  async (arg: DeletePostReqData) => {
-    return await Post.delete(arg);
+  async (reqData: DeletePostReqData) => {
+    return await Post.delete(reqData);
   }
 );
 
 export const likesPost = createAsyncThunk(
   "post/likes",
-  async (arg: LikesPostReqData) => {
-    return await Post.likes(arg);
+  async (reqData: LikesPostReqData) => {
+    return await Post.likes(reqData);
   }
 );
