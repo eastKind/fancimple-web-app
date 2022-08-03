@@ -6,13 +6,22 @@
     flex-grow: 1;
     margin-left: 20px;
 
-    .name {
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: 700;
+    .header {
+      display: flex;
+      align-items: center;
+
+      .name {
+        margin: 0 15px 0 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .followBtn {
+        padding: 5px 10px;
+      }
     }
 
-    .follow {
+    .counts {
       font-size: 1.1rem;
       font-weight: 500;
 

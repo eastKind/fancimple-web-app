@@ -32,8 +32,12 @@ function Post({ post }: PostProps) {
 
   const handleLoad = useCallback(
     async (options: GetCommentsReqData) => {
-      dispatch(initComment());
-      await dispatch(getComments(options));
+      try {
+        dispatch(initComment());
+        await dispatch(getComments(options));
+      } catch (error: any) {
+        alert(error.message);
+      }
     },
     [dispatch]
   );

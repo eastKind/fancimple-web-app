@@ -65,11 +65,10 @@ export const postSlice = createSlice({
       .addCase(deletePost.fulfilled, (state, { payload: deletedPostId }) => {
         state.posts = state.posts.filter((post) => post._id !== deletedPostId);
       })
-      .addCase(likesPost.fulfilled, (state, { payload: updatedPost }) => {
-        const index = state.posts.findIndex(
-          (post) => post._id === updatedPost._id
-        );
-        state.posts.splice(index, 1, updatedPost);
+      .addCase(likesPost.fulfilled, ({ posts }, action) => {
+        const { postId } = action.meta.arg;
+        const index = posts.findIndex((post) => post._id === postId);
+        posts[index].likeCount = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

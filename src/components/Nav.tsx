@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signout } from "../redux/thunks/auth";
+import { initUser } from "../redux/reducers/user";
 import Container from "./Container";
 import Avatar from "./Avatar";
 import DropDown from "./DropDown";
@@ -26,6 +27,7 @@ function Nav({ className }: NavProps) {
 
   const handleLogout = async () => {
     await dispatch(signout());
+    dispatch(initUser());
     navigate("/signin");
   };
 

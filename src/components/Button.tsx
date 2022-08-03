@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "../essets/scss/Button.module.scss";
 
 interface ButtonProps {
-  variant?: string;
+  variant?: "inverse";
   className?: string;
   as?: string;
   [key: string]: any;

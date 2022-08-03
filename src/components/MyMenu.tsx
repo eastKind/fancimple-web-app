@@ -10,7 +10,11 @@ function MyMenu({ postId }: MyMenuProps) {
   const dispatch = useAppDispatch();
 
   const handleDeleteClick = async () => {
-    await dispatch(deletePost({ postId }));
+    try {
+      await dispatch(deletePost({ postId }));
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
   return (

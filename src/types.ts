@@ -5,15 +5,20 @@ export type SigninReqData = {
   password: string;
 };
 
+/// User
 export type SignupReqData = {
   name: string;
   email: string;
   password: string;
 };
 
-/// User
 export type GetUserReqData = {
-  id: string;
+  userId: string;
+};
+
+export type FollowReqData = {
+  userId: string;
+  isFollowed: boolean;
 };
 
 //// Post
@@ -97,6 +102,7 @@ export type UserData = {
   followers: string[];
   followings: string[];
   likedPosts: string[];
+  postCount: number;
 };
 
 export type PostData = {
@@ -109,7 +115,6 @@ export type PostData = {
   updatedAt: string;
   likeCount: number;
   commentCount: number;
-  likeUsers: string[];
 };
 
 // Other Types

@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useLocation, Outlet, NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getUser } from "../redux/thunks/user";
+import { getUser, getMe } from "../redux/thunks/user";
 import { GetUserReqData, MyParams } from "../types";
 import Container from "../components/Container";
 import UserInfo from "../components/UserInfo";
@@ -19,14 +19,19 @@ function Profile() {
 
   const handleLoad = useCallback(
     async (options: GetUserReqData) => {
-      await dispatch(getUser(options));
+      try {
+        if (isMe) await dispatch(getMe());
+        else await dispatch(getUser(options));
+      } catch (error: any) {
+        alert(error.message);
+      }
     },
-    [dispatch]
+    [isMe, dispatch]
   );
 
   useEffect(() => {
-    if (!isMe) handleLoad({ id });
-  }, [isMe, id, handleLoad]);
+    handleLoad({ userId: id });
+  }, [id, handleLoad]);
 
   return (
     <>
@@ -56,7 +61,7 @@ function Profile() {
             </li>
           </ul>
           <div className={styles.userInfo}>
-            <UserInfo user={user} />
+            <UserInfo user={user} isMe={isMe} />
           </div>
         </div>
         <div className={styles.body}>

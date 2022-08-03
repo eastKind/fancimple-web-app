@@ -46,10 +46,10 @@ export default class Post {
   public static async likes({
     postId,
     isLiked,
-  }: LikesPostReqData): Promise<PostData> {
+  }: LikesPostReqData): Promise<number> {
     const response = await axiosInstance.patch(`/post/${postId}/like`, {
       isLiked,
     });
-    return response.data.post;
+    return response.data.likeCount;
   }
 }

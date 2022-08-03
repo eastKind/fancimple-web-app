@@ -8,22 +8,33 @@ import {
 
 export const getComments = createAsyncThunk(
   "comment/get",
-  async ({ postId, cursor, limit }: GetCommentsReqData, { dispatch }) => {
-    const responseData = await Comment.get({ postId, cursor, limit });
-    return responseData;
+  async (reqData: GetCommentsReqData, { rejectWithValue }) => {
+    try {
+      return await Comment.get(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const createComment = createAsyncThunk(
   "comment/create",
-  async (arg: CreateCommentReqData) => {
-    return await Comment.create(arg);
+  async (reqData: CreateCommentReqData, { rejectWithValue }) => {
+    try {
+      return await Comment.create(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const deleteComment = createAsyncThunk(
   "comment/delete",
-  async (arg: DeleteCommentReqData) => {
-    return await Comment.delete(arg);
+  async (reqData: DeleteCommentReqData, { rejectWithValue }) => {
+    try {
+      return await Comment.delete(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import { useAppSelector } from "../redux/hooks";
 import { User } from "../types";
+import useIsMe from "../hooks/useIsMe";
 import Avatar from "./Avatar";
 import DropDown from "./DropDown";
 import MyMenu from "./MyMenu";
@@ -15,9 +15,8 @@ interface PostHeaderProps {
 }
 
 function PostHeader({ postId, writer }: PostHeaderProps) {
-  const { me } = useAppSelector((state) => state.user);
   const [show, setShow] = useState(false);
-  const isMe = writer._id === me._id;
+  const isMe = useIsMe(writer._id);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();

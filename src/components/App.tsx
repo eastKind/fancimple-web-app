@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getMe } from "../redux/thunks/user";
 import Nav from "./Nav";
@@ -11,13 +11,18 @@ function App() {
   const { sessionId } = useAppSelector((state) => state.auth);
 
   const handleLoad = useCallback(async () => {
-    await dispatch(getMe());
+    try {
+      await dispatch(getMe());
+    } catch (error: any) {
+      alert(error.message);
+    }
   }, [dispatch]);
 
   useEffect(() => {
-    if (!sessionId) return;
     handleLoad();
-  }, [sessionId, handleLoad]);
+  }, [handleLoad]);
+
+  if (!sessionId) return <Navigate to="/signin" />;
 
   return (
     <>

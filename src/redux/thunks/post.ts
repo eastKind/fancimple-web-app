@@ -9,36 +9,55 @@ import {
 
 export const getPosts = createAsyncThunk(
   "post/get",
-  async (reqData: GetPostsReqData) => {
-    const data = await Post.get(reqData);
-    return data;
+  async (reqData: GetPostsReqData, { rejectWithValue }) => {
+    try {
+      return await Post.get(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const createPost = createAsyncThunk(
   "post/create",
-  async (reqData: FormData) => {
-    return await Post.create(reqData);
+  async (reqData: FormData, { rejectWithValue }) => {
+    try {
+      return await Post.create(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const updatePost = createAsyncThunk(
   "post/update",
-  async (reqData: UpdatePostReqData) => {
-    return await Post.update(reqData);
+  async (reqData: UpdatePostReqData, { rejectWithValue }) => {
+    try {
+      return await Post.update(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const deletePost = createAsyncThunk(
   "post/delete",
-  async (reqData: DeletePostReqData) => {
-    return await Post.delete(reqData);
+  async (reqData: DeletePostReqData, { rejectWithValue }) => {
+    try {
+      return await Post.delete(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const likesPost = createAsyncThunk(
   "post/likes",
-  async (reqData: LikesPostReqData) => {
-    return await Post.likes(reqData);
+  async (reqData: LikesPostReqData, { rejectWithValue }) => {
+    try {
+      return await Post.likes(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );

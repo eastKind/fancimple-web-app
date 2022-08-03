@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import classNames from "classnames";
 import { useOutletContext } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { getPosts } from "../redux/thunks/post";
 import { initPost } from "../redux/reducers/post";
 import { GetPostsReqData } from "../types";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import Spinner from "../components/Spinner";
+import GridItem from "../components/GridItem";
 import styles from "../essets/scss/ProfileHome.module.scss";
 
 interface OutletContext {
@@ -24,17 +25,14 @@ function ProfileHome() {
 
   const handleLoad = useCallback(
     async (options: GetPostsReqData) => {
-      if (!options.cursor) dispatch(initPost());
-      await dispatch(getPosts(options));
+      try {
+        if (!options.cursor) dispatch(initPost());
+        await dispatch(getPosts(options));
+      } catch (error: any) {
+        alert(error.message);
+      }
     },
     [dispatch]
-  );
-
-  const handleLoadMore = useCallback(
-    async (options: GetPostsReqData) => {
-      await handleLoad(options);
-    },
-    [handleLoad]
   );
 
   useEffect(() => {
@@ -43,16 +41,14 @@ function ProfileHome() {
   }, [userId, handleLoad]);
 
   useEffect(() => {
-    if (isInterSecting && hasNext) handleLoadMore({ userId, cursor, limit: 9 });
-  }, [isInterSecting, hasNext, userId, cursor, handleLoadMore]);
+    if (isInterSecting && hasNext) handleLoad({ userId, cursor, limit: 9 });
+  }, [isInterSecting, hasNext, userId, cursor, handleLoad]);
 
   return (
     <>
       <div className={styles.grid}>
         {posts.map((post) => (
-          <div key={post._id} className={styles.gridItem}>
-            <img src={post.images[0].url} alt="" />
-          </div>
+          <GridItem key={post._id} post={post} />
         ))}
       </div>
       <div

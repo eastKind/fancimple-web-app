@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
+import useIsMe from "../hooks/useIsMe";
 import { deleteComment } from "../redux/thunks/comment";
 import { CommentData } from "../types";
 import rtf from "../utils/rtf";
@@ -14,22 +15,29 @@ interface ListItemProps {
 
 function CommentItem({ comment }: ListItemProps) {
   const { _id, postId, writer, contents, createdAt, likeCount } = comment;
-  const { me } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const isMe = writer._id === me._id;
+  const isMe = useIsMe(writer._id);
 
   const handleDeleteClick = async () => {
-    await dispatch(deleteComment({ commentId: _id, postId }));
+    try {
+      await dispatch(deleteComment({ commentId: _id, postId }));
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
   return (
     <div className={styles.container}>
-      <Link to={writer._id} className={styles.avatar}>
+      <Link
+        to={`${writer._id}/post`}
+        state={{ isMe }}
+        className={styles.avatar}
+      >
         <Avatar photo={writer.photoUrl} name={writer.name} />
       </Link>
       <div className={styles.body}>
         <div className={styles.header}>
-          <Link to={writer._id}>
+          <Link to={`${writer._id}/post`} state={{ isMe }}>
             <span>{writer.name}</span>
           </Link>
           {isMe && (

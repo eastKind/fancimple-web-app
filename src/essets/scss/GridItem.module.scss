@@ -1,0 +1,41 @@
+.gridItem {
+  position: relative;
+  background-color: black;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba($black, 0.5);
+    opacity: 0;
+
+    .symbols {
+      font-variation-settings: "FILL" 1;
+      color: #fff;
+      margin-right: 5px;
+    }
+
+    .count {
+      color: #fff;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    > :nth-child(2) {
+      margin-right: 20px;
+    }
+  }
+}

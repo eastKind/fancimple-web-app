@@ -1,5 +1,10 @@
 import axiosInstance from "./axios";
-import { GetUserReqData, SignupReqData, UserData } from "../types";
+import {
+  FollowReqData,
+  GetUserReqData,
+  SignupReqData,
+  UserData,
+} from "../types";
 
 export default class User {
   public static async signup(reqData: SignupReqData): Promise<void> {
@@ -11,13 +16,18 @@ export default class User {
     return response.data.user;
   }
 
-  public static async get({ id }: GetUserReqData): Promise<UserData> {
-    const response = await axiosInstance.get(`/user/${id}`);
+  public static async get({ userId }: GetUserReqData): Promise<UserData> {
+    const response = await axiosInstance.get(`/user/${userId}`);
     return response.data.user;
   }
 
   public static async editPhoto(reqData: FormData): Promise<UserData> {
     const response = await axiosInstance.patch("/user/photo", reqData);
     return response.data.user;
+  }
+
+  public static async follow(reqData: FollowReqData): Promise<string[]> {
+    const response = await axiosInstance.patch("/user/follow", reqData);
+    return response.data.followers;
   }
 }

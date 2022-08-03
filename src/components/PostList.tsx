@@ -18,7 +18,11 @@ function PostList() {
 
   const handleLoad = useCallback(
     async (options: GetPostsReqData) => {
-      await dispatch(getPosts(options));
+      try {
+        await dispatch(getPosts(options));
+      } catch (error: any) {
+        alert(error.message);
+      }
     },
     [dispatch]
   );
