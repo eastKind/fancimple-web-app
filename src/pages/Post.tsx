@@ -17,7 +17,7 @@ interface PostProps {
 }
 
 function Post({ post }: PostProps) {
-  const { _id, images, writer, contents, likeCount, createdAt } = post;
+  const { _id, images, writer, contents, likeUsers, createdAt } = post;
   const [style, setStyle] = useState({});
   const { height } = useWindowSize();
   const dispatch = useAppDispatch();
@@ -70,7 +70,7 @@ function Post({ post }: PostProps) {
         </div>
         <div className={styles.footer}>
           <Interactions post={post} onComment={() => console.log("hi")} />
-          <span>좋아요 {likeCount}개</span>
+          <span>좋아요 {likeUsers.length}개</span>
           <span className={styles.createdAt}>{rtf(createdAt)}</span>
         </div>
         <div className={styles.commentForm}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppSelector } from "../redux/hooks";
 
 function useIsMe(otherId: string) {

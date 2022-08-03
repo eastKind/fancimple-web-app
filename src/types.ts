@@ -66,6 +66,11 @@ export type DeleteCommentReqData = {
   commentId: string;
 };
 
+export type LikesCommentReqData = {
+  commentId: string;
+  isLiked: boolean;
+};
+
 export type GetCommentsResData = {
   hasNext: boolean;
   comments: CommentData[];
@@ -89,7 +94,7 @@ export type CommentData = {
   postId: string;
   contents: string;
   writer: User;
-  likeCount: number;
+  likeUsers: string[];
   createdAt: string;
   updatedAt: string;
 };
@@ -113,7 +118,7 @@ export type PostData = {
   writer: User;
   createdAt: string;
   updatedAt: string;
-  likeCount: number;
+  likeUsers: string[];
   commentCount: number;
 };
 

@@ -34,6 +34,11 @@
         font-size: 18px;
         margin-right: 10px;
         cursor: pointer;
+
+        &.liked {
+          color: $red;
+          font-variation-settings: "FILL" 1;
+        }
       }
 
       .likeCount,

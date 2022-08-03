@@ -1,5 +1,10 @@
 import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
-import { getComments, createComment, deleteComment } from "../thunks/comment";
+import {
+  getComments,
+  createComment,
+  deleteComment,
+  likesComment,
+} from "../thunks/comment";
 import { CommentData } from "../../types";
 
 function isPendingAction(action: AnyAction) {
@@ -55,6 +60,13 @@ export const commentSlice = createSlice({
         state.comments = state.comments.filter(
           (comment) => comment._id !== action.payload
         );
+      })
+      .addCase(likesComment.fulfilled, ({ comments }, action) => {
+        const { commentId } = action.meta.arg;
+        const index = comments.findIndex(
+          (comment) => comment._id === commentId
+        );
+        comments[index].likeUsers = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

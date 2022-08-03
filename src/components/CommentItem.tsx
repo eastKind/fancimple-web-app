@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch } from "../redux/hooks";
+import useIsLiked from "../hooks/useIsLiked";
 import useIsMe from "../hooks/useIsMe";
-import { deleteComment } from "../redux/thunks/comment";
+import { deleteComment, likesComment } from "../redux/thunks/comment";
 import { CommentData } from "../types";
 import rtf from "../utils/rtf";
 import Avatar from "./Avatar";
@@ -14,13 +15,22 @@ interface ListItemProps {
 }
 
 function CommentItem({ comment }: ListItemProps) {
-  const { _id, postId, writer, contents, createdAt, likeCount } = comment;
+  const { _id, postId, writer, contents, createdAt, likeUsers } = comment;
   const dispatch = useAppDispatch();
+  const isLiked = useIsLiked(likeUsers);
   const isMe = useIsMe(writer._id);
 
   const handleDeleteClick = async () => {
     try {
       await dispatch(deleteComment({ commentId: _id, postId }));
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const handleLikesClick = async () => {
+    try {
+      await dispatch(likesComment({ commentId: _id, isLiked }));
     } catch (error: any) {
       alert(error.message);
     }
@@ -55,11 +65,16 @@ function CommentItem({ comment }: ListItemProps) {
         <div className={styles.contents}>{contents}</div>
         <div className={styles.footer}>
           <span
-            className={classNames("material-symbols-rounded", styles.likeBtn)}
+            onClick={handleLikesClick}
+            className={classNames(
+              "material-symbols-rounded",
+              styles.likeBtn,
+              isLiked && styles.liked
+            )}
           >
             favorite
           </span>
-          <span className={styles.likeCount}>좋아요 {likeCount}개</span>
+          <span className={styles.likeCount}>좋아요 {likeUsers.length}개</span>
           <span className={styles.createdAt}>{rtf(createdAt)}</span>
         </div>
       </div>

@@ -24,7 +24,7 @@ function GridItem({ post }: GridItemProps) {
           >
             favorite
           </span>
-          <span className={styles.count}>{post.likeCount}</span>
+          <span className={styles.count}>{post.likeUsers.length}</span>
           <span
             className={classNames("material-symbols-rounded", styles.symbols)}
           >

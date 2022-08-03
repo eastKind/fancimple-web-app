@@ -4,6 +4,7 @@ import {
   GetCommentsReqData,
   CreateCommentReqData,
   DeleteCommentReqData,
+  LikesCommentReqData,
 } from "../../types";
 
 export const getComments = createAsyncThunk(
@@ -33,6 +34,17 @@ export const deleteComment = createAsyncThunk(
   async (reqData: DeleteCommentReqData, { rejectWithValue }) => {
     try {
       return await Comment.delete(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const likesComment = createAsyncThunk(
+  "comment/likes",
+  async (reqData: LikesCommentReqData, { rejectWithValue }) => {
+    try {
+      return await Comment.likes(reqData);
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }

@@ -4,6 +4,7 @@ import {
   GetCommentsReqData,
   CreateCommentReqData,
   DeleteCommentReqData,
+  LikesCommentReqData,
   CommentData,
 } from "../types";
 
@@ -36,9 +37,13 @@ export default class Comment {
     return response.data.id;
   }
 
-  // public static async update(reqData: CreateCommentReqData): Promise<CommentData> {
-  //   const { id, contents } = reqData;
-  //   const response = await axiosInstance.patch(`/comment/${id}`, { contents });
-  //   return response.data.comment;
-  // }
+  public static async likes({
+    commentId,
+    isLiked,
+  }: LikesCommentReqData): Promise<string[]> {
+    const response = await axiosInstance.patch(`/comment/${commentId}/like`, {
+      isLiked,
+    });
+    return response.data.likeUsers;
+  }
 }

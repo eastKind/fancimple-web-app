@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { UserData } from "../types";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
 import AvatarForm from "./AvatarForm";
 import styles from "../essets/scss/UserInfo.module.scss";
 import Button from "./Button";
+import useIsFollowed from "../hooks/useIsFollowed";
 
 interface UserInfoProps {
   user: UserData;
@@ -12,14 +13,12 @@ interface UserInfoProps {
 }
 
 function UserInfo({ user, isMe }: UserInfoProps) {
-  const { me } = useAppSelector((state) => state.user);
-  const [isFollowed, setIsFollowed] = useState(user.followers.includes(me._id));
+  const isFollowed = useIsFollowed(user.followers);
   const dispatch = useAppDispatch();
 
   const handleClick = async () => {
     try {
       await dispatch(follow({ userId: user._id, isFollowed }));
-      setIsFollowed((prev) => !prev);
     } catch (error: any) {
       alert(error.message);
     }

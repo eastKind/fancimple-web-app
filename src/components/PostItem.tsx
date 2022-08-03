@@ -14,7 +14,7 @@ interface PostItemProps {
 
 function PostItem({ post }: PostItemProps) {
   const [show, setShow] = useState(false);
-  const { _id, images, writer, contents, commentCount, likeCount, createdAt } =
+  const { _id, images, writer, contents, commentCount, likeUsers, createdAt } =
     post;
 
   const handleComment = () => setShow((prev) => !prev);
@@ -28,7 +28,7 @@ function PostItem({ post }: PostItemProps) {
         <Slide images={images} className={styles.slide} />
         <div className={styles.body}>
           <Interactions post={post} onComment={handleComment} />
-          <span>좋아요 {likeCount}개</span>
+          <span>좋아요 {likeUsers.length}개</span>
           <p className={styles.contents}>
             {contents}
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad quo
@@ -38,7 +38,7 @@ function PostItem({ post }: PostItemProps) {
         </div>
         <div className={styles.footer}>
           <p onClick={handleComment} className={styles.comment}>
-            {commentCount > 1
+            {commentCount > 0
               ? `댓글 ${commentCount}개 모두 보기`
               : "댓글 쓰러가기"}
           </p>

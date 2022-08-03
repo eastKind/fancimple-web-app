@@ -68,7 +68,7 @@ export const postSlice = createSlice({
       .addCase(likesPost.fulfilled, ({ posts }, action) => {
         const { postId } = action.meta.arg;
         const index = posts.findIndex((post) => post._id === postId);
-        posts[index].likeCount = action.payload;
+        posts[index].likeUsers = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
