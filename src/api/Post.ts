@@ -13,9 +13,12 @@ export default class Post {
     userId,
     cursor,
     limit,
+    bookmark,
   }: GetPostsReqData): Promise<GetPostsResData> {
     const query = `writer=${userId}&cursor=${cursor}&limit=${limit}`;
-    const response = await axiosInstance.get(`/post?${query}`);
+    const response = await axiosInstance.get(
+      `/post${bookmark ? "/bookmark" : ""}?${query}`
+    );
     return response.data;
   }
 

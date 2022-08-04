@@ -9,6 +9,10 @@
     color: $red;
   }
 
+  .marked {
+    font-variation-settings: "FILL" 1;
+  }
+
   :not(:last-child) {
     margin-right: 5px;
   }

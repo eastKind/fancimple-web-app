@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useLocation, Outlet, NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getUser, getMe } from "../redux/thunks/user";
+import { getUser } from "../redux/thunks/user";
 import { GetUserReqData, MyParams } from "../types";
 import Container from "../components/Container";
 import UserInfo from "../components/UserInfo";
@@ -20,18 +20,18 @@ function Profile() {
   const handleLoad = useCallback(
     async (options: GetUserReqData) => {
       try {
-        if (isMe) await dispatch(getMe());
-        else await dispatch(getUser(options));
+        await dispatch(getUser(options));
       } catch (error: any) {
         alert(error.message);
       }
     },
-    [isMe, dispatch]
+    [dispatch]
   );
 
   useEffect(() => {
+    if (isMe) return;
     handleLoad({ userId: id });
-  }, [id, handleLoad]);
+  }, [isMe, id, handleLoad]);
 
   return (
     <>
@@ -50,15 +50,17 @@ function Profile() {
                 게시물
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to={`/${id}/bookmark`}
-                className={({ isActive }) => (isActive ? styles.active : "")}
-                state={{ isMe }}
-              >
-                북마크
-              </NavLink>
-            </li>
+            {isMe && (
+              <li>
+                <NavLink
+                  to={`/${id}/bookmark`}
+                  className={({ isActive }) => (isActive ? styles.active : "")}
+                  state={{ isMe }}
+                >
+                  북마크
+                </NavLink>
+              </li>
+            )}
           </ul>
           <div className={styles.userInfo}>
             <UserInfo user={user} isMe={isMe} />

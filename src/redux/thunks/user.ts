@@ -1,5 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { GetUserReqData, SignupReqData, FollowReqData } from "../../types";
+import {
+  GetUserReqData,
+  SignupReqData,
+  FollowReqData,
+  BookmarkReqData,
+} from "../../types";
 import User from "../../api/User";
 
 export const signup = createAsyncThunk(
@@ -51,6 +56,17 @@ export const follow = createAsyncThunk(
   async (reqData: FollowReqData, { rejectWithValue }) => {
     try {
       return await User.follow(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const bookmark = createAsyncThunk(
+  "user/bookmark",
+  async (reqData: BookmarkReqData, { rejectWithValue }) => {
+    try {
+      return await User.bookmark(reqData);
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }

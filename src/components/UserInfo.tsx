@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { UserData } from "../types";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
 import AvatarForm from "./AvatarForm";
+import Avatar from "./Avatar";
 import styles from "../essets/scss/UserInfo.module.scss";
 import Button from "./Button";
-import useIsFollowed from "../hooks/useIsFollowed";
 
 interface UserInfoProps {
   user: UserData;
@@ -13,7 +13,8 @@ interface UserInfoProps {
 }
 
 function UserInfo({ user, isMe }: UserInfoProps) {
-  const isFollowed = useIsFollowed(user.followers);
+  const { me } = useAppSelector((state) => state.user);
+  const [isFollowed, setIsFollowed] = useState(false);
   const dispatch = useAppDispatch();
 
   const handleClick = async () => {
@@ -24,9 +25,21 @@ function UserInfo({ user, isMe }: UserInfoProps) {
     }
   };
 
+  useEffect(() => {
+    setIsFollowed(user.followers.includes(me._id));
+  }, [user.followers, me._id]);
+
   return (
     <div className={styles.container}>
-      <AvatarForm user={user} />
+      {isMe ? (
+        <AvatarForm user={user} />
+      ) : (
+        <Avatar
+          photo={user.photoUrl}
+          name={user.name}
+          className={styles.avatar}
+        />
+      )}
       <div className={styles.infoContainer}>
         <div className={styles.header}>
           <p className={styles.name}>{user.name}</p>

@@ -1,6 +1,6 @@
 import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
-import { getUser, getMe, editPhoto, follow } from "../thunks/user";
-import { UserData } from "../../types";
+import { getUser, getMe, editPhoto, follow, bookmark } from "../thunks/user";
+import { UserData, MyData } from "../../types";
 import photo from "../../essets/images/person.png";
 
 function isPendingAction(action: AnyAction) {
@@ -16,7 +16,7 @@ function isRejectedAction(action: AnyAction) {
 interface UserState {
   loading: boolean;
   error: SerializedError | null;
-  me: UserData;
+  me: MyData;
   other: UserData;
 }
 
@@ -27,15 +27,15 @@ const INIT_USER = {
   photoUrl: photo,
   followers: [],
   followings: [],
-  likedPosts: [],
   postCount: 0,
 };
+const INIT_ME = { ...INIT_USER, bookmarks: [] };
 
 const initialState: UserState = {
   loading: false,
   error: null,
-  me: INIT_USER,
   other: INIT_USER,
+  me: INIT_ME,
 };
 
 export const userSlice = createSlice({
@@ -56,7 +56,12 @@ export const userSlice = createSlice({
         state.me = action.payload;
       })
       .addCase(follow.fulfilled, (state, action) => {
-        state.other.followers = action.payload;
+        const { followers, followings } = action.payload;
+        state.other.followers = followers;
+        state.me.followings = followings;
+      })
+      .addCase(bookmark.fulfilled, (state, action) => {
+        state.me.bookmarks = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

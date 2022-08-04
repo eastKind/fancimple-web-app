@@ -21,11 +21,22 @@ export type FollowReqData = {
   isFollowed: boolean;
 };
 
+export type FollowResData = {
+  followers: string[];
+  followings: string[];
+};
+
+export type BookmarkReqData = {
+  postId: string;
+  isMarked: boolean;
+};
+
 //// Post
 export type GetPostsReqData = {
   userId: string;
   cursor: string;
   limit: number;
+  bookmark?: boolean;
 };
 
 export type UpdatePostReqData = {
@@ -106,9 +117,12 @@ export type UserData = {
   photoUrl: string;
   followers: string[];
   followings: string[];
-  likedPosts: string[];
   postCount: number;
 };
+
+export interface MyData extends UserData {
+  bookmarks: string[];
+}
 
 export type PostData = {
   _id: string;

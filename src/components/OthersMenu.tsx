@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
 
@@ -9,19 +9,20 @@ interface OthersMenuProps {
 
 function OthersMenu({ postId, writerId }: OthersMenuProps) {
   const { me } = useAppSelector((state) => state.user);
-  const [isFollowed, setIsFollowed] = useState(
-    me.followings.includes(writerId)
-  );
+  const [isFollowed, setIsFollowed] = useState(false);
   const dispatch = useAppDispatch();
 
   const handleClickFollow = async () => {
     try {
       await dispatch(follow({ userId: writerId, isFollowed }));
-      setIsFollowed((prev) => !prev);
     } catch (error: any) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    setIsFollowed(me.followings.includes(writerId));
+  }, [me.followings, writerId]);
 
   return (
     <ul style={{ width: "150px" }}>
