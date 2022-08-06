@@ -24,7 +24,7 @@ function Home() {
   );
 
   useEffect(() => {
-    handleLoad({ userId: "", cursor: "", limit: 10 });
+    handleLoad({ cursor: "", limit: 10 });
   }, [handleLoad]);
 
   return (

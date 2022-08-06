@@ -53,7 +53,7 @@ export const userSlice = createSlice({
         state.other = action.payload;
       })
       .addCase(editPhoto.fulfilled, (state, action) => {
-        state.me = action.payload;
+        state.me.photoUrl = action.payload;
       })
       .addCase(follow.fulfilled, (state, action) => {
         const { followers, followings } = action.payload;

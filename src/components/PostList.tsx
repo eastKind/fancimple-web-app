@@ -29,7 +29,7 @@ function PostList() {
 
   useEffect(() => {
     if (isInterSecting && hasNext) {
-      handleLoad({ userId: "", cursor, limit: 10 });
+      handleLoad({ cursor, limit: 10 });
     }
   }, [isInterSecting, hasNext, cursor, handleLoad]);
 

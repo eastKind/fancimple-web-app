@@ -9,9 +9,14 @@ import {
 
 export const getPosts = createAsyncThunk(
   "post/get",
-  async (reqData: GetPostsReqData, { rejectWithValue }) => {
+  async (
+    { cursor, limit, userId, bookmark }: GetPostsReqData,
+    { rejectWithValue }
+  ) => {
     try {
-      return await Post.get(reqData);
+      if (userId) return await Post.getByUserId({ userId, cursor, limit });
+      if (bookmark) return await Post.getBookmarks({ cursor, limit });
+      return await Post.get({ cursor, limit });
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }

@@ -26,12 +26,12 @@ function Bookmark() {
   );
 
   useEffect(() => {
-    handleLoad({ userId: "", cursor: "", limit: 9, bookmark: true });
+    handleLoad({ cursor: "", limit: 9, bookmark: true });
   }, [handleLoad]);
 
   useEffect(() => {
     if (isInterSecting && hasNext)
-      handleLoad({ userId: "", cursor, limit: 9, bookmark: true });
+      handleLoad({ cursor, limit: 9, bookmark: true });
   }, [isInterSecting, hasNext, cursor, handleLoad]);
 
   if (error) return <div>{error.message}</div>;

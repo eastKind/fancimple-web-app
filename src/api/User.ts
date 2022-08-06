@@ -24,9 +24,9 @@ export default class User {
     return response.data.user;
   }
 
-  public static async editPhoto(reqData: FormData): Promise<MyData> {
+  public static async editPhoto(reqData: FormData): Promise<string> {
     const response = await axiosInstance.patch("/user/photo", reqData);
-    return response.data.user;
+    return response.data.photoUrl;
   }
 
   public static async follow(reqData: FollowReqData): Promise<FollowResData> {

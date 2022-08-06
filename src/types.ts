@@ -33,9 +33,9 @@ export type BookmarkReqData = {
 
 //// Post
 export type GetPostsReqData = {
-  userId: string;
   cursor: string;
   limit: number;
+  userId?: string;
   bookmark?: boolean;
 };
 
@@ -126,7 +126,6 @@ export interface MyData extends UserData {
 
 export type PostData = {
   _id: string;
-  title: string;
   contents: string;
   images: Image[];
   writer: User;

@@ -10,15 +10,30 @@ import {
 
 export default class Post {
   public static async get({
+    cursor,
+    limit,
+  }: GetPostsReqData): Promise<GetPostsResData> {
+    const query = `cursor=${cursor}&limit=${limit}`;
+    const response = await axiosInstance.get(`/post?${query}`);
+    return response.data;
+  }
+
+  public static async getByUserId({
     userId,
     cursor,
     limit,
-    bookmark,
   }: GetPostsReqData): Promise<GetPostsResData> {
-    const query = `writer=${userId}&cursor=${cursor}&limit=${limit}`;
-    const response = await axiosInstance.get(
-      `/post${bookmark ? "/bookmark" : ""}?${query}`
-    );
+    const query = `cursor=${cursor}&limit=${limit}`;
+    const response = await axiosInstance.get(`/post/${userId}?${query}`);
+    return response.data;
+  }
+
+  public static async getBookmarks({
+    cursor,
+    limit,
+  }: GetPostsReqData): Promise<GetPostsResData> {
+    const query = `cursor=${cursor}&limit=${limit}`;
+    const response = await axiosInstance.get(`/post/bookmark?${query}`);
     return response.data;
   }
 
