@@ -66,3 +66,14 @@ export const likesPost = createAsyncThunk(
     }
   }
 );
+
+export const test = createAsyncThunk(
+  "post/test",
+  async (reqData: FormData, { rejectWithValue }) => {
+    try {
+      return await Post.test(reqData);
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

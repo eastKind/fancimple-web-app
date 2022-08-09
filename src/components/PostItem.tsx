@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PostData } from "../types";
 import rtf from "../utils/rtf";
-import Slide from "./Slide";
+import Slider from "./Slider";
 import Modal from "./Modal";
 import Post from "../pages/Post";
 import PostHeader from "./PostHeader";
@@ -25,7 +25,11 @@ function PostItem({ post }: PostItemProps) {
         <div className={styles.header}>
           <PostHeader postId={_id} writer={writer} />
         </div>
-        <Slide images={images} className={styles.slide} />
+        <Slider arr={images} className={styles.slide}>
+          {images.map((image) => (
+            <img key={image._id} src={image.url} alt="" />
+          ))}
+        </Slider>
         <div className={styles.body}>
           <Interactions post={post} onComment={handleComment} />
           <span>좋아요 {likeUsers.length}개</span>

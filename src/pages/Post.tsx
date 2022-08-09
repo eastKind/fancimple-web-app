@@ -5,7 +5,7 @@ import { initComment } from "../redux/reducers/comment";
 import useWindowSize from "../hooks/useWindowSize";
 import { GetCommentsReqData, PostData } from "../types";
 import rtf from "../utils/rtf";
-import Slide from "../components/Slide";
+import Slider from "../components/Slider";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import PostHeader from "../components/PostHeader";
@@ -53,7 +53,11 @@ function Post({ post }: PostProps) {
   return (
     <div className={styles.container}>
       <div className={styles.slide} style={style}>
-        <Slide images={images} />
+        <Slider arr={images}>
+          {images.map((image) => (
+            <img key={image._id} src={image.url} alt="" />
+          ))}
+        </Slider>
       </div>
       <div className={styles.texts}>
         <div className={styles.header}>

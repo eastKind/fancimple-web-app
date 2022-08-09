@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .slider {
+    .slideItem {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+
+      .editor {
+        transition: all 0.2s ease-in-out;
+      }
+    }
+  }
+
+  .inputContainer {
+    width: 100%;
+    height: 100%;
+  }
+
+  label {
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  input {
+    display: none;
+  }
+
+  .btns {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+
+  .previews {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    img {
+      object-fit: cover;
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

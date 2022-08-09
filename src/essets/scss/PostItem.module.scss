@@ -7,6 +7,11 @@
   .slide {
     border-top: 1px solid rgba($black, 0.2);
     border-bottom: 1px solid rgba($black, 0.2);
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
   }
 
   .body {

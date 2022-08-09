@@ -70,4 +70,8 @@ export default class Post {
     });
     return response.data.likeUsers;
   }
+
+  public static async test(arg: FormData): Promise<void> {
+    await axiosInstance.post("/post/test", arg);
+  }
 }

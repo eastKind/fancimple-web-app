@@ -1,52 +1,51 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
-import { Image } from "../types";
-import styles from "../essets/scss/Slide.module.scss";
+import styles from "../essets/scss/Slider.module.scss";
 
 interface SlideProps {
-  images: Image[];
+  arr: any[];
+  children: React.ReactNode;
   className?: string;
 }
 
-function Slide({ images, className }: SlideProps) {
+function Slider({ arr, children, className }: SlideProps) {
   const [index, setIndex] = useState(0);
   const [hasLeft, setHasLeft] = useState(false);
-  const [hasRight, setHasRight] = useState(images.length > 1 ? true : false);
+  const [hasRight, setHasRight] = useState(arr.length > 1 ? true : false);
 
   const style = {
     transform: `translateX(-${index}00%)`,
   };
 
-  const handleClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLSpanElement;
-    setIndex((prev) => {
-      return target.id ? prev - 1 : prev + 1;
-    });
+  const handleClickArrow = (e: React.MouseEvent) => {
+    const eventTarget = e.target as HTMLSpanElement;
+    if (eventTarget.id) {
+      setIndex((prev) => (prev -= 1));
+      setHasRight(true);
+    } else {
+      setIndex((prev) => (prev += 1));
+      setHasLeft(true);
+    }
   };
 
   useEffect(() => {
     if (index === 0) {
       setHasLeft(false);
-    } else if (index === images.length - 1) {
-      setHasRight(false);
-    } else {
-      setHasLeft(true);
-      setHasRight(true);
+      setHasRight(arr.length > 1 ? true : false);
     }
-  }, [index, images.length]);
+    if (index === arr.length - 1) setHasRight(false);
+  }, [index, arr]);
 
   return (
     <div className={classNames(styles.container, className)}>
       <div className={styles.slide} style={style}>
-        {images.map((image) => (
-          <img key={image._id} src={image.url} alt="" />
-        ))}
+        {children}
       </div>
-      {images.length > 1 && (
+      {arr.length > 1 && (
         <div className={styles.bulletContainer}>
-          {images.map((image, bulletIndex) => (
+          {arr.map((_, bulletIndex) => (
             <span
-              key={image._id}
+              key={bulletIndex}
               className={classNames(
                 styles.bullets,
                 bulletIndex === index && styles.selected
@@ -58,7 +57,7 @@ function Slide({ images, className }: SlideProps) {
       {hasLeft && (
         <span
           id="left"
-          onClick={handleClick}
+          onClick={handleClickArrow}
           className={classNames(
             styles.arrow,
             styles.left,
@@ -70,7 +69,7 @@ function Slide({ images, className }: SlideProps) {
       )}
       {hasRight && (
         <span
-          onClick={handleClick}
+          onClick={handleClickArrow}
           className={classNames(
             styles.arrow,
             styles.right,
@@ -84,4 +83,4 @@ function Slide({ images, className }: SlideProps) {
   );
 }
 
-export default Slide;
+export default Slider;

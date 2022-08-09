@@ -5,8 +5,10 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signout } from "../redux/thunks/auth";
 import { initUser } from "../redux/reducers/user";
 import Container from "./Container";
+import Modal from "./Modal";
 import Avatar from "./Avatar";
 import DropDown from "./DropDown";
+import Upload from "../pages/Upload";
 import logo from "../essets/images/logo.png";
 import styles from "../essets/scss/Nav.module.scss";
 
@@ -15,12 +17,15 @@ interface NavProps {
 }
 
 function Nav({ className }: NavProps) {
+  const [show, setShow] = useState(false);
   const [drop, setDrop] = useState(false);
   const { me } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleShow = () => setShow(true);
+
+  const handleDrop = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDrop((prev) => !prev);
   };
@@ -43,10 +48,10 @@ function Nav({ className }: NavProps) {
               <span className="material-symbols-rounded">home</span>
             </Link>
           </li>
-          <li>
+          <li onClick={handleShow}>
             <span className="material-symbols-rounded">add_circle</span>
           </li>
-          <li onClick={handleClick}>
+          <li onClick={handleDrop}>
             <Avatar photo={me.photoUrl} name={me.name} />
             <DropDown show={drop} setShow={setDrop}>
               <ul>
@@ -62,6 +67,9 @@ function Nav({ className }: NavProps) {
           </li>
         </ul>
       </Container>
+      <Modal show={show} setShow={setShow}>
+        <Upload />
+      </Modal>
     </div>
   );
 }

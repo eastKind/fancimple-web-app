@@ -11,6 +11,11 @@
     background: black;
     display: flex;
     align-items: center;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
   }
 
   .texts {
