@@ -91,11 +91,7 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
   return (
     <div className={styles.container} style={style}>
       {files ? (
-        <Slider
-          arr={[...files]}
-          className={styles.slider}
-          selectedIndex={index}
-        >
+        <Slider arr={[...files]} selectedIndex={index} transition={false}>
           {[...files].map((file, i) => (
             <div key={i} className={styles.slideItem}>
               <Editor

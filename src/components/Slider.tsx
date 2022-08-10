@@ -7,26 +7,30 @@ interface SlideProps {
   children: React.ReactNode;
   className?: string;
   selectedIndex?: number;
+  transition?: boolean;
 }
 
-function Slider({ arr, children, className, selectedIndex = 0 }: SlideProps) {
+function Slider({
+  arr,
+  children,
+  className,
+  selectedIndex = 0,
+  transition = true,
+}: SlideProps) {
   const [index, setIndex] = useState(0);
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(arr.length > 1 ? true : false);
 
   const style = {
     transform: `translateX(-${index}00%)`,
+    transition: transition ? "all 0.4s ease-in-out" : "none",
   };
 
   const handleClickArrow = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLSpanElement;
-    if (eventTarget.id) {
-      setIndex((prev) => (prev -= 1));
-      setHasRight(true);
-    } else {
-      setIndex((prev) => (prev += 1));
-      setHasLeft(true);
-    }
+    setIndex((prev) => {
+      return eventTarget.id ? prev - 1 : prev + 1;
+    });
   };
 
   useEffect(() => {
@@ -37,13 +41,18 @@ function Slider({ arr, children, className, selectedIndex = 0 }: SlideProps) {
     if (index === 0) {
       setHasLeft(false);
       setHasRight(arr.length > 1 ? true : false);
+    } else if (index === arr.length - 1) {
+      setHasLeft(true);
+      setHasRight(false);
+    } else {
+      setHasLeft(true);
+      setHasRight(true);
     }
-    if (index === arr.length - 1) setHasRight(false);
   }, [index, arr]);
 
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.slide} style={style} draggable>
+      <div className={styles.slide} style={style}>
         {children}
       </div>
       {arr.length > 1 && (

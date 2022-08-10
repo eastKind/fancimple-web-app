@@ -1,22 +1,12 @@
 import React, { useRef, useEffect, Dispatch, SetStateAction } from "react";
-import classNames from "classnames";
-import styles from "../essets/scss/DropDown.module.scss";
 
 interface DropDownProps {
   children: React.ReactNode;
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
-  variant?: "horiz";
-  className?: string;
 }
 
-function DropDown({
-  children,
-  show,
-  setShow,
-  variant,
-  className,
-}: DropDownProps) {
+function DropDown({ children, show, setShow }: DropDownProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,18 +22,7 @@ function DropDown({
     };
   }, [show, setShow]);
 
-  return (
-    <div
-      className={classNames(
-        styles.container,
-        variant && styles[variant],
-        className
-      )}
-      ref={ref}
-    >
-      {show && children}
-    </div>
-  );
+  return <div ref={ref}>{show && children}</div>;
 }
 
 export default DropDown;

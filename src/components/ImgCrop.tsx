@@ -23,13 +23,12 @@ function ImgCrop({ onCrop, className }: ImgCropProps) {
 
   return (
     <div className={classNames(styles.container, className)}>
-      <span
-        className={classNames("material-symbols-rounded", styles.cropBtn)}
-        onClick={handleShow}
-      >
-        crop
-      </span>
-      <DropDown show={show} setShow={setShow} className={styles.dropdown}>
+      <div className={styles.cropBtn}>
+        <span className={"material-symbols-rounded"} onClick={handleShow}>
+          crop
+        </span>
+      </div>
+      <DropDown show={show} setShow={setShow}>
         <ul className={styles.cropList} onClick={handleClick}>
           <li id="16/9">
             <span className="material-symbols-rounded">crop_16_9</span>

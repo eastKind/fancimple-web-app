@@ -4,17 +4,11 @@
   justify-content: center;
   position: relative;
 
-  .slider {
-    .slideItem {
-      flex-shrink: 0;
-      display: flex;
-      justify-content: center;
-      width: 100%;
-
-      .editor {
-        transition: all 0.2s ease-in-out;
-      }
-    }
+  .slideItem {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
   .inputContainer {
@@ -36,18 +30,15 @@
     }
   }
 
-  .cropBtn,
-  .previewsBtn {
+  .cropBtn {
     position: absolute;
     bottom: 22px;
-    box-shadow: $box-shadow;
-  }
-
-  .cropBtn {
     left: 22px;
   }
 
   .previewsBtn {
+    position: absolute;
+    bottom: 22px;
     right: 22px;
   }
 }

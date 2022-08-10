@@ -1,28 +1,49 @@
 .container {
-  width: 35px;
-  height: 35px;
-  background-color: #fff;
-  border: 1px solid rgba($black, 0.3);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
 
   .cropBtn {
-    // color: #fff;
+    width: 35px;
+    height: 35px;
+    background-color: $black;
+    border: 1px solid rgba($black, 0.3);
+    border-radius: 50%;
+    box-shadow: $box-shadow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+
+    span {
+      color: #fff;
+    }
   }
 
-  .dropdown {
-    height: 35px;
+  .cropList {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    bottom: calc(100% + 20px);
+    left: 0;
+    background-color: $black;
+    border-radius: 10px;
+    border: 1px solid rgba($black, 0.3);
+    box-shadow: $box-shadow;
+    overflow: hidden;
 
-    .cropList {
-      top: -220px;
-      right: -22px;
+    li {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
 
       span {
         pointer-events: none;
+        color: #fff;
       }
+    }
+
+    > :not(:last-child) {
+      border-bottom: 1px solid #fff;
     }
   }
 }

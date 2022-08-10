@@ -45,23 +45,40 @@ function Nav({ className }: NavProps) {
         <ul className={styles.menu}>
           <li>
             <Link to="/">
-              <span className="material-symbols-rounded">home</span>
+              <span
+                className={classNames(
+                  "material-symbols-rounded",
+                  styles.symbols
+                )}
+              >
+                home
+              </span>
             </Link>
           </li>
           <li onClick={handleShow}>
-            <span className="material-symbols-rounded">add_circle</span>
+            <span
+              className={classNames("material-symbols-rounded", styles.symbols)}
+            >
+              add_circle
+            </span>
           </li>
-          <li onClick={handleDrop}>
+          <li onClick={handleDrop} className={styles.user}>
             <Avatar photo={me.photoUrl} name={me.name} />
             <DropDown show={drop} setShow={setDrop}>
-              <ul>
-                <Link to={`/${me._id}/post`} state={{ isMe: true }}>
-                  <li>프로필</li>
-                </Link>
-                <Link to={`/${me._id}/bookmark`} state={{ isMe: true }}>
-                  <li>북마크</li>
-                </Link>
-                <li onClick={handleLogout}>로그아웃</li>
+              <ul className={styles.userMenu}>
+                <li>
+                  <Link to={`/${me._id}/post`} state={{ isMe: true }}>
+                    프로필
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/${me._id}/bookmark`} state={{ isMe: true }}>
+                    북마크
+                  </Link>
+                </li>
+                <li onClick={handleLogout}>
+                  <span>로그아웃</span>
+                </li>
               </ul>
             </DropDown>
           </li>

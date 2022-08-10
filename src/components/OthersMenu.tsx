@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
+import styles from "../essets/scss/PostMenu.module.scss";
 
 interface OthersMenuProps {
   postId: string;
@@ -25,13 +26,19 @@ function OthersMenu({ postId, writerId }: OthersMenuProps) {
   }, [me.followings, writerId]);
 
   return (
-    <ul style={{ width: "150px" }}>
+    <ul className={styles.list}>
       <li onClick={handleClickFollow}>
-        {isFollowed ? "팔로우 취소" : "팔로우"}
+        <span>{isFollowed ? "팔로우 취소" : "팔로우"}</span>
       </li>
-      <li>즐겨찾기 등록</li>
-      <li>공유하기</li>
-      <li>링크 복사</li>
+      <li>
+        <span>즐겨찾기 등록</span>
+      </li>
+      <li>
+        <span>공유하기</span>
+      </li>
+      <li>
+        <span>링크 복사</span>
+      </li>
     </ul>
   );
 }

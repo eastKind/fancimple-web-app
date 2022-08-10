@@ -26,7 +26,7 @@
       li {
         cursor: pointer;
 
-        span {
+        .symbols {
           display: block;
           font-size: 2.3rem;
           color: #fff;
@@ -35,6 +35,43 @@
 
       > :not(:last-child) {
         margin-right: 15px;
+      }
+    }
+
+    .user {
+      position: relative;
+
+      .userMenu {
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        border: 1px solid rgba($black, 0.3);
+        box-shadow: $box-shadow;
+        overflow: hidden;
+
+        li {
+          font-family: $gmarket-sans;
+          word-break: keep-all;
+          text-align: center;
+          cursor: pointer;
+
+          > * {
+            display: block;
+            padding: 15px 20px;
+          }
+
+          &:hover {
+            background-color: #f4f4f4;
+          }
+        }
+
+        > :not(:last-child) {
+          border-bottom: 1px solid rgba($black, 0.3);
+        }
       }
     }
   }
