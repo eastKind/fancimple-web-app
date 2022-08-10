@@ -4,6 +4,8 @@
   overflow: hidden;
 
   .header {
+    padding: 10px 22px;
+    border-bottom: 1px solid rgba($black, 0.3);
     display: flex;
     justify-content: space-between;
   }

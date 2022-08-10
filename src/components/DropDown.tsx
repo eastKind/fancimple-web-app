@@ -6,10 +6,17 @@ interface DropDownProps {
   children: React.ReactNode;
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
+  variant?: "horiz";
   className?: string;
 }
 
-function DropDown({ children, show, setShow, className }: DropDownProps) {
+function DropDown({
+  children,
+  show,
+  setShow,
+  variant,
+  className,
+}: DropDownProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,7 +33,14 @@ function DropDown({ children, show, setShow, className }: DropDownProps) {
   }, [show, setShow]);
 
   return (
-    <div className={classNames(styles.container, className)} ref={ref}>
+    <div
+      className={classNames(
+        styles.container,
+        variant && styles[variant],
+        className
+      )}
+      ref={ref}
+    >
       {show && children}
     </div>
   );

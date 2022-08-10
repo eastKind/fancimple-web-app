@@ -23,10 +23,14 @@
       margin: 0;
       padding: 0;
 
-      li span {
-        display: block;
-        font-size: 2.3rem;
-        color: #fff;
+      li {
+        cursor: pointer;
+
+        span {
+          display: block;
+          font-size: 2.3rem;
+          color: #fff;
+        }
       }
 
       > :not(:last-child) {

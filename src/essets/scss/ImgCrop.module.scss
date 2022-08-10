@@ -1,0 +1,28 @@
+.container {
+  width: 35px;
+  height: 35px;
+  background-color: #fff;
+  border: 1px solid rgba($black, 0.3);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .cropBtn {
+    // color: #fff;
+    cursor: pointer;
+  }
+
+  .dropdown {
+    height: 35px;
+
+    .cropList {
+      top: -220px;
+      right: -22px;
+
+      span {
+        pointer-events: none;
+      }
+    }
+  }
+}

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import classNames from "classnames";
 import useWindowSize from "../hooks/useWindowSize";
 import { useAppDispatch } from "../redux/hooks";
 import { test } from "../redux/thunks/post";
 import Editor from "react-avatar-editor";
 import Slider from "./Slider";
+import ImgCrop from "./ImgCrop";
+import Previews from "./Previews";
 import styles from "../essets/scss/ImageEditor.module.scss";
 
 interface ImageEditorProps {
@@ -14,12 +15,16 @@ interface ImageEditorProps {
 
 function ImageEditor({ files, onChange }: ImageEditorProps) {
   const { width: innerWidth, height: innerHeight } = useWindowSize();
-  const WIDTH = innerWidth * 0.5;
   const MAX_WIDTH = innerHeight * 0.7;
   const [style, setStyle] = useState({});
-  const [editorSize, setEditorSize] = useState({ w: WIDTH, h: WIDTH });
+  const [size, setSize] = useState({ w: innerWidth, h: innerWidth });
   const [previews, setPreviews] = useState<string[]>([]);
+  const [index, setIndex] = useState(0);
   const editorRef: React.LegacyRef<Editor> = useRef(null);
+
+  const handleSelect = (index: number) => {
+    setIndex(index);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextFiles = e.target.files;
@@ -28,7 +33,7 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
 
   const handleStyle = (innerWidth: number, innerHeight: number) => {
     const nextStyle = {
-      width: innerWidth * 0.5,
+      width: innerWidth,
       maxWidth: innerHeight * 0.7,
       maxHeight: innerHeight * 0.7,
       aspectRatio: "1 / 1",
@@ -36,32 +41,24 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
     setStyle(nextStyle);
   };
 
-  const handleEditorSize = (e: React.MouseEvent<HTMLDivElement>) => {
-    const nextWidth = WIDTH > MAX_WIDTH ? MAX_WIDTH : WIDTH;
-    const { id } = e.target as HTMLButtonElement;
+  const handleCrop = (id: string) => {
+    const nextWidth = innerWidth > MAX_WIDTH ? MAX_WIDTH : innerWidth;
     if (id === "1/1") {
-      setEditorSize({
+      setSize({
         w: nextWidth,
         h: nextWidth,
       });
     } else if (id === "16/9") {
-      setEditorSize({
+      setSize({
         w: nextWidth,
         h: nextWidth * 0.5625,
       });
     } else {
-      setEditorSize({
+      setSize({
         w: nextWidth * 0.8,
         h: nextWidth,
       });
     }
-  };
-
-  const handlePreviews = (files: FileList) => {
-    [...files].forEach((file) => {
-      const nextPreview = URL.createObjectURL(file);
-      setPreviews((prev) => [...prev, nextPreview]);
-    });
   };
 
   // const handleSubmit = () => {
@@ -75,31 +72,36 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
   //   });
   // };
 
-  // useEffect(() => {
-  //   if (index === 0) setHasLeft(false);
-  //   if (index === images.length - 1) setHasRight(false);
-  // }, [index, images.length]);
-
   useEffect(() => {
     if (!files) return;
-    handlePreviews(files);
+    const nextPreviews = [...files].map((file) => URL.createObjectURL(file));
+    setPreviews(nextPreviews);
+
+    return () => {
+      nextPreviews.forEach((preview) => URL.revokeObjectURL(preview));
+      setPreviews([]);
+    };
   }, [files]);
 
   useEffect(() => {
     handleStyle(innerWidth, innerHeight);
-    setEditorSize({ w: innerWidth * 0.5, h: innerWidth * 0.5 });
+    setSize({ w: innerWidth, h: innerWidth });
   }, [innerWidth, innerHeight]);
 
   return (
     <div className={styles.container} style={style}>
       {files ? (
-        <Slider arr={[...files]} className={styles.slider}>
+        <Slider
+          arr={[...files]}
+          className={styles.slider}
+          selectedIndex={index}
+        >
           {[...files].map((file, i) => (
             <div key={i} className={styles.slideItem}>
               <Editor
                 ref={editorRef}
-                width={editorSize.w}
-                height={editorSize.h}
+                width={size.w}
+                height={size.h}
                 image={file}
                 border={[0, 0]}
                 style={{
@@ -114,23 +116,22 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
         </Slider>
       ) : (
         <div className={styles.inputContainer}>
-          <label htmlFor="fileInput">이미지</label>
-          <input id="fileInput" type="file" multiple onChange={handleChange} />
+          사진을 끌어다 놓거나 클릭하세요
+          <input
+            type="file"
+            multiple
+            accept=".png, .jpg, .jpeg"
+            onChange={handleChange}
+          />
         </div>
       )}
-      {files && (
-        <div className={styles.btns} onClick={handleEditorSize}>
-          <button id="1/1">1:1</button>
-          <button id="16/9">16:9</button>
-          <button id="4/5">4:5</button>
-        </div>
-      )}
+      {files && <ImgCrop onCrop={handleCrop} className={styles.cropBtn} />}
       {previews.length > 0 && (
-        <div className={styles.previews}>
-          {previews.map((preview, i) => (
-            <img key={i} src={preview} alt={""} />
-          ))}
-        </div>
+        <Previews
+          previews={previews}
+          onSelect={handleSelect}
+          className={styles.previewsBtn}
+        />
       )}
     </div>
   );

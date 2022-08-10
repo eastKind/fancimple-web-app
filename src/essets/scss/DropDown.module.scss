@@ -3,13 +3,11 @@
 
   ul {
     position: absolute;
-    top: 10px;
-    right: 0;
     margin: 0;
     padding: 0;
     background-color: #fff;
     box-shadow: $box-shadow;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid rgba($black, 0.4);
     text-align: center;
     word-break: keep-all;
@@ -19,16 +17,29 @@
     li {
       font-family: $gmarket-sans;
       padding: 15px 20px;
-      border-bottom: 1px solid rgba($black, 0.4);
       cursor: pointer;
 
       &:hover {
         background-color: #f4f4f4;
       }
-    }
 
-    > :last-child {
-      border: none;
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba($black, 0.4);
+      }
+    }
+  }
+
+  &.horiz {
+    ul {
+      display: flex;
+
+      li {
+        border: none;
+
+        &:not(:last-child) {
+          border-right: 1px solid rgba($black, 0.4);
+        }
+      }
     }
   }
 }

@@ -40,9 +40,7 @@ function Upload() {
         </span>
       </div>
       <div className={styles.body}>
-        <div className={styles.imageSection}>
-          <ImageEditor files={values.files} onChange={handleImageChange} />
-        </div>
+        <ImageEditor files={values.files} onChange={handleImageChange} />
         <div className={classNames(styles.textSection, open && styles.open)}>
           text-section
         </div>

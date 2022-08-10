@@ -6,9 +6,10 @@ interface SlideProps {
   arr: any[];
   children: React.ReactNode;
   className?: string;
+  selectedIndex?: number;
 }
 
-function Slider({ arr, children, className }: SlideProps) {
+function Slider({ arr, children, className, selectedIndex = 0 }: SlideProps) {
   const [index, setIndex] = useState(0);
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(arr.length > 1 ? true : false);
@@ -29,6 +30,10 @@ function Slider({ arr, children, className }: SlideProps) {
   };
 
   useEffect(() => {
+    setIndex(selectedIndex);
+  }, [selectedIndex]);
+
+  useEffect(() => {
     if (index === 0) {
       setHasLeft(false);
       setHasRight(arr.length > 1 ? true : false);
@@ -38,7 +43,7 @@ function Slider({ arr, children, className }: SlideProps) {
 
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.slide} style={style}>
+      <div className={styles.slide} style={style} draggable>
         {children}
       </div>
       {arr.length > 1 && (
