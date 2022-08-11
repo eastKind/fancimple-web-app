@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import useWindowSize from "../hooks/useWindowSize";
-import { useAppDispatch } from "../redux/hooks";
-import { test } from "../redux/thunks/post";
-import Editor from "react-avatar-editor";
-import Slider from "./Slider";
+// import { useAppDispatch } from "../redux/hooks";
+// import { test } from "../redux/thunks/post";
 import ImgCrop from "./ImgCrop";
-import Previews from "./Previews";
+import PreviewList from "./PreviewList";
 import styles from "../essets/scss/ImageEditor.module.scss";
+import EditorSlide from "./EditorSlide";
 
 interface ImageEditorProps {
   files: FileList | null;
@@ -20,11 +19,7 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
   const [size, setSize] = useState({ w: innerWidth, h: innerWidth });
   const [previews, setPreviews] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
-  const editorRef: React.LegacyRef<Editor> = useRef(null);
-
-  const handleSelect = (index: number) => {
-    setIndex(index);
-  };
+  const editorRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextFiles = e.target.files;
@@ -91,25 +86,13 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
   return (
     <div className={styles.container} style={style}>
       {files ? (
-        <Slider arr={[...files]} selectedIndex={index} transition={false}>
-          {[...files].map((file, i) => (
-            <div key={i} className={styles.slideItem}>
-              <Editor
-                ref={editorRef}
-                width={size.w}
-                height={size.h}
-                image={file}
-                border={[0, 0]}
-                style={{
-                  maxWidth: MAX_WIDTH,
-                  maxHeight: MAX_WIDTH,
-                  aspectRatio: "1 / 1",
-                }}
-                className={styles.editor}
-              />
-            </div>
-          ))}
-        </Slider>
+        <EditorSlide
+          files={files}
+          index={index}
+          setIndex={setIndex}
+          size={size}
+          ref={editorRef}
+        />
       ) : (
         <div className={styles.inputContainer}>
           사진을 끌어다 놓거나 클릭하세요
@@ -123,9 +106,10 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
       )}
       {files && <ImgCrop onCrop={handleCrop} className={styles.cropBtn} />}
       {previews.length > 0 && (
-        <Previews
+        <PreviewList
           previews={previews}
-          onSelect={handleSelect}
+          index={index}
+          setIndex={setIndex}
           className={styles.previewsBtn}
         />
       )}

@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import classNames from "classnames";
 import DropDown from "./DropDown";
-import styles from "../essets/scss/Previews.module.scss";
+import styles from "../essets/scss/PreviewList.module.scss";
+import PreviewItem from "./PreviewItem";
 
-interface PreviewsProps {
+interface PreviewListProps {
   previews: string[];
-  onSelect: (index: number) => void;
+  index: number;
+  setIndex: Dispatch<SetStateAction<number>>;
   className?: string;
 }
 
-function Previews({ previews, onSelect, className }: PreviewsProps) {
+function PreviewList({
+  previews,
+  index,
+  setIndex,
+  className,
+}: PreviewListProps) {
   const [show, setShow] = useState(false);
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(previews.length > 4);
@@ -24,7 +31,7 @@ function Previews({ previews, onSelect, className }: PreviewsProps) {
 
   const handleClickPreview = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLLIElement;
-    onSelect(eventTarget.value);
+    setIndex(eventTarget.value);
   };
 
   const handleClickArrow = (e: React.MouseEvent) => {
@@ -59,9 +66,12 @@ function Previews({ previews, onSelect, className }: PreviewsProps) {
             style={style}
           >
             {previews.map((preview, i) => (
-              <li key={i} value={i}>
-                <img src={preview} alt={""} />
-              </li>
+              <PreviewItem
+                key={i}
+                preview={preview}
+                value={i}
+                isSelected={i === index}
+              />
             ))}
           </ul>
           {hasLeft && (
@@ -95,4 +105,4 @@ function Previews({ previews, onSelect, className }: PreviewsProps) {
   );
 }
 
-export default Previews;
+export default PreviewList;

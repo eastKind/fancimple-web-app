@@ -1,17 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import classNames from "classnames";
-import styles from "../essets/scss/Slider.module.scss";
+import Editor from "react-avatar-editor";
+import useWindowSize from "../hooks/useWindowSize";
+import styles from "../essets/scss/EditorSlide.module.scss";
 
-interface SlideProps {
-  arr: any[];
-  children: React.ReactNode;
-  className?: string;
+interface EditorSlideProps {
+  files: FileList;
+  index: number;
+  setIndex: Dispatch<SetStateAction<number>>;
+  size: { w: number; h: number };
 }
 
-function Slider({ arr, children, className }: SlideProps) {
-  const [index, setIndex] = useState(0);
+function EditorSlide(
+  { files, index, setIndex, size }: EditorSlideProps,
+  ref: React.LegacyRef<Editor>
+) {
+  const { height: innerHeight } = useWindowSize();
   const [hasLeft, setHasLeft] = useState(false);
-  const [hasRight, setHasRight] = useState(arr.length > 1 ? true : false);
+  const [hasRight, setHasRight] = useState(files.length > 1 ? true : false);
 
   const style = {
     transform: `translateX(-${index}00%)`,
@@ -27,24 +39,40 @@ function Slider({ arr, children, className }: SlideProps) {
   useEffect(() => {
     if (index === 0) {
       setHasLeft(false);
-      setHasRight(arr.length > 1 ? true : false);
-    } else if (index === arr.length - 1) {
+      setHasRight(files.length > 1 ? true : false);
+    } else if (index === files.length - 1) {
       setHasLeft(true);
       setHasRight(false);
     } else {
       setHasLeft(true);
       setHasRight(true);
     }
-  }, [index, arr]);
+  }, [index, files]);
 
   return (
-    <div className={classNames(styles.container, className)}>
+    <div className={styles.container}>
       <div className={styles.slide} style={style}>
-        {children}
+        {[...files].map((file, i) => (
+          <div key={i} className={styles.slideItem}>
+            <Editor
+              ref={ref}
+              width={size.w}
+              height={size.h}
+              image={file}
+              border={[0, 0]}
+              style={{
+                maxWidth: innerHeight * 0.7,
+                maxHeight: innerHeight * 0.7,
+                aspectRatio: "1 / 1",
+              }}
+            />
+          </div>
+        ))}
+        ;
       </div>
-      {arr.length > 1 && (
+      {files.length > 1 && (
         <div className={styles.bulletContainer}>
-          {arr.map((_, bulletIndex) => (
+          {[...files].map((_, bulletIndex) => (
             <span
               key={bulletIndex}
               className={classNames(
@@ -84,4 +112,4 @@ function Slider({ arr, children, className }: SlideProps) {
   );
 }
 
-export default Slider;
+export default forwardRef(EditorSlide);
