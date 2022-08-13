@@ -1,7 +1,8 @@
 .preview {
   width: 100px;
   height: 100px;
-  padding: 10px;
+  padding: 5px;
+  position: relative;
   flex-shrink: 0;
   cursor: pointer;
 
@@ -15,6 +16,16 @@
 
     &.selected {
       opacity: 1;
+      background-color: black;
     }
+  }
+
+  .removeBtn {
+    font-size: 18px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 }

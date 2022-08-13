@@ -8,17 +8,17 @@ import styles from "../essets/scss/ImageEditor.module.scss";
 import EditorSlide from "./EditorSlide";
 
 interface ImageEditorProps {
-  files: FileList | null;
+  files: File[] | null;
   onChange: (files: FileList) => void;
+  onDelete: (index: number) => void;
 }
 
-function ImageEditor({ files, onChange }: ImageEditorProps) {
-  const { width: innerWidth, height: innerHeight } = useWindowSize();
-  const MAX_WIDTH = innerHeight * 0.7;
-  const [style, setStyle] = useState({});
-  const [size, setSize] = useState({ w: innerWidth, h: innerWidth });
-  const [previews, setPreviews] = useState<string[]>([]);
+function ImageEditor({ files, onChange, onDelete }: ImageEditorProps) {
+  const { innerWidth, innerHeight } = useWindowSize();
+  const [width, setWidth] = useState(Math.min(innerWidth, innerHeight * 0.8));
+  const [height, setHeight] = useState(Math.min(innerWidth, innerHeight * 0.8));
   const [index, setIndex] = useState(0);
+  const [previews, setPreviews] = useState<string[]>([]);
   const editorRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,33 +26,19 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
     if (nextFiles) onChange(nextFiles);
   };
 
-  const handleStyle = (innerWidth: number, innerHeight: number) => {
-    const nextStyle = {
-      width: innerWidth,
-      maxWidth: innerHeight * 0.7,
-      maxHeight: innerHeight * 0.7,
-      aspectRatio: "1 / 1",
-    };
-    setStyle(nextStyle);
-  };
-
   const handleCrop = (id: string) => {
-    const nextWidth = innerWidth > MAX_WIDTH ? MAX_WIDTH : innerWidth;
+    const nextValue = Math.min(innerWidth, innerHeight * 0.8);
     if (id === "1/1") {
-      setSize({
-        w: nextWidth,
-        h: nextWidth,
-      });
+      setWidth((prev) => (prev === nextValue ? prev : nextValue));
+      setHeight((prev) => (prev === nextValue ? prev : nextValue));
     } else if (id === "16/9") {
-      setSize({
-        w: nextWidth,
-        h: nextWidth * 0.5625,
-      });
+      const nextHeight = nextValue * 0.5625;
+      setWidth((prev) => (prev === nextValue ? prev : nextValue));
+      setHeight((prev) => (prev === nextHeight ? prev : nextHeight));
     } else {
-      setSize({
-        w: nextWidth * 0.8,
-        h: nextWidth,
-      });
+      const nextWidth = nextValue * 0.8;
+      setWidth((prev) => (prev === nextWidth ? prev : nextWidth));
+      setHeight((prev) => (prev === nextValue ? prev : nextValue));
     }
   };
 
@@ -69,28 +55,31 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
 
   useEffect(() => {
     if (!files) return;
-    const nextPreviews = [...files].map((file) => URL.createObjectURL(file));
-    setPreviews(nextPreviews);
+    setIndex((prev) => (prev ? prev : 0));
+
+    const nextUrls = files.map((file) => URL.createObjectURL(file));
+    setPreviews(nextUrls);
 
     return () => {
-      nextPreviews.forEach((preview) => URL.revokeObjectURL(preview));
+      nextUrls.forEach((url) => URL.revokeObjectURL(url));
       setPreviews([]);
     };
   }, [files]);
 
   useEffect(() => {
-    handleStyle(innerWidth, innerHeight);
-    setSize({ w: innerWidth, h: innerWidth });
+    setWidth(Math.min(innerWidth, innerHeight * 0.8));
+    setHeight(Math.min(innerWidth, innerHeight * 0.8));
   }, [innerWidth, innerHeight]);
 
   return (
-    <div className={styles.container} style={style}>
+    <div className={styles.container}>
       {files ? (
         <EditorSlide
-          files={files}
+          previews={previews}
           index={index}
           setIndex={setIndex}
-          size={size}
+          width={width}
+          height={height}
           ref={editorRef}
         />
       ) : (
@@ -108,8 +97,11 @@ function ImageEditor({ files, onChange }: ImageEditorProps) {
       {previews.length > 0 && (
         <PreviewList
           previews={previews}
+          setPreviews={setPreviews}
           index={index}
           setIndex={setIndex}
+          onChange={onChange}
+          onDelete={onDelete}
           className={styles.previewsBtn}
         />
       )}

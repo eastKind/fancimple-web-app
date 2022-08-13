@@ -3,25 +3,23 @@ import classNames from "classnames";
 import ImageEditor from "../components/ImageEditor";
 import styles from "../essets/scss/Upload.module.scss";
 
-interface Values {
-  files: FileList | null;
-  texts: string;
-}
-
-const INIT_VALUES: Values = {
-  files: null,
-  texts: "",
-};
-
 function Upload() {
-  const [values, setValues] = useState(INIT_VALUES);
+  const [files, setFiles] = useState<File[] | null>(null);
+  const [texts, setTexts] = useState("");
   const [open, setOpen] = useState(false);
 
-  const handleImageChange = (files: FileList) => {
-    setValues((prev) => ({
-      ...prev,
-      files,
-    }));
+  const handleImageChange = (nextFiles: FileList) => {
+    if (!files) {
+      setFiles([...nextFiles]);
+    } else {
+      setFiles([...files, ...nextFiles]);
+    }
+  };
+
+  const handleImageDelete = (index: number) => {
+    if (!files) return;
+    const nextFiles = files.filter((_, i) => i !== index);
+    setFiles(nextFiles);
   };
 
   const handleCancle = () => {
@@ -40,7 +38,11 @@ function Upload() {
         </span>
       </div>
       <div className={styles.body}>
-        <ImageEditor files={values.files} onChange={handleImageChange} />
+        <ImageEditor
+          files={files}
+          onChange={handleImageChange}
+          onDelete={handleImageDelete}
+        />
         <div className={classNames(styles.textSection, open && styles.open)}>
           text-section
         </div>

@@ -19,7 +19,7 @@ interface PostProps {
 function Post({ post }: PostProps) {
   const { _id, images, writer, contents, likeUsers, createdAt } = post;
   const [style, setStyle] = useState({});
-  const { height } = useWindowSize();
+  const { innerHeight } = useWindowSize();
   const dispatch = useAppDispatch();
 
   const handleStyle = (height: number, aspectRatio: string) => {
@@ -43,8 +43,8 @@ function Post({ post }: PostProps) {
   );
 
   useEffect(() => {
-    handleStyle(height, "1");
-  }, [height]);
+    handleStyle(innerHeight, "1");
+  }, [innerHeight]);
 
   useEffect(() => {
     handleLoad({ postId: _id, cursor: "", limit: 10 });

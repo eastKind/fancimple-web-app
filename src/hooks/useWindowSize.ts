@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import throttle from "lodash-es/throttle";
 
 function useWindowSize() {
-  const [width, setWidth] = useState(window.innerWidth);
-  const [height, setHeight] = useState(window.innerHeight);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
 
   useEffect(() => {
     const handleResize = throttle(() => {
-      setWidth(window.innerWidth);
-      setHeight(window.innerHeight);
+      setInnerWidth(window.innerWidth);
+      setInnerHeight(window.innerHeight);
     }, 500);
     window.addEventListener("resize", handleResize);
 
@@ -17,7 +17,7 @@ function useWindowSize() {
     };
   }, []);
 
-  return { width, height };
+  return { innerWidth, innerHeight };
 }
 
 export default useWindowSize;

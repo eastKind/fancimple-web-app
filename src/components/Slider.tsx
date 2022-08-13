@@ -25,16 +25,10 @@ function Slider({ arr, children, className }: SlideProps) {
   };
 
   useEffect(() => {
-    if (index === 0) {
-      setHasLeft(false);
-      setHasRight(arr.length > 1 ? true : false);
-    } else if (index === arr.length - 1) {
-      setHasLeft(true);
-      setHasRight(false);
-    } else {
-      setHasLeft(true);
-      setHasRight(true);
-    }
+    if (index) setHasLeft(true);
+    else setHasLeft(false);
+    if (index < arr.length - 1) setHasRight(true);
+    else setHasRight(false);
   }, [index, arr]);
 
   return (
@@ -55,7 +49,7 @@ function Slider({ arr, children, className }: SlideProps) {
           ))}
         </div>
       )}
-      {hasLeft && (
+      {hasLeft && arr.length > 1 && (
         <span
           id="left"
           onClick={handleClickArrow}
@@ -68,7 +62,7 @@ function Slider({ arr, children, className }: SlideProps) {
           chevron_left
         </span>
       )}
-      {hasRight && (
+      {hasRight && arr.length > 1 && (
         <span
           onClick={handleClickArrow}
           className={classNames(

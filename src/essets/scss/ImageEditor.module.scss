@@ -3,6 +3,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 100vw;
+  max-width: 80vh;
+  aspect-ratio: 1;
 
   .inputContainer {
     display: flex;

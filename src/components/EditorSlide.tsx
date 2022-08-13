@@ -7,23 +7,22 @@ import React, {
 } from "react";
 import classNames from "classnames";
 import Editor from "react-avatar-editor";
-import useWindowSize from "../hooks/useWindowSize";
 import styles from "../essets/scss/EditorSlide.module.scss";
 
 interface EditorSlideProps {
-  files: FileList;
+  previews: string[];
   index: number;
   setIndex: Dispatch<SetStateAction<number>>;
-  size: { w: number; h: number };
+  width: number;
+  height: number;
 }
 
 function EditorSlide(
-  { files, index, setIndex, size }: EditorSlideProps,
+  { previews, index, setIndex, width, height }: EditorSlideProps,
   ref: React.LegacyRef<Editor>
 ) {
-  const { height: innerHeight } = useWindowSize();
   const [hasLeft, setHasLeft] = useState(false);
-  const [hasRight, setHasRight] = useState(files.length > 1 ? true : false);
+  const [hasRight, setHasRight] = useState(previews.length > 1 ? true : false);
 
   const style = {
     transform: `translateX(-${index}00%)`,
@@ -37,42 +36,32 @@ function EditorSlide(
   };
 
   useEffect(() => {
-    if (index === 0) {
-      setHasLeft(false);
-      setHasRight(files.length > 1 ? true : false);
-    } else if (index === files.length - 1) {
-      setHasLeft(true);
-      setHasRight(false);
-    } else {
-      setHasLeft(true);
-      setHasRight(true);
-    }
-  }, [index, files]);
+    if (index) setHasLeft(true);
+    else setHasLeft(false);
+    if (index < previews.length - 1) setHasRight(true);
+    else setHasRight(false);
+  }, [index, previews]);
 
   return (
     <div className={styles.container}>
       <div className={styles.slide} style={style}>
-        {[...files].map((file, i) => (
+        {previews.map((url, i) => (
           <div key={i} className={styles.slideItem}>
             <Editor
               ref={ref}
-              width={size.w}
-              height={size.h}
-              image={file}
+              width={width}
+              height={height}
+              image={url}
               border={[0, 0]}
-              style={{
-                maxWidth: innerHeight * 0.7,
-                maxHeight: innerHeight * 0.7,
-                aspectRatio: "1 / 1",
-              }}
+              className={styles.editor}
             />
           </div>
         ))}
         ;
       </div>
-      {files.length > 1 && (
+      {previews.length > 1 && (
         <div className={styles.bulletContainer}>
-          {[...files].map((_, bulletIndex) => (
+          {[...previews].map((_, bulletIndex) => (
             <span
               key={bulletIndex}
               className={classNames(
@@ -83,7 +72,7 @@ function EditorSlide(
           ))}
         </div>
       )}
-      {hasLeft && (
+      {hasLeft && previews.length > 1 && (
         <span
           id="left"
           onClick={handleClickArrow}
@@ -96,7 +85,7 @@ function EditorSlide(
           chevron_left
         </span>
       )}
-      {hasRight && (
+      {hasRight && previews.length > 1 && (
         <span
           onClick={handleClickArrow}
           className={classNames(
