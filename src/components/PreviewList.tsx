@@ -30,10 +30,6 @@ function PreviewList({
   const END = 400 - previews.length * 100;
   const START = 0;
 
-  const style = {
-    transform: `translateX(${figure}px)`,
-  };
-
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     setPreviews((prev) => {
       const next = [...prev];
@@ -61,6 +57,7 @@ function PreviewList({
 
   const handleClickPreview = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLLIElement;
+    if (eventTarget.tagName !== "LI") return;
     setIndex(eventTarget.value);
   };
 
@@ -74,7 +71,6 @@ function PreviewList({
         : prev + 300 > START
         ? START
         : prev + 300;
-      console.log(prev, next);
       return next;
     });
   };
@@ -99,7 +95,7 @@ function PreviewList({
             <ul
               className={styles.previewList}
               onMouseDown={handleClickPreview}
-              style={style}
+              style={{ transform: `translateX(${figure}px)` }}
             >
               {previews.map((preview, i) => (
                 <PreviewItem

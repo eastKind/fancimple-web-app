@@ -15,6 +15,10 @@
         transition: all 0.2s ease-in-out;
       }
     }
+
+    &.done {
+      pointer-events: none;
+    }
   }
 
   .bulletContainer {

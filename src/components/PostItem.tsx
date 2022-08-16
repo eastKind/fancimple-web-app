@@ -33,12 +33,7 @@ function PostItem({ post }: PostItemProps) {
         <div className={styles.body}>
           <Interactions post={post} onComment={handleComment} />
           <span>좋아요 {likeUsers.length}개</span>
-          <p className={styles.contents}>
-            {contents}
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad quo
-            molestias officiis! Earum dicta esse minus mollitia magni at rerum
-            illum! Adipisci at voluptatibus hic nostrum quasi dolore et ipsa.
-          </p>
+          <p className={styles.contents}>{contents}</p>
         </div>
         <div className={styles.footer}>
           <p onClick={handleComment} className={styles.comment}>

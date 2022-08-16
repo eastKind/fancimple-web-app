@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import useWindowSize from "../hooks/useWindowSize";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+// import useWindowSize from "../hooks/useWindowSize";
 // import { useAppDispatch } from "../redux/hooks";
 // import { test } from "../redux/thunks/post";
 import ImgCrop from "./ImgCrop";
@@ -8,53 +8,36 @@ import styles from "../essets/scss/ImageEditor.module.scss";
 import EditorSlide from "./EditorSlide";
 
 interface ImageEditorProps {
-  files: File[] | null;
+  steps: number;
+  files: File[];
+  ratio: string;
+  setImages: Dispatch<SetStateAction<Blob[]>>;
   onChange: (files: FileList) => void;
+  onEdit: (ratio: string) => void;
   onDelete: (index: number) => void;
 }
 
-function ImageEditor({ files, onChange, onDelete }: ImageEditorProps) {
-  const { innerWidth, innerHeight } = useWindowSize();
-  const [width, setWidth] = useState(Math.min(innerWidth, innerHeight * 0.8));
-  const [height, setHeight] = useState(Math.min(innerWidth, innerHeight * 0.8));
+function ImageEditor({
+  steps,
+  files,
+  ratio,
+  onChange,
+  onEdit,
+  onDelete,
+  setImages,
+}: ImageEditorProps) {
   const [index, setIndex] = useState(0);
   const [previews, setPreviews] = useState<string[]>([]);
-  const editorRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextFiles = e.target.files;
     if (nextFiles) onChange(nextFiles);
   };
 
-  const handleCrop = (id: string) => {
-    const nextValue = Math.min(innerWidth, innerHeight * 0.8);
-    if (id === "1/1") {
-      setWidth((prev) => (prev === nextValue ? prev : nextValue));
-      setHeight((prev) => (prev === nextValue ? prev : nextValue));
-    } else if (id === "16/9") {
-      const nextHeight = nextValue * 0.5625;
-      setWidth((prev) => (prev === nextValue ? prev : nextValue));
-      setHeight((prev) => (prev === nextHeight ? prev : nextHeight));
-    } else {
-      const nextWidth = nextValue * 0.8;
-      setWidth((prev) => (prev === nextWidth ? prev : nextWidth));
-      setHeight((prev) => (prev === nextValue ? prev : nextValue));
-    }
-  };
-
-  // const handleSubmit = () => {
-  //   if (!editorRef.current) return;
-  //   const canvas = editorRef.current.getImageScaledToCanvas();
-  //   canvas.toBlob(async (blob) => {
-  //     if (!blob) return;
-  //     const formData = new FormData();
-  //     formData.append("photo", blob);
-  //     await dispatch(test(formData));
-  //   });
-  // };
+  const handleEdit = (nextRatio: string) => onEdit(nextRatio);
 
   useEffect(() => {
-    if (!files) return;
+    if (files.length < 1) return;
     setIndex((prev) => (prev ? prev : 0));
 
     const nextUrls = files.map((file) => URL.createObjectURL(file));
@@ -66,23 +49,9 @@ function ImageEditor({ files, onChange, onDelete }: ImageEditorProps) {
     };
   }, [files]);
 
-  useEffect(() => {
-    setWidth(Math.min(innerWidth, innerHeight * 0.8));
-    setHeight(Math.min(innerWidth, innerHeight * 0.8));
-  }, [innerWidth, innerHeight]);
-
   return (
     <div className={styles.container}>
-      {files ? (
-        <EditorSlide
-          previews={previews}
-          index={index}
-          setIndex={setIndex}
-          width={width}
-          height={height}
-          ref={editorRef}
-        />
-      ) : (
+      {steps === 0 && (
         <div className={styles.inputContainer}>
           사진을 끌어다 놓거나 클릭하세요
           <input
@@ -93,8 +62,20 @@ function ImageEditor({ files, onChange, onDelete }: ImageEditorProps) {
           />
         </div>
       )}
-      {files && <ImgCrop onCrop={handleCrop} className={styles.cropBtn} />}
-      {previews.length > 0 && (
+      {0 < steps && steps < 3 && (
+        <EditorSlide
+          steps={steps}
+          previews={previews}
+          index={index}
+          ratio={ratio}
+          setIndex={setIndex}
+          setImages={setImages}
+        />
+      )}
+      {steps === 1 && (
+        <ImgCrop onCrop={handleEdit} className={styles.cropBtn} />
+      )}
+      {steps === 1 && (
         <PreviewList
           previews={previews}
           setPreviews={setPreviews}
@@ -105,6 +86,7 @@ function ImageEditor({ files, onChange, onDelete }: ImageEditorProps) {
           className={styles.previewsBtn}
         />
       )}
+      {steps === 4 && <div>게시물 등록이 완료되었습니다</div>}
     </div>
   );
 }

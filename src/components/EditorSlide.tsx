@@ -1,31 +1,62 @@
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import classNames from "classnames";
 import Editor from "react-avatar-editor";
+import useWindowSize from "../hooks/useWindowSize";
 import styles from "../essets/scss/EditorSlide.module.scss";
 
+const INIT = 1080;
+
 interface EditorSlideProps {
+  steps: number;
   previews: string[];
   index: number;
+  ratio: string;
   setIndex: Dispatch<SetStateAction<number>>;
-  width: number;
-  height: number;
+  setImages: Dispatch<SetStateAction<Blob[]>>;
 }
 
-function EditorSlide(
-  { previews, index, setIndex, width, height }: EditorSlideProps,
-  ref: React.LegacyRef<Editor>
-) {
+function EditorSlide({
+  steps,
+  previews,
+  index,
+  ratio,
+  setIndex,
+  setImages,
+}: EditorSlideProps) {
+  const { innerHeight } = useWindowSize();
+  const [width, setWidth] = useState(INIT);
+  const [height, setHeight] = useState(INIT);
+  const [style, setStyle] = useState({});
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(previews.length > 1 ? true : false);
+  // const editorRef: LegacyRef<Editor> = useRef(null);
 
-  const style = {
-    transform: `translateX(-${index}00%)`,
+  const handleSize = (ratio: string) => {
+    if (ratio === "1/1") {
+      setWidth((prev) => (prev === INIT ? prev : INIT));
+      setHeight((prev) => (prev === INIT ? prev : INIT));
+    } else if (ratio === "4/5") {
+      const nextWidth = INIT * 0.8;
+      setWidth((prev) => (prev === nextWidth ? prev : nextWidth));
+      setHeight((prev) => (prev === INIT ? prev : INIT));
+    } else {
+      const nextHeight = INIT * 0.5625;
+      setWidth((prev) => (prev === INIT ? prev : INIT));
+      setHeight((prev) => (prev === nextHeight ? prev : nextHeight));
+    }
+  };
+
+  const handleStyle = (ratio: string, innerHeight: number) => {
+    let maxWidth = innerHeight * 0.8;
+    let maxHeight = innerHeight * 0.8;
+
+    if (ratio === "4/5") {
+      maxWidth = innerHeight * 0.8 * 0.8;
+    }
+    if (ratio === "16/9") {
+      maxHeight = innerHeight * 0.8 * 0.5625;
+    }
+    setStyle({ maxWidth, maxHeight });
   };
 
   const handleClickArrow = (e: React.MouseEvent) => {
@@ -36,23 +67,48 @@ function EditorSlide(
   };
 
   useEffect(() => {
+    handleSize(ratio);
+    handleStyle(ratio, innerHeight);
+  }, [ratio, innerHeight]);
+
+  useEffect(() => {
     if (index) setHasLeft(true);
     else setHasLeft(false);
     if (index < previews.length - 1) setHasRight(true);
     else setHasRight(false);
   }, [index, previews]);
 
+  useEffect(() => {
+    if (steps !== 2) return;
+    const canvases = document.getElementsByClassName(
+      styles.editor
+    ) as HTMLCollectionOf<HTMLCanvasElement>;
+    [...canvases].forEach((canvas) => {
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        setImages((prev) => [...prev, blob]);
+      });
+    });
+
+    return () => {
+      setImages([]);
+    };
+  }, [steps, setImages]);
+
   return (
     <div className={styles.container}>
-      <div className={styles.slide} style={style}>
+      <div
+        className={classNames(styles.slide, steps === 2 && styles.done)}
+        style={{ transform: `translateX(-${index}00%)` }}
+      >
         {previews.map((url, i) => (
           <div key={i} className={styles.slideItem}>
             <Editor
-              ref={ref}
               width={width}
               height={height}
               image={url}
               border={[0, 0]}
+              style={style}
               className={styles.editor}
             />
           </div>
@@ -101,4 +157,4 @@ function EditorSlide(
   );
 }
 
-export default forwardRef(EditorSlide);
+export default EditorSlide;

@@ -6,19 +6,40 @@
   .header {
     padding: 10px 22px;
     border-bottom: 1px solid rgba($black, 0.3);
-    display: flex;
-    justify-content: space-between;
+    font-size: 1.1rem;
+    line-height: 20px;
+
+    .init {
+      text-align: center;
+    }
+
+    .steps {
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        cursor: pointer;
+      }
+    }
   }
 
   .body {
     display: flex;
+
+    .imgSection {
+      width: 100vw;
+      max-width: 80vh;
+      aspect-ratio: 1;
+      background-color: $bg-color;
+    }
 
     .textSection {
       width: 0;
       transition: width 0.2s ease-in-out;
 
       &.open {
-        width: 100px;
+        width: 340px;
+        border-left: 1px solid rgba($black, 0.3);
       }
     }
   }

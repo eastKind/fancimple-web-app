@@ -17,15 +17,15 @@ interface PostProps {
 }
 
 function Post({ post }: PostProps) {
-  const { _id, images, writer, contents, likeUsers, createdAt } = post;
+  const { _id, images, writer, contents, likeUsers, createdAt, ratio } = post;
   const [style, setStyle] = useState({});
   const { innerHeight } = useWindowSize();
   const dispatch = useAppDispatch();
 
-  const handleStyle = (height: number, aspectRatio: string) => {
-    const ratio = Number(aspectRatio);
+  const handleStyle = (height: number, ratio: string) => {
     const maxHeight = height * 0.9;
-    const maxWidth = ratio > 1 ? maxHeight / ratio : maxHeight;
+    const maxWidth = ratio === "4/5" ? maxHeight * 0.8 : maxHeight;
+    const aspectRatio = ratio === "4/5" ? "0.8" : "1";
     const nextStyle: CSSProperties = { maxHeight, maxWidth, aspectRatio };
     setStyle(nextStyle);
   };
@@ -43,8 +43,8 @@ function Post({ post }: PostProps) {
   );
 
   useEffect(() => {
-    handleStyle(innerHeight, "1");
-  }, [innerHeight]);
+    handleStyle(innerHeight, ratio);
+  }, [innerHeight, ratio]);
 
   useEffect(() => {
     handleLoad({ postId: _id, cursor: "", limit: 10 });
@@ -64,12 +64,7 @@ function Post({ post }: PostProps) {
           <PostHeader postId={_id} writer={writer} />
         </div>
         <div className={styles.body}>
-          <p className={styles.contents}>
-            {contents}
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad quo
-            molestias officiis! Earum dicta esse minus mollitia magni at rerum
-            illum! Adipisci at voluptatibus hic nostrum quasi dolore et ipsa.
-          </p>
+          <p className={styles.contents}>{contents}</p>
           <CommentList postId={_id} />
         </div>
         <div className={styles.footer}>

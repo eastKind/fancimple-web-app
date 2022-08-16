@@ -128,6 +128,7 @@ export type PostData = {
   _id: string;
   contents: string;
   images: Image[];
+  ratio: string;
   writer: User;
   createdAt: string;
   updatedAt: string;

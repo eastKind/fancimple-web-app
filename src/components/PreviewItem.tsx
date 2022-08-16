@@ -32,36 +32,28 @@ function PreviewItem({
     { handlerId: Identifier | null }
   >({
     accept: "item",
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
+    collect: (monitor) => ({ handlerId: monitor.getHandlerId() }),
     hover(item: DragItem, monitor) {
       if (!ref.current) return;
       const dragIndex = item.index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) return;
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleX =
+        (hoverBoundingRect.left - hoverBoundingRect.right) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+      const hoverClientX =
+        (clientOffset as XYCoord).x - hoverBoundingRect.right;
+      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) return;
+      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) return;
       moveItem(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [, drag] = useDrag({
     type: "item",
-    item: () => {
-      return { id: `${index}`, index };
-    },
-    collect: (monitor: any) => ({
-      isDragging: monitor.isDragging(),
-    }),
+    item: () => ({ id: `${index}`, index }),
   });
 
   const handleClick = () => onDelete(index);
@@ -73,7 +65,6 @@ function PreviewItem({
       className={styles.preview}
       value={index}
       data-handler-id={handlerId}
-      style={{ cursor: isDragging ? "grab" : "pointer" }}
     >
       <img
         src={preview}
