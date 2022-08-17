@@ -15,12 +15,12 @@ interface PostHeaderProps {
 }
 
 function PostHeader({ postId, writer }: PostHeaderProps) {
-  const [show, setShow] = useState(false);
+  const [drop, setDrop] = useState(false);
   const isMe = useIsMe(writer._id);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShow((prev) => !prev);
+    setDrop((prev) => !prev);
   };
 
   return (
@@ -37,7 +37,7 @@ function PostHeader({ postId, writer }: PostHeaderProps) {
       >
         more_horiz
       </span>
-      <DropDown show={show} setShow={setShow}>
+      <DropDown show={drop} setShow={setDrop}>
         {isMe ? (
           <MyMenu postId={postId} />
         ) : (

@@ -1,0 +1,38 @@
+.container {
+  min-width: 400px;
+  border-radius: 10px;
+  background-color: #fff;
+
+  .header {
+    padding: 20px;
+    border-bottom: 1px solid rgba($black, 0.3);
+
+    .symbol {
+      display: block;
+      text-align: center;
+      color: $red;
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .texts {
+      font-size: 1.2rem;
+      text-align: center;
+    }
+  }
+
+  .btns {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+
+    .btn {
+      flex-grow: 1;
+
+      &:first-of-type {
+        margin-right: 10px;
+      }
+    }
+  }
+}
