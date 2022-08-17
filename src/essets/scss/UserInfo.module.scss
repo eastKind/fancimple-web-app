@@ -30,8 +30,12 @@
       font-size: 1.1rem;
       font-weight: 500;
 
-      span:not(:last-of-type) {
-        margin-right: 20px;
+      span {
+        cursor: pointer;
+
+        &:not(:last-of-type) {
+          margin-right: 20px;
+        }
       }
     }
 

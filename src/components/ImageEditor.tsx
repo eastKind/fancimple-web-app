@@ -9,29 +9,34 @@ import EditorSlide from "./EditorSlide";
 
 interface ImageEditorProps {
   steps: number;
-  files: File[];
   ratio: string;
-  setImages: Dispatch<SetStateAction<Blob[]>>;
-  onChange: (files: FileList) => void;
   onEdit: (ratio: string) => void;
   onDelete: (index: number) => void;
+  setImages: Dispatch<SetStateAction<Blob[]>>;
+  setSteps: Dispatch<SetStateAction<number>>;
 }
 
 function ImageEditor({
   steps,
-  files,
   ratio,
-  onChange,
   onEdit,
   onDelete,
   setImages,
+  setSteps,
 }: ImageEditorProps) {
+  const [files, setFiles] = useState<File[]>([]);
   const [index, setIndex] = useState(0);
   const [previews, setPreviews] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextFiles = e.target.files;
-    if (nextFiles) onChange(nextFiles);
+    if (!nextFiles) return;
+    setFiles([...nextFiles]);
+    setSteps(1);
+  };
+
+  const handleAppend = (nextFiles: FileList) => {
+    setFiles((prev) => [...prev, ...nextFiles]);
   };
 
   const handleEdit = (nextRatio: string) => onEdit(nextRatio);
@@ -81,7 +86,7 @@ function ImageEditor({
           setPreviews={setPreviews}
           index={index}
           setIndex={setIndex}
-          onChange={onChange}
+          onChange={handleAppend}
           onDelete={onDelete}
           className={styles.previewsBtn}
         />

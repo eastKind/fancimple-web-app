@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import User from "../api/User";
 import { signup } from "../redux/thunks/user";
 import { signin } from "../redux/thunks/auth";
 import { validate, validatePw } from "../utils/validate";
@@ -29,13 +30,19 @@ function SignUpForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleValidate = (
+  const handleValidate = async (
     validateFn: ValidateFn,
     ...options: [string, string]
   ) => {
+    const [key, value] = options;
+    let nextCaution = { ...validateFn(key, value) };
+    if ((key === "name" || key === "email") && !nextCaution[key]) {
+      const caution = await User.validate({ [key]: value });
+      nextCaution = { [key]: caution };
+    }
     setCautions((prev) => ({
       ...prev,
-      ...validateFn(...options),
+      ...nextCaution,
     }));
   };
 
@@ -74,7 +81,7 @@ function SignUpForm() {
     }));
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id !== "password2") {
       handleValidate(validate, id, value);

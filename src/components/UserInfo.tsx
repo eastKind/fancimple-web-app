@@ -4,8 +4,10 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
 import AvatarForm from "./AvatarForm";
 import Avatar from "./Avatar";
+import Modal from "./Modal";
 import styles from "../essets/scss/UserInfo.module.scss";
 import Button from "./Button";
+import UserList from "./UserList";
 
 interface UserInfoProps {
   user: UserData;
@@ -15,14 +17,22 @@ interface UserInfoProps {
 function UserInfo({ user, isMe }: UserInfoProps) {
   const { me } = useAppSelector((state) => state.user);
   const [isFollowed, setIsFollowed] = useState(false);
+  const [showFollowings, setShowFollowings] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
   const dispatch = useAppDispatch();
 
-  const handleClick = async () => {
+  const handleClickFollow = async () => {
     try {
       await dispatch(follow({ userId: user._id, isFollowed }));
     } catch (error: any) {
       alert(error.message);
     }
+  };
+
+  const handleClickCounts = (e: React.MouseEvent) => {
+    const { id } = e.target as HTMLSpanElement;
+    if (id === "following") setShowFollowings(true);
+    if (id === "follower") setShowFollowers(true);
   };
 
   useEffect(() => {
@@ -45,7 +55,7 @@ function UserInfo({ user, isMe }: UserInfoProps) {
           <p className={styles.name}>{user.name}</p>
           {isMe || (
             <Button
-              onClick={handleClick}
+              onClick={handleClickFollow}
               className={styles.followBtn}
               variant="inverse"
             >
@@ -53,13 +63,27 @@ function UserInfo({ user, isMe }: UserInfoProps) {
             </Button>
           )}
         </div>
-        <div className={styles.counts}>
+        <div className={styles.counts} onClick={handleClickCounts}>
           <span>게시물 {user.postCount}</span>
-          <span>팔로워 {user.followers.length}</span>
-          <span>팔로우 {user.followings.length}</span>
+          <span id="follower">팔로워 {user.followers.length}</span>
+          <span id="following">팔로우 {user.followings.length}</span>
         </div>
         <span>{"Hello :)"}</span>
       </div>
+      <Modal show={showFollowings} setShow={setShowFollowings}>
+        <UserList
+          userId={user._id}
+          isFollowList={true}
+          setShow={setShowFollowings}
+        />
+      </Modal>
+      <Modal show={showFollowers} setShow={setShowFollowers}>
+        <UserList
+          userId={user._id}
+          isFollowList={false}
+          setShow={setShowFollowers}
+        />
+      </Modal>
     </div>
   );
 }

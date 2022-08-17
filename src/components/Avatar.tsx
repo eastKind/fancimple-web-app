@@ -6,6 +6,7 @@ import styles from "../essets/scss/Avatar.module.scss";
 interface AvatarProps {
   photo: string | undefined;
   name: string | undefined;
+  width?: string;
   className?: string;
   [key: string]: any;
 }
@@ -13,11 +14,14 @@ interface AvatarProps {
 function Avatar({
   photo = defaultPhoto,
   name = "프로필 이미지",
+  width = "30px",
   className,
   ...otherProps
 }: AvatarProps) {
   return (
     <img
+      width={width}
+      height={width}
       src={photo}
       alt={name}
       className={classNames(styles.avatar, className)}

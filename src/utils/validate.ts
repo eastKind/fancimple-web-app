@@ -5,8 +5,8 @@ export const validate = (key: string, value: string) => {
 
   switch (key) {
     case "name":
-      if (!/^[가-힣a-zA-Z]{2,8}$/.test(value)) {
-        result.name = "닉네임은 한글 또는 영문 2~8자를 입력해주세요.";
+      if (!/^[가-힣a-zA-Z0-9_.]{2,16}$/.test(value)) {
+        result.name = "문자,숫자,밑줄 및 마침표 2~16자를 입력해주세요.";
       }
       break;
     case "email":

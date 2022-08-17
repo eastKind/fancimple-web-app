@@ -1,0 +1,57 @@
+.container {
+  background-color: #fff;
+  border-radius: 10px;
+
+  .header {
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 20px;
+    position: relative;
+    border-bottom: 1px solid rgba($black, 0.3);
+
+    .closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .list {
+    margin: 0;
+    padding: 10px 20px;
+    width: 400px;
+    height: 320px;
+    overflow: auto;
+
+    .listItem {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+
+      span {
+        font-size: 1.1rem;
+        margin-left: 10px;
+      }
+
+      .desc {
+        flex-grow: 1;
+        text-align: end;
+        margin-left: 10px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+      }
+    }
+
+    .observer {
+      display: none;
+
+      &.show {
+        display: block;
+      }
+    }
+  }
+}

@@ -8,7 +8,6 @@ import { createPost } from "../redux/thunks/post";
 import Spinner from "../components/Spinner";
 
 function Upload() {
-  const [files, setFiles] = useState<File[]>([]);
   const [images, setImages] = useState<Blob[]>([]);
   const [ratio, setRatio] = useState("1/1");
   const [texts, setTexts] = useState("");
@@ -16,30 +15,21 @@ function Upload() {
   const { loading } = useAppSelector((state) => state.post);
   const dispatch = useAppDispatch();
 
-  const handleImageChange = (nextFiles: FileList) => {
-    if (files.length < 1) {
-      setFiles([...nextFiles]);
-    } else {
-      setFiles([...files, ...nextFiles]);
-    }
-    setSteps(1);
-  };
-
   const handleImageEdit = (nextRatio: string) => {
     setRatio(nextRatio);
   };
 
   const handleImageDelete = (index: number) => {
-    const nextFiles = files.filter((_, i) => i !== index);
-    setFiles(nextFiles);
+    const nextImages = images.filter((_, i) => i !== index);
+    setImages(nextImages);
   };
 
   const handleTextChange = (nextTexts: string) => setTexts(nextTexts);
 
   const handleClickPrev = () => {
-    if (steps === 1) setFiles([]);
     setSteps((prev) => (prev -= 1));
   };
+
   const handleClickNext = async () => {
     setSteps((prev) => (prev += 1));
     if (steps === 2) {
@@ -69,18 +59,16 @@ function Upload() {
       </div>
       <div className={styles.body}>
         <div className={styles.imgSection}>
-          {/* <Spinner size="60px" /> */}
           {loading ? (
             <Spinner size="60px" />
           ) : (
             <ImageEditor
               steps={steps}
-              files={files}
               ratio={ratio}
-              onChange={handleImageChange}
               onEdit={handleImageEdit}
               onDelete={handleImageDelete}
               setImages={setImages}
+              setSteps={setSteps}
             />
           )}
         </div>

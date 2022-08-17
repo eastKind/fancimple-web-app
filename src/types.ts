@@ -6,6 +6,10 @@ export type SigninReqData = {
 };
 
 /// User
+export type ValidateReqData = {
+  [key: string]: string;
+};
+
 export type SignupReqData = {
   name: string;
   email: string;
@@ -14,6 +18,17 @@ export type SignupReqData = {
 
 export type GetUserReqData = {
   userId: string;
+};
+
+export type GetUsersReqData = {
+  userId: string;
+  cursor: string;
+  limit: number;
+};
+
+export type GetUsersResData = {
+  users: User[];
+  hasNext: boolean;
 };
 
 export type FollowReqData = {
