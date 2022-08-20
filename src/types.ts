@@ -55,9 +55,8 @@ export type GetPostsReqData = {
 };
 
 export type UpdatePostReqData = {
-  _id: string;
-  title: string;
-  contents: string;
+  postId: string;
+  texts: string;
   deletedKeys: string[];
 };
 
@@ -141,7 +140,7 @@ export interface MyData extends UserData {
 
 export type PostData = {
   _id: string;
-  contents: string;
+  texts: string;
   images: Image[];
   ratio: string;
   writer: User;

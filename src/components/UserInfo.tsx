@@ -17,8 +17,8 @@ interface UserInfoProps {
 function UserInfo({ user, isMe }: UserInfoProps) {
   const { me } = useAppSelector((state) => state.user);
   const [isFollowed, setIsFollowed] = useState(false);
-  const [showFollowings, setShowFollowings] = useState(false);
-  const [showFollowers, setShowFollowers] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedList, setSelectedList] = useState("");
   const dispatch = useAppDispatch();
 
   const handleClickFollow = async () => {
@@ -29,10 +29,13 @@ function UserInfo({ user, isMe }: UserInfoProps) {
     }
   };
 
-  const handleClickCounts = (e: React.MouseEvent) => {
+  const handleModal = () => setModalOpen((prev) => !prev);
+
+  const handleClick = (e: React.MouseEvent) => {
     const { id } = e.target as HTMLSpanElement;
-    if (id === "following") setShowFollowings(true);
-    if (id === "follower") setShowFollowers(true);
+    if (!id) return;
+    setSelectedList(id);
+    handleModal();
   };
 
   useEffect(() => {
@@ -63,26 +66,15 @@ function UserInfo({ user, isMe }: UserInfoProps) {
             </Button>
           )}
         </div>
-        <div className={styles.counts} onClick={handleClickCounts}>
+        <div className={styles.counts} onClick={handleClick}>
           <span>게시물 {user.postCount}</span>
           <span id="follower">팔로워 {user.followers.length}</span>
-          <span id="following">팔로우 {user.followings.length}</span>
+          <span id="follow">팔로우 {user.followings.length}</span>
         </div>
         <span>{"Hello :)"}</span>
       </div>
-      <Modal show={showFollowings} setShow={setShowFollowings}>
-        <UserList
-          userId={user._id}
-          isFollowList={true}
-          setShow={setShowFollowings}
-        />
-      </Modal>
-      <Modal show={showFollowers} setShow={setShowFollowers}>
-        <UserList
-          userId={user._id}
-          isFollowList={false}
-          setShow={setShowFollowers}
-        />
+      <Modal isOpen={modalOpen} onClose={handleModal}>
+        <UserList userId={user._id} selectedList={selectedList} />
       </Modal>
     </div>
   );

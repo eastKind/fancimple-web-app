@@ -10,13 +10,13 @@ interface GridItemProps {
 }
 
 function GridItem({ post }: GridItemProps) {
-  const [show, setShow] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const handleClick = () => setShow(true);
+  const handleModal = () => setModalOpen((prev) => !prev);
 
   return (
     <>
-      <div key={post._id} className={styles.gridItem} onClick={handleClick}>
+      <div key={post._id} className={styles.gridItem} onClick={handleModal}>
         <img src={post.images[0].url} alt="" />
         <div className={styles.overlay}>
           <span
@@ -33,7 +33,7 @@ function GridItem({ post }: GridItemProps) {
           <span className={styles.count}>{post.commentCount}</span>
         </div>
       </div>
-      <Modal show={show} setShow={setShow}>
+      <Modal isOpen={modalOpen} onClose={handleModal}>
         <Post post={post} />
       </Modal>
     </>

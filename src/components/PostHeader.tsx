@@ -1,26 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import classNames from "classnames";
-import { User } from "../types";
+import { PostData, User } from "../types";
 import useIsMe from "../hooks/useIsMe";
 import Avatar from "./Avatar";
-import DropDown from "./DropDown";
 import MyMenu from "./MyMenu";
 import OthersMenu from "./OthersMenu";
 import styles from "../essets/scss/PostHeader.module.scss";
 
 interface PostHeaderProps {
-  postId: string;
-  writer: User;
+  post: PostData;
 }
 
-function PostHeader({ postId, writer }: PostHeaderProps) {
+function PostHeader({ post }: PostHeaderProps) {
+  const { writer } = post;
   const [drop, setDrop] = useState(false);
   const isMe = useIsMe(writer._id);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleDrop = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setDrop((prev) => !prev);
+    setDrop(true);
   };
 
   return (
@@ -31,19 +29,16 @@ function PostHeader({ postId, writer }: PostHeaderProps) {
       <Link to={`/${writer._id}/post`} state={{ isMe }}>
         <span className={styles.name}>{writer.name}</span>
       </Link>
-      <span
-        onClick={handleClick}
-        className={classNames("material-symbols-rounded", styles.moreBtn)}
-      >
-        more_horiz
-      </span>
-      <DropDown show={drop} setShow={setDrop}>
-        {isMe ? (
-          <MyMenu postId={postId} />
-        ) : (
-          <OthersMenu postId={postId} writerId={writer._id} />
-        )}
-      </DropDown>
+      <div className={styles.moreBtn}>
+        <span onClick={handleDrop} className="material-symbols-rounded">
+          more_horiz
+        </span>
+      </div>
+      {isMe ? (
+        <MyMenu post={post} isDropped={drop} setDrop={setDrop} />
+      ) : (
+        <OthersMenu post={post} isDropped={drop} setDrop={setDrop} />
+      )}
     </div>
   );
 }

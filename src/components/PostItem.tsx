@@ -13,17 +13,16 @@ interface PostItemProps {
 }
 
 function PostItem({ post }: PostItemProps) {
-  const [show, setShow] = useState(false);
-  const { _id, images, writer, contents, commentCount, likeUsers, createdAt } =
-    post;
+  const { images, texts, commentCount, likeUsers, createdAt } = post;
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const handleComment = () => setShow((prev) => !prev);
+  const handleModal = () => setModalOpen((prev) => !prev);
 
   return (
     <>
       <li className={styles.listItem}>
         <div className={styles.header}>
-          <PostHeader postId={_id} writer={writer} />
+          <PostHeader post={post} />
         </div>
         <Slider arr={images} className={styles.slide}>
           {images.map((image) => (
@@ -31,12 +30,12 @@ function PostItem({ post }: PostItemProps) {
           ))}
         </Slider>
         <div className={styles.body}>
-          <Interactions post={post} onComment={handleComment} />
+          <Interactions post={post} onComment={handleModal} />
           <span>좋아요 {likeUsers.length}개</span>
-          <p className={styles.contents}>{contents}</p>
+          <p className={styles.texts}>{texts}</p>
         </div>
         <div className={styles.footer}>
-          <p onClick={handleComment} className={styles.comment}>
+          <p onClick={handleModal} className={styles.comment}>
             {commentCount > 0
               ? `댓글 ${commentCount}개 모두 보기`
               : "댓글 쓰러가기"}
@@ -44,7 +43,7 @@ function PostItem({ post }: PostItemProps) {
           <p className={styles.createdAt}>{rtf(createdAt)}</p>
         </div>
       </li>
-      <Modal show={show} setShow={setShow}>
+      <Modal isOpen={modalOpen} onClose={handleModal}>
         <Post post={post} />
       </Modal>
     </>

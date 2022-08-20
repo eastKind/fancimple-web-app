@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import UserAPI from "../api/User";
@@ -17,11 +10,10 @@ import styles from "../essets/scss/UserList.module.scss";
 
 interface UserListProps {
   userId: string;
-  isFollowList: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
+  selectedList: string;
 }
 
-function UserList({ userId, isFollowList, setShow }: UserListProps) {
+function UserList({ userId, selectedList }: UserListProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasNext, setHasNext] = useState(false);
@@ -33,9 +25,10 @@ function UserList({ userId, isFollowList, setShow }: UserListProps) {
     async (options: GetUsersReqData) => {
       try {
         setLoading(true);
-        const { users: nextUsers, hasNext } = isFollowList
-          ? await UserAPI.getFollowings(options)
-          : await UserAPI.getFollowers(options);
+        const { users: nextUsers, hasNext } =
+          selectedList === "follow"
+            ? await UserAPI.getFollowings(options)
+            : await UserAPI.getFollowers(options);
         const nextCursor =
           nextUsers.length > 0 ? nextUsers[nextUsers.length - 1]._id : "";
         if (options.cursor) setUsers((prev) => [...prev, ...nextUsers]);
@@ -48,10 +41,8 @@ function UserList({ userId, isFollowList, setShow }: UserListProps) {
         setLoading(false);
       }
     },
-    [isFollowList]
+    [selectedList]
   );
-
-  const handleClose = () => setShow(false);
 
   useEffect(() => {
     handleLoad({ userId, cursor: "", limit: 10 });
@@ -66,13 +57,7 @@ function UserList({ userId, isFollowList, setShow }: UserListProps) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        {isFollowList ? "팔로잉" : "팔로워"}
-        <span
-          className={classNames("material-symbols-rounded", styles.closeBtn)}
-          onClick={handleClose}
-        >
-          close
-        </span>
+        {selectedList === "follow" ? "팔로잉" : "팔로워"}
       </div>
       <ul className={styles.list}>
         {users.map((user) => (

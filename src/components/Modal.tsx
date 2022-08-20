@@ -1,14 +1,14 @@
-import React, { useRef, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useRef, useEffect } from "react";
 import Portal from "../Portal";
 import styles from "../essets/scss/Modal.module.scss";
 
 interface ModalProps {
   children: React.ReactNode;
-  show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-function Modal({ children, show, setShow }: ModalProps) {
+function Modal({ children, isOpen, onClose }: ModalProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function Modal({ children, show, setShow }: ModalProps) {
     if (!containerNode) return;
 
     const handleClickOutside = (e: MouseEvent) => {
-      if (e.target === containerNode) setShow((prev) => !prev);
+      if (e.target === containerNode) onClose();
     };
     containerNode.addEventListener("click", handleClickOutside);
     document.body.style.overflowY = "hidden";
@@ -24,11 +24,11 @@ function Modal({ children, show, setShow }: ModalProps) {
       containerNode.removeEventListener("click", handleClickOutside);
       document.body.style.overflowY = "scroll";
     };
-  }, [show, setShow]);
+  }, [isOpen, onClose]);
 
   return (
     <Portal>
-      {show && (
+      {isOpen && (
         <div ref={ref} className={styles.container}>
           {children}
         </div>

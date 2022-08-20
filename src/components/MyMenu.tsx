@@ -1,47 +1,64 @@
-import React, { useState } from "react";
-import classNames from "classnames";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { deletePost } from "../redux/thunks/post";
+import { PostData } from "../types";
 import Confirm from "./Confirm";
+import Modal from "./Modal";
+import DropDown from "./DropDown";
+import Update from "../pages/Update";
 import styles from "../essets/scss/PostMenu.module.scss";
 
 interface MyMenuProps {
-  postId: string;
+  post: PostData;
+  isDropped: boolean;
+  setDrop: Dispatch<SetStateAction<boolean>>;
 }
 
-function MyMenu({ postId }: MyMenuProps) {
-  const [show, setShow] = useState(false);
+function MyMenu({ post, isDropped, setDrop }: MyMenuProps) {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  const handleShow = () => setShow(true);
+  const handleConfirm = () => setConfirmOpen((prev) => !prev);
+  const handleModal = () => setModalOpen((prev) => !prev);
+  const handleDrop = () => setDrop((prev) => !prev);
 
   const handleDelete = async () => {
-    await dispatch(deletePost({ postId }));
+    await dispatch(deletePost({ postId: post._id }));
   };
 
   return (
     <>
-      <ul className={classNames(styles.list, show && styles.hide)}>
-        <li onClick={handleShow}>
-          <span>삭제하기</span>
-        </li>
-        <li>
-          <span>수정하기</span>
-        </li>
-        <li>
-          <span>좋아요 숨기기</span>
-        </li>
-        <li>
-          <span>댓글 숨기기</span>
-        </li>
-      </ul>
-      <Confirm show={show} setShow={setShow} onConfirm={handleDelete}>
+      <DropDown isDropped={isDropped} setDrop={setDrop}>
+        <ul className={styles.list} onClick={handleDrop}>
+          <li onClick={handleConfirm}>
+            <span>삭제하기</span>
+          </li>
+          <li onClick={handleModal}>
+            <span>수정하기</span>
+          </li>
+          <li>
+            <span>좋아요 숨기기</span>
+          </li>
+          <li>
+            <span>댓글 숨기기</span>
+          </li>
+        </ul>
+      </DropDown>
+      <Confirm
+        isOpen={confirmOpen}
+        onCancel={handleConfirm}
+        onConfirm={handleDelete}
+      >
         <span>
           게시물이 삭제됩니다.
           <br />
           계속 하시겠습니까?
         </span>
       </Confirm>
+      <Modal isOpen={modalOpen} onClose={handleModal}>
+        <Update post={post} onCancel={handleModal} />
+      </Modal>
     </>
   );
 }

@@ -23,7 +23,7 @@ function PreviewList({
   onDelete,
   className,
 }: PreviewListProps) {
-  const [show, setShow] = useState(false);
+  const [drop, setDrop] = useState(false);
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(false);
   const [figure, setFigure] = useState(0);
@@ -45,14 +45,16 @@ function PreviewList({
     if (nextFiles) onChange(nextFiles);
   };
 
-  const handleDelete = (index: number) => {
-    setFigure(0);
-    onDelete(index);
+  const handleDelete = (deleteIdx: number) => {
+    if (figure !== START) {
+      setFigure((prev) => (prev += 100));
+    }
+    onDelete(deleteIdx);
   };
 
   const handleShow = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShow(true);
+    setDrop(true);
   };
 
   const handleClickPreview = (e: React.MouseEvent) => {
@@ -89,7 +91,7 @@ function PreviewList({
           photo_library
         </span>
       </div>
-      <DropDown show={show} setShow={setShow}>
+      <DropDown isDropped={drop} setDrop={setDrop}>
         <div className={styles.slideContainer}>
           <div className={styles.slide}>
             <ul

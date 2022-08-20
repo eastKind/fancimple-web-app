@@ -9,11 +9,11 @@ interface ImgCropProps {
 }
 
 function ImgCrop({ onCrop, className }: ImgCropProps) {
-  const [show, setShow] = useState(false);
+  const [drop, setDrop] = useState(false);
 
   const handleShow = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShow(true);
+    setDrop(true);
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -28,7 +28,7 @@ function ImgCrop({ onCrop, className }: ImgCropProps) {
           crop
         </span>
       </div>
-      <DropDown show={show} setShow={setShow}>
+      <DropDown isDropped={drop} setDrop={setDrop}>
         <ul className={styles.cropList} onClick={handleClick}>
           <li id="16/9">
             <span className="material-symbols-rounded">crop_16_9</span>

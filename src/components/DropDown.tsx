@@ -1,28 +1,28 @@
-import React, { useRef, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useRef, Dispatch, SetStateAction, useEffect } from "react";
 
 interface DropDownProps {
   children: React.ReactNode;
-  show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
+  isDropped: boolean;
+  setDrop: Dispatch<SetStateAction<boolean>>;
 }
 
-function DropDown({ children, show, setShow }: DropDownProps) {
+function DropDown({ children, isDropped, setDrop }: DropDownProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!ref.current) return;
     const dropNode = ref.current;
-    if (!dropNode) return;
 
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!dropNode.contains(e.target as Node)) setShow(false);
+    const handleClick = (e: MouseEvent) => {
+      if (!dropNode.contains(e.target as Node)) setDrop(false);
     };
-    window.addEventListener("click", handleClickOutside);
+    window.addEventListener("click", handleClick);
     return () => {
-      window.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("click", handleClick);
     };
-  }, [show, setShow]);
+  }, [isDropped, setDrop]);
 
-  return <div ref={ref}>{show && children}</div>;
+  return <div ref={ref}>{isDropped && children}</div>;
 }
 
 export default DropDown;

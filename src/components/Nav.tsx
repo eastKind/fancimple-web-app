@@ -17,13 +17,13 @@ interface NavProps {
 }
 
 function Nav({ className }: NavProps) {
-  const [show, setShow] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [drop, setDrop] = useState(false);
   const { me } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleShow = () => setShow(true);
+  const handleModal = () => setModalOpen((prev) => !prev);
 
   const handleDrop = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -55,7 +55,7 @@ function Nav({ className }: NavProps) {
               </span>
             </Link>
           </li>
-          <li onClick={handleShow}>
+          <li onClick={handleModal}>
             <span
               className={classNames("material-symbols-rounded", styles.symbols)}
             >
@@ -64,8 +64,8 @@ function Nav({ className }: NavProps) {
           </li>
           <li onClick={handleDrop} className={styles.user}>
             <Avatar photo={me.photoUrl} name={me.name} />
-            <DropDown show={drop} setShow={setDrop}>
-              <ul className={styles.userMenu}>
+            <DropDown isDropped={drop} setDrop={setDrop}>
+              <ul className={styles.userMenu} onClick={handleDrop}>
                 <li>
                   <Link to={`/${me._id}/post`} state={{ isMe: true }}>
                     프로필
@@ -84,7 +84,7 @@ function Nav({ className }: NavProps) {
           </li>
         </ul>
       </Container>
-      <Modal show={show} setShow={setShow}>
+      <Modal isOpen={modalOpen} onClose={handleModal}>
         <Upload />
       </Modal>
     </div>

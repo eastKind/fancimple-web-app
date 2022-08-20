@@ -17,7 +17,7 @@ interface PostProps {
 }
 
 function Post({ post }: PostProps) {
-  const { _id, images, writer, contents, likeUsers, createdAt, ratio } = post;
+  const { _id, images, texts, likeUsers, createdAt, ratio } = post;
   const [style, setStyle] = useState({});
   const { innerHeight } = useWindowSize();
   const dispatch = useAppDispatch();
@@ -59,12 +59,12 @@ function Post({ post }: PostProps) {
           ))}
         </Slider>
       </div>
-      <div className={styles.texts}>
+      <div className={styles.textContainer}>
         <div className={styles.header}>
-          <PostHeader postId={_id} writer={writer} />
+          <PostHeader post={post} />
         </div>
         <div className={styles.body}>
-          <p className={styles.contents}>{contents}</p>
+          <p className={styles.texts}>{texts}</p>
           <CommentList postId={_id} />
         </div>
         <div className={styles.footer}>

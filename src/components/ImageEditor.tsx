@@ -11,7 +11,6 @@ interface ImageEditorProps {
   steps: number;
   ratio: string;
   onEdit: (ratio: string) => void;
-  onDelete: (index: number) => void;
   setImages: Dispatch<SetStateAction<Blob[]>>;
   setSteps: Dispatch<SetStateAction<number>>;
 }
@@ -20,13 +19,16 @@ function ImageEditor({
   steps,
   ratio,
   onEdit,
-  onDelete,
   setImages,
   setSteps,
 }: ImageEditorProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [index, setIndex] = useState(0);
   const [previews, setPreviews] = useState<string[]>([]);
+
+  const handleDelete = (deleteIdx: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== deleteIdx));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextFiles = e.target.files;
@@ -40,6 +42,13 @@ function ImageEditor({
   };
 
   const handleEdit = (nextRatio: string) => onEdit(nextRatio);
+
+  useEffect(() => {
+    if (previews.length < 1) return;
+    setIndex((prev) =>
+      prev > previews.length - 1 ? previews.length - 1 : prev
+    );
+  }, [previews]);
 
   useEffect(() => {
     if (files.length < 1) return;
@@ -87,7 +96,7 @@ function ImageEditor({
           index={index}
           setIndex={setIndex}
           onChange={handleAppend}
-          onDelete={onDelete}
+          onDelete={handleDelete}
           className={styles.previewsBtn}
         />
       )}

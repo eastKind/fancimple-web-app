@@ -43,14 +43,12 @@ export default class Post {
   }
 
   public static async update({
-    _id,
-    title,
-    contents,
+    postId,
+    texts,
     deletedKeys,
   }: UpdatePostReqData): Promise<PostData> {
-    const response = await axiosInstance.patch(`/post${_id}`, {
-      title,
-      contents,
+    const response = await axiosInstance.patch(`/post/${postId}`, {
+      texts,
       deletedKeys,
     });
     return response.data.post;

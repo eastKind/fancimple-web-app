@@ -19,11 +19,6 @@ function Upload() {
     setRatio(nextRatio);
   };
 
-  const handleImageDelete = (index: number) => {
-    const nextImages = images.filter((_, i) => i !== index);
-    setImages(nextImages);
-  };
-
   const handleTextChange = (nextTexts: string) => setTexts(nextTexts);
 
   const handleClickPrev = () => {
@@ -34,7 +29,7 @@ function Upload() {
     setSteps((prev) => (prev += 1));
     if (steps === 2) {
       const formData = new FormData();
-      formData.append("contents", texts);
+      formData.append("texts", texts);
       formData.append("ratio", ratio);
       images.forEach((image) => {
         formData.append("image", image);
@@ -66,7 +61,6 @@ function Upload() {
               steps={steps}
               ratio={ratio}
               onEdit={handleImageEdit}
-              onDelete={handleImageDelete}
               setImages={setImages}
               setSteps={setSteps}
             />

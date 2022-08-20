@@ -1,25 +1,25 @@
-import React, { Dispatch, ReactNode, SetStateAction } from "react";
+import React, { ReactNode } from "react";
 import classNames from "classnames";
 import Modal from "./Modal";
 import Button from "./Button";
 import styles from "../essets/scss/Confirm.module.scss";
 
 interface ConfirmProps {
-  show: boolean;
+  isOpen: boolean;
   children: ReactNode;
-  setShow: Dispatch<SetStateAction<boolean>>;
   onConfirm: () => void;
+  onCancel: () => void;
 }
 
-function Confirm({ show, children, setShow, onConfirm }: ConfirmProps) {
+function Confirm({ isOpen, children, onCancel, onConfirm }: ConfirmProps) {
   const handleClick = (e: React.MouseEvent) => {
     const { id } = e.target as HTMLDivElement;
     if (id === "confirm") onConfirm();
-    else setShow(false);
+    else onCancel();
   };
 
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal isOpen={isOpen} onClose={onCancel}>
       <div className={styles.container}>
         <div className={styles.header}>
           <span

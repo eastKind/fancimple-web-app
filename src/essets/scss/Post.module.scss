@@ -18,7 +18,7 @@
     }
   }
 
-  .texts {
+  .textContainer {
     display: flex;
     flex-direction: column;
     min-width: 450px;
@@ -30,7 +30,7 @@
       flex-direction: column;
       overflow-y: auto;
 
-      .contents {
+      .texts {
         margin: 0 0 15px;
       }
     }

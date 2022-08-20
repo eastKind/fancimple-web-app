@@ -14,9 +14,13 @@
   }
 
   .moreBtn {
-    font-size: 2rem;
+    height: 30px;
     flex-grow: 1;
     text-align: right;
-    cursor: pointer;
+
+    span {
+      font-size: 2rem;
+      cursor: pointer;
+    }
   }
 }

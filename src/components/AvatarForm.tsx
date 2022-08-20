@@ -16,13 +16,13 @@ function AvatarForm({ user }: AvatarFormProps) {
   const { name, photoUrl } = user;
   const [file, setFile] = useState<File>();
   const [scale, setScale] = useState(1);
-  const [show, setShow] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const editorRef: React.LegacyRef<AvatarEditor> = useRef(null);
 
   const initialize = () => {
-    setShow(false);
+    setModalOpen(false);
     setFile(undefined);
     if (inputRef.current) inputRef.current.value = "";
   };
@@ -36,7 +36,7 @@ function AvatarForm({ user }: AvatarFormProps) {
     setScale(Number(e.target.value));
   };
 
-  const handleCancle = () => initialize();
+  const handleCancel = () => initialize();
 
   const handleSubmit = () => {
     try {
@@ -57,7 +57,7 @@ function AvatarForm({ user }: AvatarFormProps) {
   };
 
   useEffect(() => {
-    if (file) setShow(true);
+    if (file) setModalOpen(true);
   }, [file]);
 
   return (
@@ -72,7 +72,7 @@ function AvatarForm({ user }: AvatarFormProps) {
         onChange={handleChangeFile}
         ref={inputRef}
       />
-      <Modal show={show} setShow={setShow}>
+      <Modal isOpen={modalOpen} onClose={handleCancel}>
         <div className={styles.editor}>
           {file && (
             <AvatarEditor
@@ -101,7 +101,7 @@ function AvatarForm({ user }: AvatarFormProps) {
               완료
             </Button>
             <Button
-              onClick={handleCancle}
+              onClick={handleCancel}
               className={styles.cancleBtn}
               variant="inverse"
             >

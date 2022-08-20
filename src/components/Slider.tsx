@@ -25,6 +25,7 @@ function Slider({ arr, children, className }: SlideProps) {
   };
 
   useEffect(() => {
+    if (index > arr.length - 1) setIndex(arr.length - 1);
     if (index) setHasLeft(true);
     else setHasLeft(false);
     if (index < arr.length - 1) setHasRight(true);
