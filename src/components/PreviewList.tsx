@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import classNames from "classnames";
 import DropDown from "./DropDown";
-import styles from "../essets/scss/PreviewList.module.scss";
 import PreviewItem from "./PreviewItem";
+import styles from "../essets/scss/PreviewList.module.scss";
+import Tooltip from "./Tooltip";
 
 interface PreviewListProps {
   previews: string[];
@@ -24,11 +25,15 @@ function PreviewList({
   className,
 }: PreviewListProps) {
   const [drop, setDrop] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(false);
-  const [figure, setFigure] = useState(0);
-  const END = 400 - previews.length * 100;
+  const [location, setLocation] = useState(0);
+
+  const MAX_WIDTH = 400;
+  const WIDTH = 100;
   const START = 0;
+  const END = MAX_WIDTH - previews.length * WIDTH;
 
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     setPreviews((prev) => {
@@ -46,26 +51,26 @@ function PreviewList({
   };
 
   const handleDelete = (deleteIdx: number) => {
-    if (figure !== START) {
-      setFigure((prev) => (prev += 100));
-    }
+    if (location !== START) setLocation((prev) => (prev += 100));
     onDelete(deleteIdx);
   };
 
-  const handleShow = (e: React.MouseEvent) => {
+  const handleDrop = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDrop(true);
   };
 
+  const handleCloseTooltip = () => setTooltipOpen(false);
+
   const handleClickPreview = (e: React.MouseEvent) => {
-    const eventTarget = e.target as HTMLLIElement;
-    if (eventTarget.tagName !== "LI") return;
-    setIndex(eventTarget.value);
+    const { value, tagName } = e.target as HTMLLIElement;
+    if (tagName === "LI") setIndex(value);
+    if (tooltipOpen) handleCloseTooltip();
   };
 
   const handleClickArrow = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLSpanElement;
-    setFigure((prev) => {
+    setLocation((prev) => {
       const next = eventTarget.id
         ? prev - 300 < END
           ? END
@@ -78,16 +83,22 @@ function PreviewList({
   };
 
   useEffect(() => {
-    if (figure < START) setHasLeft(true);
+    if (location < START) setHasLeft(true);
     else setHasLeft(false);
-    if (figure > END) setHasRight(true);
+    if (location > END) setHasRight(true);
     else setHasRight(false);
-  }, [figure, END]);
+  }, [location, END]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setTooltipOpen(true);
+    }, 2000);
+  }, []);
 
   return (
     <div className={classNames(styles.container, className)}>
       <div className={styles.previewBtn}>
-        <span className={"material-symbols-rounded"} onClick={handleShow}>
+        <span className={"material-symbols-rounded"} onClick={handleDrop}>
           photo_library
         </span>
       </div>
@@ -97,7 +108,7 @@ function PreviewList({
             <ul
               className={styles.previewList}
               onMouseDown={handleClickPreview}
-              style={{ transform: `translateX(${figure}px)` }}
+              style={{ transform: `translateX(${location}px)` }}
             >
               {previews.map((preview, i) => (
                 <PreviewItem
@@ -148,6 +159,11 @@ function PreviewList({
               onChange={handleChange}
             />
           </div>
+          {tooltipOpen && (
+            <Tooltip onClose={handleCloseTooltip} className={styles.tooltip}>
+              사진을 드래그해서 순서를 바꿔보세요.
+            </Tooltip>
+          )}
         </div>
       </DropDown>
     </div>

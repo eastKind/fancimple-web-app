@@ -9,17 +9,19 @@
     font-size: 1.1rem;
     line-height: 20px;
 
-    .init {
+    .indicator {
+      width: 100%;
       text-align: center;
     }
 
-    .steps {
-      display: flex;
-      justify-content: space-between;
+    .prev {
+      cursor: pointer;
+      float: left;
+    }
 
-      span {
-        cursor: pointer;
-      }
+    .next {
+      cursor: pointer;
+      float: right;
     }
   }
 

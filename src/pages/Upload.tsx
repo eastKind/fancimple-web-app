@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import ImageEditor from "../components/ImageEditor";
@@ -12,6 +12,7 @@ function Upload() {
   const [ratio, setRatio] = useState("1/1");
   const [texts, setTexts] = useState("");
   const [steps, setSteps] = useState(0);
+  const [indicator, setIndicator] = useState("작성");
   const { loading } = useAppSelector((state) => state.post);
   const dispatch = useAppDispatch();
 
@@ -39,18 +40,42 @@ function Upload() {
     }
   };
 
+  useEffect(() => {
+    switch (steps) {
+      case 0:
+        setIndicator("게시물 생성");
+        break;
+      case 1:
+        setIndicator("자르기");
+        break;
+      case 2:
+        setIndicator("텍스트 입력");
+        break;
+      case 3:
+        setIndicator("게시물 등록 중");
+        break;
+      case 4:
+        setIndicator("게시물 등록 완료");
+        break;
+      default:
+        break;
+    }
+  }, [steps]);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         {0 < steps && steps < 3 && (
-          <div className={styles.steps}>
-            <span onClick={handleClickPrev}>이전</span>
-            <span onClick={handleClickNext}>{steps < 2 ? "다음" : "완료"}</span>
+          <div>
+            <span onClick={handleClickPrev} className={styles.prev}>
+              이전
+            </span>
+            <span onClick={handleClickNext} className={styles.next}>
+              {steps < 2 ? "다음" : "완료"}
+            </span>
           </div>
         )}
-        {steps === 0 && <div className={styles.init}>게시물 작성</div>}
-        {steps === 3 && <div className={styles.init}>게시물 등록 중</div>}
-        {steps === 4 && <div className={styles.init}>게시물 등록 완료</div>}
+        <div className={styles.indicator}>{indicator}</div>
       </div>
       <div className={styles.body}>
         <div className={styles.imgSection}>

@@ -28,17 +28,23 @@ function ImageEditor({
 
   const handleDelete = (deleteIdx: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== deleteIdx));
+    setPreviews((prev) => prev.filter((_, i) => i !== deleteIdx));
+    URL.revokeObjectURL(previews[deleteIdx]);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nextFiles = e.target.files;
-    if (!nextFiles) return;
-    setFiles([...nextFiles]);
+    if (!e.target.files) return;
+    const newFiles = [...e.target.files];
+    setFiles(newFiles);
+    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+    setPreviews(newPreviews);
     setSteps(1);
   };
 
-  const handleAppend = (nextFiles: FileList) => {
-    setFiles((prev) => [...prev, ...nextFiles]);
+  const handleAppend = (newFiles: FileList) => {
+    setFiles((prev) => [...prev, ...newFiles]);
+    const newPreviews = [...newFiles].map((file) => URL.createObjectURL(file));
+    setPreviews((prev) => [...prev, ...newPreviews]);
   };
 
   const handleEdit = (nextRatio: string) => onEdit(nextRatio);
@@ -51,17 +57,8 @@ function ImageEditor({
   }, [previews]);
 
   useEffect(() => {
-    if (files.length < 1) return;
-    setIndex((prev) => (prev ? prev : 0));
-
-    const nextUrls = files.map((file) => URL.createObjectURL(file));
-    setPreviews(nextUrls);
-
-    return () => {
-      nextUrls.forEach((url) => URL.revokeObjectURL(url));
-      setPreviews([]);
-    };
-  }, [files]);
+    if (files.length === 0) setSteps(0);
+  }, [files, setSteps]);
 
   return (
     <div className={styles.container}>

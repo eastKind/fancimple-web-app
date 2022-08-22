@@ -77,5 +77,10 @@
         display: none;
       }
     }
+
+    .tooltip {
+      top: -40px - 16px;
+      left: 0;
+    }
   }
 }
