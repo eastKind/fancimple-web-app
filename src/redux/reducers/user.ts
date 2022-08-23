@@ -43,6 +43,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     initUser: () => initialState,
+    initOther: (state) => {
+      state.other = initialState.other;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -77,6 +80,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { initUser } = userSlice.actions;
+export const { initUser, initOther } = userSlice.actions;
 
 export default userSlice.reducer;

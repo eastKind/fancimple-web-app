@@ -8,6 +8,7 @@ import Modal from "./Modal";
 import styles from "../essets/scss/UserInfo.module.scss";
 import Button from "./Button";
 import UserList from "./UserList";
+import Spinner from "./Spinner";
 
 interface UserInfoProps {
   user: UserData;
@@ -15,7 +16,7 @@ interface UserInfoProps {
 }
 
 function UserInfo({ user, isMe }: UserInfoProps) {
-  const { me } = useAppSelector((state) => state.user);
+  const { me, loading } = useAppSelector((state) => state.user);
   const [isFollowed, setIsFollowed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedList, setSelectedList] = useState("");
@@ -53,26 +54,30 @@ function UserInfo({ user, isMe }: UserInfoProps) {
           className={styles.avatar}
         />
       )}
-      <div className={styles.infoContainer}>
-        <div className={styles.header}>
-          <p className={styles.name}>{user.name}</p>
-          {isMe || (
-            <Button
-              onClick={handleClickFollow}
-              className={styles.followBtn}
-              variant="inverse"
-            >
-              {isFollowed ? "팔로우 취소" : "팔로우"}
-            </Button>
-          )}
+      {loading ? (
+        <Spinner size="30px" className={styles.spinner} />
+      ) : (
+        <div className={styles.infoContainer}>
+          <div className={styles.header}>
+            <p className={styles.name}>{user.name}</p>
+            {isMe || (
+              <Button
+                onClick={handleClickFollow}
+                className={styles.followBtn}
+                variant="inverse"
+              >
+                {isFollowed ? "팔로우 취소" : "팔로우"}
+              </Button>
+            )}
+          </div>
+          <div className={styles.counts} onClick={handleClick}>
+            <span>게시물 {user.postCount}</span>
+            <span id="follower">팔로워 {user.followers.length}</span>
+            <span id="follow">팔로우 {user.followings.length}</span>
+          </div>
+          <span>{"Hello :)"}</span>
         </div>
-        <div className={styles.counts} onClick={handleClick}>
-          <span>게시물 {user.postCount}</span>
-          <span id="follower">팔로워 {user.followers.length}</span>
-          <span id="follow">팔로우 {user.followings.length}</span>
-        </div>
-        <span>{"Hello :)"}</span>
-      </div>
+      )}
       <Modal isOpen={modalOpen} onClose={handleModal}>
         <UserList userId={user._id} selectedList={selectedList} />
       </Modal>

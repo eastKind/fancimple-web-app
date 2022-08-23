@@ -177,7 +177,7 @@ function SignUpForm() {
         <p className={styles.cautions}>{cautions.password2}</p>
       </div>
       <Button type="submit" disabled={loading} className={styles.btn}>
-        {loading ? <Spinner size="25.6px" variant="white" /> : "회원 가입"}
+        {loading ? <Spinner size="25.6px" variant="inverse" /> : "회원 가입"}
       </Button>
     </form>
   );

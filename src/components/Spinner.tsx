@@ -5,18 +5,14 @@ import styles from "../essets/scss/spinner.module.scss";
 interface SpinnerProps {
   size: string;
   className?: string;
-  variant?: string;
+  variant?: "inverse";
 }
 
 function Spinner({ size, className, variant }: SpinnerProps) {
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)}>
       <div
-        className={classNames(
-          styles.spinner,
-          variant && styles[variant],
-          className
-        )}
+        className={classNames(styles.spinner, variant && styles[variant])}
         style={{ width: size, height: size }}
       ></div>
     </div>

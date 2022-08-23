@@ -14,7 +14,6 @@ function Home() {
   const handleLoad = useCallback(
     async (options: GetPostsReqData) => {
       try {
-        dispatch(initPost());
         await dispatch(getPosts(options));
       } catch (error: any) {
         alert(error.message);
@@ -25,7 +24,11 @@ function Home() {
 
   useEffect(() => {
     handleLoad({ cursor: "", limit: 10 });
-  }, [handleLoad]);
+
+    return () => {
+      dispatch(initPost());
+    };
+  }, [handleLoad, dispatch]);
 
   return (
     <>

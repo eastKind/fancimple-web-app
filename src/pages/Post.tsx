@@ -33,7 +33,6 @@ function Post({ post }: PostProps) {
   const handleLoad = useCallback(
     async (options: GetCommentsReqData) => {
       try {
-        dispatch(initComment());
         await dispatch(getComments(options));
       } catch (error: any) {
         alert(error.message);
@@ -48,7 +47,10 @@ function Post({ post }: PostProps) {
 
   useEffect(() => {
     handleLoad({ postId: _id, cursor: "", limit: 10 });
-  }, [handleLoad, _id]);
+    return () => {
+      dispatch(initComment());
+    };
+  }, [_id, handleLoad, dispatch]);
 
   return (
     <div className={styles.container}>
