@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { deletePost } from "../redux/thunks/post";
 import { PostData } from "../types";
 import Confirm from "./Confirm";
@@ -17,6 +17,7 @@ interface MyMenuProps {
 function MyMenu({ post, isDropped, setDrop }: MyMenuProps) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const { loading } = useAppSelector((state) => state.post);
   const dispatch = useAppDispatch();
 
   const handleConfirm = () => setConfirmOpen((prev) => !prev);
@@ -47,6 +48,7 @@ function MyMenu({ post, isDropped, setDrop }: MyMenuProps) {
       </DropDown>
       <Confirm
         isOpen={confirmOpen}
+        loading={loading}
         onCancel={handleConfirm}
         onConfirm={handleDelete}
       >

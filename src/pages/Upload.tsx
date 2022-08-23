@@ -36,7 +36,7 @@ function Upload() {
         formData.append("image", image);
       });
       await dispatch(createPost(formData));
-      setSteps((prev) => (prev += 1));
+      setSteps(4);
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { PostData, User } from "../types";
+import { PostData } from "../types";
 import useIsMe from "../hooks/useIsMe";
 import Avatar from "./Avatar";
 import MyMenu from "./MyMenu";

@@ -80,7 +80,8 @@
 
     .tooltip {
       top: -40px - 16px;
-      left: 0;
+      right: 0;
+      min-width: 250px;
     }
   }
 }

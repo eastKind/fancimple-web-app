@@ -2,16 +2,24 @@ import React, { ReactNode } from "react";
 import classNames from "classnames";
 import Modal from "./Modal";
 import Button from "./Button";
+import Spinner from "./Spinner";
 import styles from "../essets/scss/Confirm.module.scss";
 
 interface ConfirmProps {
   isOpen: boolean;
+  loading: boolean;
   children: ReactNode;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-function Confirm({ isOpen, children, onCancel, onConfirm }: ConfirmProps) {
+function Confirm({
+  isOpen,
+  loading,
+  children,
+  onCancel,
+  onConfirm,
+}: ConfirmProps) {
   const handleClick = (e: React.MouseEvent) => {
     const { id } = e.target as HTMLDivElement;
     if (id === "confirm") onConfirm();
@@ -31,7 +39,7 @@ function Confirm({ isOpen, children, onCancel, onConfirm }: ConfirmProps) {
         </div>
         <div className={styles.btns} onClick={handleClick}>
           <Button id="confirm" className={styles.btn}>
-            확인
+            {loading ? <Spinner size="16.8px" /> : "확인"}
           </Button>
           <Button variant="inverse" className={styles.btn}>
             취소

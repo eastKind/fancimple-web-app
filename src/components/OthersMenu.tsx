@@ -17,6 +17,8 @@ function OthersMenu({ post, isDropped, setDrop }: OthersMenuProps) {
   const [isFollowed, setIsFollowed] = useState(false);
   const dispatch = useAppDispatch();
 
+  const handleDrop = () => setDrop((prev) => !prev);
+
   const handleClickFollow = async () => {
     try {
       await dispatch(follow({ userId: writer._id, isFollowed }));
@@ -31,7 +33,7 @@ function OthersMenu({ post, isDropped, setDrop }: OthersMenuProps) {
 
   return (
     <DropDown isDropped={isDropped} setDrop={setDrop}>
-      <ul className={styles.list}>
+      <ul className={styles.list} onClick={handleDrop}>
         <li onClick={handleClickFollow}>
           <span>{isFollowed ? "팔로우 취소" : "팔로우"}</span>
         </li>

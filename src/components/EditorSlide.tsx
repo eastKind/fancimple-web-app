@@ -113,7 +113,6 @@ function EditorSlide({
             />
           </div>
         ))}
-        ;
       </div>
       {previews.length > 1 && (
         <div className={styles.bulletContainer}>

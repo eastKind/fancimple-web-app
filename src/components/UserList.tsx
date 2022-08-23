@@ -68,15 +68,13 @@ function UserList({ userId, selectedList }: UserListProps) {
             <Link to={`/${user._id}/post`} state={{ isMe: false }}>
               <span>{user.name}</span>
             </Link>
-            {/* <div className={styles.desc}>{"hello :)"}</div> */}
           </li>
         ))}
+        {loading && <Spinner size="30px" />}
         <div
           className={classNames(styles.observer, hasNext && styles.show)}
           ref={targetRef}
-        >
-          {loading && <Spinner size="30px" />}
-        </div>
+        />
       </ul>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import classNames from "classnames";
 import { useOutletContext } from "react-router-dom";
 import { getPosts } from "../redux/thunks/post";
@@ -7,7 +7,6 @@ import { GetPostsReqData } from "../types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import Spinner from "../components/Spinner";
-import GridItem from "../components/GridItem";
 import styles from "../essets/scss/ProfileHome.module.scss";
 
 interface OutletContext {
@@ -22,6 +21,13 @@ function ProfileHome() {
   const dispatch = useAppDispatch();
   const targetRef = useRef<any>(null);
   const isInterSecting = useInfiniteScroll(targetRef);
+
+  const GridItem = lazy(async () => {
+    return await Promise.all([
+      import("../components/GridItem"),
+      new Promise((resolve) => setTimeout(resolve, 1500)),
+    ]).then(([module]) => module);
+  });
 
   const handleLoad = useCallback(
     async (options: GetPostsReqData) => {
@@ -48,7 +54,20 @@ function ProfileHome() {
     <>
       <div className={styles.grid}>
         {posts.map((post) => (
-          <GridItem key={post._id} post={post} />
+          <Suspense
+            key={post._id}
+            fallback={
+              <div
+                style={{
+                  maxWidth: "297px",
+                  aspectRatio: "1",
+                  backgroundColor: "#eee",
+                }}
+              />
+            }
+          >
+            <GridItem post={post} />
+          </Suspense>
         ))}
       </div>
       <div

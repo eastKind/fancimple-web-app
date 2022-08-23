@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, lazy, Suspense } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useLocation, Outlet, NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getUser } from "../redux/thunks/user";
 import { GetUserReqData, MyParams } from "../types";
 import Container from "../components/Container";
-import UserInfo from "../components/UserInfo";
+import photo from "../essets/images/person.png";
 import styles from "../essets/scss/Profile.module.scss";
 
 function Profile() {
@@ -16,6 +16,13 @@ function Profile() {
     isMe ? state.user.me : state.user.other
   );
   const dispatch = useAppDispatch();
+
+  const UserInfo = lazy(async () => {
+    return await Promise.all([
+      import("../components/UserInfo"),
+      new Promise((resolve) => setTimeout(resolve, 1500)),
+    ]).then(([module]) => module);
+  });
 
   const handleLoad = useCallback(
     async (options: GetUserReqData) => {
@@ -63,7 +70,11 @@ function Profile() {
             )}
           </ul>
           <div className={styles.userInfo}>
-            <UserInfo user={user} isMe={isMe} />
+            <Suspense
+              fallback={<img src={photo} alt="" className={styles.suspense} />}
+            >
+              <UserInfo user={user} isMe={isMe} />
+            </Suspense>
           </div>
         </div>
         <div className={styles.body}>

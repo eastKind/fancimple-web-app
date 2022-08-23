@@ -9,6 +9,7 @@ import "../essets/scss/App.font.scss";
 function App() {
   const dispatch = useAppDispatch();
   const { sessionId } = useAppSelector((state) => state.auth);
+  const { me } = useAppSelector((state) => state.user);
 
   const handleLoad = useCallback(async () => {
     try {
@@ -19,8 +20,9 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
+    if (me._id) return;
     handleLoad();
-  }, [handleLoad]);
+  }, [me, handleLoad]);
 
   if (!sessionId) return <Navigate to="/signin" />;
 
