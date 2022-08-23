@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import styles from "../essets/scss/spinner.module.scss";
+import styles from "../essets/scss/Spinner.module.scss";
 
 interface SpinnerProps {
   size: string;
