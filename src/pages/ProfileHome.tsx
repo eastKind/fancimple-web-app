@@ -32,6 +32,7 @@ function ProfileHome() {
 
   useEffect(() => {
     handleLoad({ userId, cursor: "", limit: 9 });
+
     return () => {
       dispatch(initPost());
     };
@@ -48,11 +49,16 @@ function ProfileHome() {
           <GridItem key={post._id} post={post} />
         ))}
       </div>
+      {loading && posts.length === 0 && (
+        <div className={styles.spinner}>
+          <Spinner size="30px" />
+        </div>
+      )}
       <div
         className={classNames(styles.observer, hasNext && styles.show)}
         ref={targetRef}
       >
-        {loading && <Spinner size="18px" />}
+        {loading && <Spinner size="30px" />}
       </div>
     </>
   );

@@ -23,6 +23,17 @@
 
       .followBtn {
         padding: 5px 10px;
+        position: relative;
+        overflow: hidden;
+
+        .spinner {
+          background-color: #fff;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
       }
     }
 
@@ -42,9 +53,5 @@
     > :not(:last-child) {
       margin-bottom: 10px;
     }
-  }
-
-  .spinner {
-    height: 150px;
   }
 }

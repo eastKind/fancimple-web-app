@@ -67,14 +67,10 @@ function Nav({ className }: NavProps) {
             <DropDown isDropped={drop} setDrop={setDrop}>
               <ul className={styles.userMenu} onClick={handleDrop}>
                 <li>
-                  <Link to={`/${me._id}/post`} state={{ isMe: true }}>
-                    프로필
-                  </Link>
+                  <Link to={`/${me._id}/post`}>프로필</Link>
                 </li>
                 <li>
-                  <Link to={`/${me._id}/bookmark`} state={{ isMe: true }}>
-                    북마크
-                  </Link>
+                  <Link to={`/${me._id}/bookmark`}>북마크</Link>
                 </li>
                 <li onClick={handleLogout}>
                   <span>로그아웃</span>

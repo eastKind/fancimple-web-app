@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  MouseEvent,
+} from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import UserAPI from "../api/User";
@@ -11,15 +17,21 @@ import styles from "../essets/scss/UserList.module.scss";
 interface UserListProps {
   userId: string;
   selectedList: string;
+  onClose: () => void;
 }
 
-function UserList({ userId, selectedList }: UserListProps) {
+function UserList({ userId, selectedList, onClose }: UserListProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasNext, setHasNext] = useState(false);
   const [cursor, setCursor] = useState("");
   const targetRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useInfiniteScroll(targetRef);
+
+  const handleClick = (e: MouseEvent) => {
+    const { tagName } = e.target as HTMLElement;
+    if (tagName === "SPAN" || tagName === "IMG") onClose();
+  };
 
   const handleLoad = useCallback(
     async (options: GetUsersReqData) => {
@@ -59,22 +71,24 @@ function UserList({ userId, selectedList }: UserListProps) {
       <div className={styles.header}>
         {selectedList === "follow" ? "팔로잉" : "팔로워"}
       </div>
-      <ul className={styles.list}>
+      <ul className={styles.list} onClick={handleClick}>
         {users.map((user) => (
           <li key={user._id} className={styles.listItem}>
-            <Link to={`/${user._id}/post`} state={{ isMe: false }}>
+            <Link to={`/${user._id}/post`}>
               <Avatar width="45px" photo={user.photoUrl} name={user.name} />
             </Link>
-            <Link to={`/${user._id}/post`} state={{ isMe: false }}>
+            <Link to={`/${user._id}/post`}>
               <span>{user.name}</span>
             </Link>
           </li>
         ))}
-        {loading && <Spinner size="30px" />}
+        {loading && users.length === 0 && <Spinner size="30px" />}
         <div
           className={classNames(styles.observer, hasNext && styles.show)}
           ref={targetRef}
-        />
+        >
+          {loading && <Spinner size="30px" />}
+        </div>
       </ul>
     </div>
   );

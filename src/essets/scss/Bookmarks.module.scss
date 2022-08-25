@@ -4,6 +4,10 @@
   grid-gap: 27px;
 }
 
+.spinner {
+  height: calc(100vh - 354px);
+}
+
 .observer {
   display: none;
 

@@ -23,10 +23,10 @@ function PostHeader({ post }: PostHeaderProps) {
 
   return (
     <div className={styles.header}>
-      <Link to={`/${writer._id}/post`} state={{ isMe }}>
+      <Link to={`/${writer._id}/post`}>
         <Avatar photo={writer.photoUrl} name={writer.name} />
       </Link>
-      <Link to={`/${writer._id}/post`} state={{ isMe }}>
+      <Link to={`/${writer._id}/post`}>
         <span className={styles.name}>{writer.name}</span>
       </Link>
       <div className={styles.moreBtn}>

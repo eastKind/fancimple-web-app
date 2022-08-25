@@ -1,6 +1,7 @@
 .container {
   display: flex;
   align-items: flex-start;
+  position: relative;
 
   .avatar {
     padding-top: 5px;
@@ -52,5 +53,14 @@
         text-align: right;
       }
     }
+  }
+
+  .spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
   }
 }

@@ -19,6 +19,13 @@
     }
   }
 
+  .spinner {
+    flex-grow: 1;
+    height: 100%;
+    border: 1px solid rgba($black, 0.5);
+    border-radius: 5px 0 0 5px;
+  }
+
   button {
     border-radius: 0 5px 5px 0;
     height: 100%;

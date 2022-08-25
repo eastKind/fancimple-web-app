@@ -2,15 +2,20 @@
   margin: 50px 0 0;
   padding: 0;
 
-  .observer {
-    display: none;
-
-    &.show {
-      display: block;
-    }
-  }
-
   > :not(:last-child) {
     margin-bottom: 20px;
+  }
+}
+
+.spinner {
+  height: calc(100vh - 112px);
+}
+
+.observer {
+  margin-bottom: 20px;
+  display: none;
+
+  &.show {
+    display: block;
   }
 }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import ImageEditor from "../components/ImageEditor";
-import styles from "../essets/scss/Upload.module.scss";
-import TextEditor from "../components/TextEditor";
 import { createPost } from "../redux/thunks/post";
+import ImageEditor from "../components/ImageEditor";
+import TextEditor from "../components/TextEditor";
 import Spinner from "../components/Spinner";
+import styles from "../essets/scss/Upload.module.scss";
 
 function Upload() {
   const [images, setImages] = useState<Blob[]>([]);

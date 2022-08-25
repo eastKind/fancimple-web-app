@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Portal from "../Portal";
+import classNames from "classnames";
 import styles from "../essets/scss/Modal.module.scss";
 
 interface ModalProps {
@@ -31,6 +32,12 @@ function Modal({ children, isOpen, onClose }: ModalProps) {
       {isOpen && (
         <div ref={ref} className={styles.container}>
           {children}
+          <span
+            className={classNames("material-symbols-rounded", styles.symbol)}
+            onClick={() => onClose()}
+          >
+            close
+          </span>
         </div>
       )}
     </Portal>

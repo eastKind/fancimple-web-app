@@ -19,7 +19,6 @@ function Bookmark() {
 
   const handleLoad = useCallback(
     async (options: GetPostsReqData) => {
-      if (!options.cursor) dispatch(initPost());
       await dispatch(getPosts(options));
     },
     [dispatch]
@@ -27,7 +26,10 @@ function Bookmark() {
 
   useEffect(() => {
     handleLoad({ cursor: "", limit: 9, bookmark: true });
-  }, [handleLoad]);
+    return () => {
+      dispatch(initPost());
+    };
+  }, [handleLoad, dispatch]);
 
   useEffect(() => {
     if (isInterSecting && hasNext)
@@ -43,11 +45,16 @@ function Bookmark() {
           <GridItem key={post._id} post={post} />
         ))}
       </div>
+      {loading && posts.length === 0 && (
+        <div className={styles.spinner}>
+          <Spinner size="30px" />
+        </div>
+      )}
       <div
         className={classNames(styles.observer, hasNext && styles.show)}
         ref={targetRef}
       >
-        {loading && <Spinner size="18px" />}
+        {loading && <Spinner size="30px" />}
       </div>
     </>
   );

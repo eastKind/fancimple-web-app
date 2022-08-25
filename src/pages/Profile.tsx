@@ -1,44 +1,39 @@
 import React, { useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet";
-import { useParams, useLocation, Outlet, NavLink } from "react-router-dom";
+import { useParams, Outlet, NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import useIsMe from "../hooks/useIsMe";
 import { initOther } from "../redux/reducers/user";
 import { getUser } from "../redux/thunks/user";
-import { GetUserReqData, MyParams } from "../types";
+import { MyParams } from "../types";
 import Container from "../components/Container";
 import UserInfo from "../components/UserInfo";
+import Spinner from "../components/Spinner";
+import NotFound from "./NotFound";
 import styles from "../essets/scss/Profile.module.scss";
 
 function Profile() {
-  const location = useLocation();
-  const { isMe } = location.state as { isMe: boolean };
   const { id } = useParams<keyof MyParams>() as MyParams;
-  const user = useAppSelector((state) =>
-    isMe ? state.user.me : state.user.other
-  );
+  const { other: user, loading, error } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const isMe = useIsMe(id);
 
   const handleLoad = useCallback(
-    async (options: GetUserReqData) => {
-      try {
-        await dispatch(getUser(options));
-      } catch (error: any) {
-        alert(error.message);
-      }
+    async (userId: string) => {
+      dispatch(getUser({ userId }));
     },
     [dispatch]
   );
 
   useEffect(() => {
-    if (isMe) return;
-    handleLoad({ userId: id });
-  }, [isMe, id, handleLoad]);
+    handleLoad(id);
 
-  useEffect(() => {
     return () => {
       dispatch(initOther());
     };
-  }, [dispatch]);
+  }, [id, handleLoad, dispatch]);
+
+  if (error) return <NotFound />;
 
   return (
     <>
@@ -70,7 +65,13 @@ function Profile() {
             )}
           </ul>
           <div className={styles.userInfo}>
-            <UserInfo user={user} isMe={isMe} />
+            {loading && !user._id ? (
+              <div className={styles.spinner}>
+                <Spinner size="30px" />
+              </div>
+            ) : (
+              <UserInfo user={user} isMe={isMe} />
+            )}
           </div>
         </div>
         <div className={styles.body}>

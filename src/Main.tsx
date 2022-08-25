@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./components/App";
 import Bookmark from "./pages/Bookmark";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import ProfileHome from "./pages/ProfileHome";
 import SignIn from "./pages/SignIn";
@@ -18,6 +19,7 @@ function Main() {
             <Route path="post" element={<ProfileHome />} />
             <Route path="bookmark" element={<Bookmark />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

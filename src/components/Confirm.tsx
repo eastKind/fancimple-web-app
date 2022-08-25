@@ -38,8 +38,8 @@ function Confirm({
           <div className={styles.texts}>{children}</div>
         </div>
         <div className={styles.btns} onClick={handleClick}>
-          <Button id="confirm" className={styles.btn}>
-            {loading ? <Spinner size="16.8px" /> : "확인"}
+          <Button id="confirm" className={styles.btn} disabled={loading}>
+            {loading ? <Spinner size="16.8px" variant="inverse" /> : "확인"}
           </Button>
           <Button variant="inverse" className={styles.btn}>
             취소

@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useCallback, CSSProperties } from "react";
-import { useAppDispatch } from "../redux/hooks";
-import { getComments } from "../redux/thunks/comment";
-import { initComment } from "../redux/reducers/comment";
+import React, { useState, useEffect, CSSProperties } from "react";
 import useWindowSize from "../hooks/useWindowSize";
-import { GetCommentsReqData, PostData } from "../types";
+import { PostData } from "../types";
 import rtf from "../utils/rtf";
 import Slider from "../components/Slider";
 import CommentForm from "../components/CommentForm";
@@ -20,7 +17,6 @@ function Post({ post }: PostProps) {
   const { _id, images, texts, likeUsers, createdAt, ratio } = post;
   const [style, setStyle] = useState({});
   const { innerHeight } = useWindowSize();
-  const dispatch = useAppDispatch();
 
   const handleStyle = (height: number, ratio: string) => {
     const maxHeight = height * 0.9;
@@ -30,27 +26,9 @@ function Post({ post }: PostProps) {
     setStyle(nextStyle);
   };
 
-  const handleLoad = useCallback(
-    async (options: GetCommentsReqData) => {
-      try {
-        await dispatch(getComments(options));
-      } catch (error: any) {
-        alert(error.message);
-      }
-    },
-    [dispatch]
-  );
-
   useEffect(() => {
     handleStyle(innerHeight, ratio);
   }, [innerHeight, ratio]);
-
-  useEffect(() => {
-    handleLoad({ postId: _id, cursor: "", limit: 10 });
-    return () => {
-      dispatch(initComment());
-    };
-  }, [_id, handleLoad, dispatch]);
 
   return (
     <div className={styles.container}>

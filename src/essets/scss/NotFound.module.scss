@@ -1,0 +1,23 @@
+.container {
+  margin-top: 50px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  .warn {
+    margin-right: 20px;
+
+    h1 {
+      margin: 0 0 15px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin: 0 0 15px;
+    }
+  }
+
+  .symbol {
+    font-size: 100px;
+  }
+}
