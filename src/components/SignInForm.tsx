@@ -20,7 +20,6 @@ function SignInForm() {
 
   const handleValidate = () => {
     let isPass = true;
-
     Object.entries(values).forEach(([key, value]) => {
       if (!value) {
         setCautions((prev) => ({
@@ -33,24 +32,18 @@ function SignInForm() {
         isPass = false;
       }
     });
-
     setTimeout(() => {
       setCautions(initialState);
     }, 3000);
-
     return isPass;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const isPass = handleValidate();
-      if (isPass) {
-        await dispatch(signin(values)).unwrap();
-        navigate("/");
-      }
-    } catch (error: any) {
-      alert(error.message);
+    const isPass = handleValidate();
+    if (isPass) {
+      await dispatch(signin(values));
+      navigate("/");
     }
   };
 

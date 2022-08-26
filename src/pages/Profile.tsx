@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from "react";
-import { Helmet } from "react-helmet";
 import { useParams, Outlet, NavLink } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useIsMe from "../hooks/useIsMe";
-import { initOther } from "../redux/reducers/user";
+import { initUser } from "../redux/reducers/user";
 import { getUser } from "../redux/thunks/user";
 import { MyParams } from "../types";
 import Container from "../components/Container";
@@ -14,26 +14,25 @@ import styles from "../essets/scss/Profile.module.scss";
 
 function Profile() {
   const { id } = useParams<keyof MyParams>() as MyParams;
-  const { other: user, loading, error } = useAppSelector((state) => state.user);
+  const { user, loading, error } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const isMe = useIsMe(id);
 
   const handleLoad = useCallback(
     async (userId: string) => {
-      dispatch(getUser({ userId }));
+      await dispatch(getUser({ userId }));
     },
     [dispatch]
   );
 
   useEffect(() => {
     handleLoad(id);
-
     return () => {
-      dispatch(initOther());
+      dispatch(initUser());
     };
   }, [id, handleLoad, dispatch]);
 
-  if (error) return <NotFound />;
+  if (error?.status === 404) return <NotFound />;
 
   return (
     <>

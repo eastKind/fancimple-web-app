@@ -1,4 +1,4 @@
-import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
+import { createSlice, AnyAction } from "@reduxjs/toolkit";
 import {
   getPosts,
   createPost,
@@ -6,7 +6,7 @@ import {
   updatePost,
   likesPost,
 } from "../thunks/post";
-import { PostData } from "../../types";
+import type { PostData, Error } from "../../types";
 
 function isPendingAction(action: AnyAction) {
   return /^post\/.*\/pending$/.test(action.type);
@@ -20,7 +20,7 @@ function isRejectedAction(action: AnyAction) {
 
 interface PostState {
   loading: boolean;
-  error: SerializedError | null;
+  error: Error | null;
   posts: PostData[];
   cursor: string;
   hasNext: boolean;
@@ -79,7 +79,7 @@ export const postSlice = createSlice({
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
       });
   },
 });

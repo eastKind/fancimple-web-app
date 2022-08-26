@@ -1,9 +1,10 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import React, { Dispatch, SetStateAction } from "react";
+import { useAppDispatch } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
 import { PostData } from "../types";
 import DropDown from "./DropDown";
 import styles from "../essets/scss/PostMenu.module.scss";
+import useFollowState from "../hooks/useFollowState";
 
 interface OthersMenuProps {
   post: PostData;
@@ -13,23 +14,15 @@ interface OthersMenuProps {
 
 function OthersMenu({ post, isDropped, setDrop }: OthersMenuProps) {
   const { writer } = post;
-  const { me } = useAppSelector((state) => state.user);
-  const [isFollowed, setIsFollowed] = useState(false);
+  const { isFollowed, setIsFollowed } = useFollowState(writer._id);
   const dispatch = useAppDispatch();
 
   const handleDrop = () => setDrop((prev) => !prev);
 
   const handleClickFollow = async () => {
-    try {
-      await dispatch(follow({ userId: writer._id, isFollowed }));
-    } catch (error: any) {
-      alert(error.message);
-    }
+    setIsFollowed((prev) => !prev);
+    await dispatch(follow({ userId: writer._id, isFollowed }));
   };
-
-  useEffect(() => {
-    setIsFollowed(me.followings.includes(writer._id));
-  }, [me.followings, writer._id]);
 
   return (
     <DropDown isDropped={isDropped} setDrop={setDrop}>

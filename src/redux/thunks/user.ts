@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
+import User from "../../api/User";
+import type {
   GetUserReqData,
   SignupReqData,
   FollowReqData,
   BookmarkReqData,
 } from "../../types";
-import User from "../../api/User";
 
 export const signup = createAsyncThunk(
   "user/signup",
@@ -13,7 +13,8 @@ export const signup = createAsyncThunk(
     try {
       return await User.signup(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -22,9 +23,10 @@ export const getMe = createAsyncThunk(
   "user/getMe",
   async (_, { rejectWithValue }) => {
     try {
-      return await User.me();
+      return await User.getMe();
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -33,9 +35,10 @@ export const getUser = createAsyncThunk(
   "user/getUser",
   async (reqData: GetUserReqData, { rejectWithValue }) => {
     try {
-      return await User.get(reqData);
+      return await User.getOther(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -46,7 +49,8 @@ export const editPhoto = createAsyncThunk(
     try {
       return await User.editPhoto(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -57,7 +61,8 @@ export const follow = createAsyncThunk(
     try {
       return await User.follow(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -68,7 +73,8 @@ export const bookmark = createAsyncThunk(
     try {
       return await User.bookmark(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Post from "../../api/Post";
-import {
+import type {
   GetPostsReqData,
   UpdatePostReqData,
   DeletePostReqData,
@@ -18,7 +18,8 @@ export const getPosts = createAsyncThunk(
       if (bookmark) return await Post.getBookmarks({ cursor, limit });
       return await Post.get({ cursor, limit });
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -29,7 +30,8 @@ export const createPost = createAsyncThunk(
     try {
       return await Post.create(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -40,7 +42,8 @@ export const updatePost = createAsyncThunk(
     try {
       return await Post.update(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -51,7 +54,8 @@ export const deletePost = createAsyncThunk(
     try {
       return await Post.delete(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -62,18 +66,8 @@ export const likesPost = createAsyncThunk(
     try {
       return await Post.likes(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const test = createAsyncThunk(
-  "post/test",
-  async (reqData: FormData, { rejectWithValue }) => {
-    try {
-      return await Post.test(reqData);
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );

@@ -1,5 +1,5 @@
 import axiosInstance from "./axios";
-import {
+import type {
   GetCommentsResData,
   GetCommentsReqData,
   CreateCommentReqData,

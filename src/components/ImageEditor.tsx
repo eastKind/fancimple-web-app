@@ -1,7 +1,4 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-// import useWindowSize from "../hooks/useWindowSize";
-// import { useAppDispatch } from "../redux/hooks";
-// import { test } from "../redux/thunks/post";
 import ImgCrop from "./ImgCrop";
 import PreviewList from "./PreviewList";
 import styles from "../essets/scss/ImageEditor.module.scss";

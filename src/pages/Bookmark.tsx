@@ -10,7 +10,7 @@ import GridItem from "../components/GridItem";
 import styles from "../essets/scss/Bookmarks.module.scss";
 
 function Bookmark() {
-  const { posts, cursor, hasNext, loading, error } = useAppSelector(
+  const { posts, cursor, hasNext, loading } = useAppSelector(
     (state) => state.post
   );
   const dispatch = useAppDispatch();
@@ -35,8 +35,6 @@ function Bookmark() {
     if (isInterSecting && hasNext)
       handleLoad({ cursor, limit: 9, bookmark: true });
   }, [isInterSecting, hasNext, cursor, handleLoad]);
-
-  if (error) return <div>{error.message}</div>;
 
   return (
     <>

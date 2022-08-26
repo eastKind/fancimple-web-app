@@ -48,21 +48,17 @@ function SignUpForm() {
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    try {
-      const invalidKey = Object.keys(cautions).find((key) => {
-        return !(cautions[key] === "" && values[key]);
-      });
-      if (!invalidKey) {
-        const { name, email, password } = values;
-        await dispatch(signup({ name, email, password }));
-        await dispatch(signin({ email, password }));
-        return navigate("/");
-      }
-      if (invalidKey !== "password2") {
-        handleValidate(validate, invalidKey, values[invalidKey]);
-      }
-    } catch (error: any) {
-      alert(error.message);
+    const invalidKey = Object.keys(cautions).find((key) => {
+      return !(cautions[key] === "" && values[key]);
+    });
+    if (!invalidKey) {
+      const { name, email, password } = values;
+      await dispatch(signup({ name, email, password }));
+      await dispatch(signin({ email, password }));
+      return navigate("/");
+    }
+    if (invalidKey !== "password2") {
+      handleValidate(validate, invalidKey, values[invalidKey]);
     }
   };
 

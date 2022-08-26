@@ -9,20 +9,14 @@ import "../essets/scss/App.font.scss";
 function App() {
   const dispatch = useAppDispatch();
   const { sessionId } = useAppSelector((state) => state.auth);
-  const { me } = useAppSelector((state) => state.user);
 
   const handleLoad = useCallback(async () => {
-    try {
-      await dispatch(getMe());
-    } catch (error: any) {
-      alert(error.message);
-    }
+    await dispatch(getMe());
   }, [dispatch]);
 
   useEffect(() => {
-    if (me._id) return;
     handleLoad();
-  }, [me, handleLoad]);
+  }, [handleLoad]);
 
   if (!sessionId) return <Navigate to="/signin" />;
 

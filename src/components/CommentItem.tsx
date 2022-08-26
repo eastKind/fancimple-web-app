@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch } from "../redux/hooks";
-import useIsLiked from "../hooks/useIsLiked";
+import useLikeState from "../hooks/useLikeState";
 import useIsMe from "../hooks/useIsMe";
 import { deleteComment, likesComment } from "../redux/thunks/comment";
 import { CommentData } from "../types";
@@ -18,27 +18,19 @@ interface ListItemProps {
 function CommentItem({ comment }: ListItemProps) {
   const { _id, postId, writer, contents, createdAt, likeUsers } = comment;
   const [isDeleting, setIsDeleting] = useState(false);
+  const { isLiked, setIsLiked } = useLikeState(likeUsers);
   const dispatch = useAppDispatch();
-  const isLiked = useIsLiked(likeUsers);
   const isMe = useIsMe(writer._id);
 
   const handleDeleteClick = async () => {
-    try {
-      setIsDeleting(true);
-      await dispatch(deleteComment({ commentId: _id, postId }));
-    } catch (error: any) {
-      alert(error.message);
-    } finally {
-      setIsDeleting(false);
-    }
+    setIsDeleting(true);
+    await dispatch(deleteComment({ commentId: _id, postId }));
+    setIsDeleting(false);
   };
 
   const handleLikesClick = async () => {
-    try {
-      await dispatch(likesComment({ commentId: _id, isLiked }));
-    } catch (error: any) {
-      alert(error.message);
-    }
+    setIsLiked((prev) => !prev);
+    await dispatch(likesComment({ commentId: _id, isLiked }));
   };
 
   return (

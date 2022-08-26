@@ -2,7 +2,6 @@ import axiosInstance from "./axios";
 import type {
   ValidateReqData,
   FollowReqData,
-  FollowResData,
   GetUserReqData,
   GetUsersReqData,
   GetUsersResData,
@@ -22,12 +21,12 @@ export default class User {
     await axiosInstance.post("/user", reqData);
   }
 
-  public static async me(): Promise<MyData> {
+  public static async getMe(): Promise<MyData> {
     const response = await axiosInstance.get("/user/me");
     return response.data.user;
   }
 
-  public static async get({ userId }: GetUserReqData): Promise<UserData> {
+  public static async getOther({ userId }: GetUserReqData): Promise<UserData> {
     const response = await axiosInstance.get(`/user/${userId}`);
     return response.data.user;
   }
@@ -61,13 +60,11 @@ export default class User {
     return response.data.photoUrl;
   }
 
-  public static async follow(reqData: FollowReqData): Promise<FollowResData> {
-    const response = await axiosInstance.patch("/user/follow", reqData);
-    return response.data;
+  public static async follow(reqData: FollowReqData): Promise<void> {
+    await axiosInstance.patch("/user/follow", reqData);
   }
 
-  public static async bookmark(reqData: BookmarkReqData): Promise<string[]> {
-    const response = await axiosInstance.patch("/user/bookmark", reqData);
-    return response.data.bookmarks;
+  public static async bookmark(reqData: BookmarkReqData): Promise<void> {
+    await axiosInstance.patch("/user/bookmark", reqData);
   }
 }

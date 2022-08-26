@@ -1,5 +1,5 @@
 import axiosInstance from "./axios";
-import {
+import type {
   PostData,
   GetPostsResData,
   GetPostsReqData,
@@ -67,9 +67,5 @@ export default class Post {
       isLiked,
     });
     return response.data.likeUsers;
-  }
-
-  public static async test(arg: FormData): Promise<void> {
-    await axiosInstance.post("/post/test", arg);
   }
 }

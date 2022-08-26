@@ -16,15 +16,10 @@ function CommentForm({ postId }: CommentFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      setIsSubmitting(true);
-      await dispatch(createComment({ postId, contents: value }));
-    } catch (error: any) {
-      alert(error.message);
-    } finally {
-      setValue("");
-      setIsSubmitting(false);
-    }
+    setIsSubmitting(true);
+    await dispatch(createComment({ postId, contents: value }));
+    setValue("");
+    setIsSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

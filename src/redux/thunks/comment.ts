@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Comment from "../../api/Comment";
-import {
+import type {
   GetCommentsReqData,
   CreateCommentReqData,
   DeleteCommentReqData,
@@ -13,7 +13,8 @@ export const getComments = createAsyncThunk(
     try {
       return await Comment.get(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -24,7 +25,8 @@ export const createComment = createAsyncThunk(
     try {
       return await Comment.create(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -35,7 +37,8 @@ export const deleteComment = createAsyncThunk(
     try {
       return await Comment.delete(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -46,7 +49,8 @@ export const likesComment = createAsyncThunk(
     try {
       return await Comment.likes(reqData);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );

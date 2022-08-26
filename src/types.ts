@@ -36,11 +36,6 @@ export type FollowReqData = {
   isFollowed: boolean;
 };
 
-export type FollowResData = {
-  followers: string[];
-  followings: string[];
-};
-
 export type BookmarkReqData = {
   postId: string;
   isMarked: boolean;
@@ -102,6 +97,11 @@ export type GetCommentsResData = {
 };
 
 // Redux Data Types
+export interface Error {
+  status: number;
+  data: string;
+}
+
 export interface User {
   _id: string;
   name: string;
@@ -127,7 +127,6 @@ export type CommentData = {
 export type UserData = {
   _id: string;
   name: string;
-  email: string;
   photoUrl: string;
   followers: string[];
   followings: string[];

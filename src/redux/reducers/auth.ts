@@ -1,6 +1,7 @@
-import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
+import { createSlice, AnyAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { signin, signout } from "../thunks/auth";
+import type { Error } from "../../types";
 
 function isPendingAction(action: AnyAction) {
   return /^auth\/.*\/pending$/.test(action.type);
@@ -14,7 +15,7 @@ function isRejectedAction(action: AnyAction) {
 
 interface AuthState {
   loading: boolean;
-  error: SerializedError | null;
+  error: Error | null;
   sessionId?: string;
 }
 
@@ -45,7 +46,7 @@ export const authSlice = createSlice({
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
       });
   },
 });

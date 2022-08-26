@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppSelector } from "../redux/hooks";
 
-function useIsMarked(postId: string) {
+function useMarkState(postId: string) {
   const [isMarked, setIsMarked] = useState(false);
   const { me } = useAppSelector((state) => state.user);
 
@@ -9,7 +9,7 @@ function useIsMarked(postId: string) {
     setIsMarked(me.bookmarks.includes(postId));
   }, [me.bookmarks, postId]);
 
-  return isMarked;
+  return { isMarked, setIsMarked };
 }
 
-export default useIsMarked;
+export default useMarkState;

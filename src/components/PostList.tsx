@@ -19,18 +19,13 @@ function PostList() {
 
   const handleLoad = useCallback(
     async (options: GetPostsReqData) => {
-      try {
-        await dispatch(getPosts(options));
-      } catch (error: any) {
-        alert(error.message);
-      }
+      await dispatch(getPosts(options));
     },
     [dispatch]
   );
 
   useEffect(() => {
     handleLoad({ cursor: "", limit: 10 });
-
     return () => {
       dispatch(initPost());
     };
@@ -38,7 +33,6 @@ function PostList() {
 
   useEffect(() => {
     if (isInterSecting && hasNext) {
-      console.log("hi");
       handleLoad({ cursor, limit: 10 });
     }
   }, [isInterSecting, hasNext, cursor, handleLoad]);

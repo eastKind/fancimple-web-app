@@ -1,8 +1,8 @@
 import React from "react";
 import classNames from "classnames";
-import { useAppDispatch } from "../redux/hooks";
-import useIsLiked from "../hooks/useIsLiked";
-import useIsMarked from "../hooks/useIsMarked";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import useLikeState from "../hooks/useLikeState";
+import useMarkState from "../hooks/useMarkState";
 import { likesPost } from "../redux/thunks/post";
 import { bookmark } from "../redux/thunks/user";
 import { PostData } from "../types";
@@ -15,26 +15,23 @@ interface InteractionsProps {
 
 function Interactions({ post, onComment }: InteractionsProps) {
   const { _id, likeUsers } = post;
-  const isLiked = useIsLiked(likeUsers);
-  const isMarked = useIsMarked(_id);
+  const { isLiked, setIsLiked } = useLikeState(likeUsers);
+  const { isMarked, setIsMarked } = useMarkState(_id);
+  const { loading } = useAppSelector((state) => state.post);
   const dispatch = useAppDispatch();
 
   const handleComment = () => onComment();
 
   const handleLikes = async () => {
-    try {
-      await dispatch(likesPost({ postId: _id, isLiked }));
-    } catch (error: any) {
-      alert(error.message);
-    }
+    if (loading) return;
+    setIsLiked((prev) => !prev);
+    await dispatch(likesPost({ postId: _id, isLiked }));
   };
 
   const handleBookmark = async () => {
-    try {
-      await dispatch(bookmark({ postId: _id, isMarked }));
-    } catch (error: any) {
-      alert(error.message);
-    }
+    if (loading) return;
+    setIsMarked((prev) => !prev);
+    await dispatch(bookmark({ postId: _id, isMarked }));
   };
 
   return (

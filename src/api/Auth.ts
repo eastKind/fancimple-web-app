@@ -1,5 +1,5 @@
 import axiosInstance from "./axios";
-import { SigninReqData } from "../types";
+import type { SigninReqData } from "../types";
 
 export default class Auth {
   public static async signin(reqData: SigninReqData): Promise<void> {

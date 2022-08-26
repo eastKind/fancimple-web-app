@@ -1,11 +1,11 @@
-import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
+import { createSlice, AnyAction } from "@reduxjs/toolkit";
 import {
   getComments,
   createComment,
   deleteComment,
   likesComment,
 } from "../thunks/comment";
-import { CommentData } from "../../types";
+import type { CommentData, Error } from "../../types";
 
 function isPendingAction(action: AnyAction) {
   return /^comment\/.*\/pending$/.test(action.type);
@@ -19,7 +19,7 @@ function isRejectedAction(action: AnyAction) {
 
 interface CommentState {
   loading: boolean;
-  error: SerializedError | null;
+  error: Error | null;
   comments: CommentData[];
   cursor: string;
   hasNext: boolean;
@@ -77,7 +77,7 @@ export const commentSlice = createSlice({
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
       });
   },
 });

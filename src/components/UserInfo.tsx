@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { UserData } from "../types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
+import useFollowState from "../hooks/useFollowState";
 import AvatarForm from "./AvatarForm";
 import Avatar from "./Avatar";
 import Modal from "./Modal";
 import Button from "./Button";
 import UserList from "./UserList";
 import styles from "../essets/scss/UserInfo.module.scss";
-import Spinner from "./Spinner";
 
 interface UserInfoProps {
   user: UserData;
@@ -16,21 +16,18 @@ interface UserInfoProps {
 }
 
 function UserInfo({ user, isMe }: UserInfoProps) {
-  const { me, loading } = useAppSelector((state) => state.user);
-  const [isFollowed, setIsFollowed] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const { loading } = useAppSelector((state) => state.user);
+  const { isFollowed, setIsFollowed } = useFollowState(user._id);
   const [selectedList, setSelectedList] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  const handleClickFollow = async () => {
-    try {
-      await dispatch(follow({ userId: user._id, isFollowed }));
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
-
   const handleModal = () => setModalOpen((prev) => !prev);
+
+  const handleClickFollow = async () => {
+    setIsFollowed((prev) => !prev);
+    await dispatch(follow({ userId: user._id, isFollowed }));
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     const { id } = e.target as HTMLSpanElement;
@@ -38,10 +35,6 @@ function UserInfo({ user, isMe }: UserInfoProps) {
     setSelectedList(id);
     handleModal();
   };
-
-  useEffect(() => {
-    setIsFollowed(user.followers.includes(me._id));
-  }, [user.followers, me._id]);
 
   return (
     <div className={styles.container}>
@@ -57,18 +50,17 @@ function UserInfo({ user, isMe }: UserInfoProps) {
       <div className={styles.infoContainer}>
         <div className={styles.header}>
           <p className={styles.name}>{user.name}</p>
-          {isMe || (
+          {isMe ? (
+            <div className={styles.editBtn}>
+              <span className="material-symbols-rounded">edit</span>
+            </div>
+          ) : (
             <Button
               onClick={handleClickFollow}
               className={styles.followBtn}
               variant="inverse"
               disabled={loading}
             >
-              {loading && (
-                <div className={styles.spinner}>
-                  <Spinner size="18px" />
-                </div>
-              )}
               {isFollowed ? "팔로우 취소" : "팔로우"}
             </Button>
           )}
@@ -78,7 +70,6 @@ function UserInfo({ user, isMe }: UserInfoProps) {
           <span id="follower">팔로워 {user.followers.length}</span>
           <span id="follow">팔로우 {user.followings.length}</span>
         </div>
-        <span>{"Hello :)"}</span>
       </div>
       <Modal isOpen={modalOpen} onClose={handleModal}>
         <UserList

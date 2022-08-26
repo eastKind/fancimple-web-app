@@ -21,18 +21,13 @@ function ProfileHome() {
 
   const handleLoad = useCallback(
     async (options: GetPostsReqData) => {
-      try {
-        await dispatch(getPosts(options));
-      } catch (error: any) {
-        alert(error.message);
-      }
+      await dispatch(getPosts(options));
     },
     [dispatch]
   );
 
   useEffect(() => {
     handleLoad({ userId, cursor: "", limit: 9 });
-
     return () => {
       dispatch(initPost());
     };

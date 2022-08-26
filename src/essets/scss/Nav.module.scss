@@ -52,6 +52,7 @@
         border: 1px solid rgba($black, 0.3);
         box-shadow: $box-shadow;
         overflow: hidden;
+        z-index: 1;
 
         li {
           font-family: $gmarket-sans;

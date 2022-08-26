@@ -1,6 +1,6 @@
-import { createSlice, SerializedError, AnyAction } from "@reduxjs/toolkit";
-import { getUser, getMe, editPhoto, follow, bookmark } from "../thunks/user";
-import { UserData, MyData } from "../../types";
+import { createSlice, AnyAction } from "@reduxjs/toolkit";
+import { getUser, getMe, editPhoto } from "../thunks/user";
+import type { UserData, MyData, Error } from "../../types";
 import photo from "../../essets/images/person.png";
 
 function isPendingAction(action: AnyAction) {
@@ -15,15 +15,14 @@ function isRejectedAction(action: AnyAction) {
 
 interface UserState {
   loading: boolean;
-  error: SerializedError | null;
+  error: Error | null;
   me: MyData;
-  other: UserData;
+  user: UserData;
 }
 
 const INIT_USER = {
   _id: "",
   name: "",
-  email: "",
   photoUrl: photo,
   followers: [],
   followings: [],
@@ -34,17 +33,17 @@ const INIT_ME = { ...INIT_USER, bookmarks: [] };
 const initialState: UserState = {
   loading: false,
   error: null,
-  other: INIT_USER,
   me: INIT_ME,
+  user: INIT_USER,
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    initUser: () => initialState,
-    initOther: (state) => {
-      state.other = initialState.other;
+    initMe: () => initialState,
+    initUser: (state) => {
+      state.user = initialState.user;
     },
   },
   extraReducers: (builder) => {
@@ -53,18 +52,10 @@ export const userSlice = createSlice({
         state.me = action.payload;
       })
       .addCase(getUser.fulfilled, (state, action) => {
-        state.other = action.payload;
+        state.user = action.payload;
       })
       .addCase(editPhoto.fulfilled, (state, action) => {
         state.me.photoUrl = action.payload;
-      })
-      .addCase(follow.fulfilled, (state, action) => {
-        const { followers, followings } = action.payload;
-        state.other.followers = followers;
-        state.me.followings = followings;
-      })
-      .addCase(bookmark.fulfilled, (state, action) => {
-        state.me.bookmarks = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
@@ -75,11 +66,11 @@ export const userSlice = createSlice({
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
       });
   },
 });
 
-export const { initUser, initOther } = userSlice.actions;
+export const { initMe, initUser } = userSlice.actions;
 
 export default userSlice.reducer;

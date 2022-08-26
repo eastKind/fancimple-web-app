@@ -8,7 +8,7 @@ import React, {
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import UserAPI from "../api/User";
-import { User, GetUsersReqData } from "../types";
+import type { User, GetUsersReqData, Error } from "../types";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import Avatar from "./Avatar";
 import Spinner from "./Spinner";
@@ -23,6 +23,7 @@ interface UserListProps {
 function UserList({ userId, selectedList, onClose }: UserListProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const [hasNext, setHasNext] = useState(false);
   const [cursor, setCursor] = useState("");
   const targetRef = useRef<HTMLDivElement>(null);
@@ -36,6 +37,7 @@ function UserList({ userId, selectedList, onClose }: UserListProps) {
   const handleLoad = useCallback(
     async (options: GetUsersReqData) => {
       try {
+        setError(null);
         setLoading(true);
         const { users: nextUsers, hasNext } =
           selectedList === "follow"
@@ -48,7 +50,8 @@ function UserList({ userId, selectedList, onClose }: UserListProps) {
         setHasNext(hasNext);
         setCursor(nextCursor);
       } catch (error: any) {
-        alert(error.message);
+        const { status, data } = error.response;
+        setError({ status, data });
       } finally {
         setLoading(false);
       }

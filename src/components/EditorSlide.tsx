@@ -23,39 +23,31 @@ function EditorSlide({
   setIndex,
   setImages,
 }: EditorSlideProps) {
-  const { innerHeight } = useWindowSize();
-  const [width, setWidth] = useState(INIT);
-  const [height, setHeight] = useState(INIT);
+  const { innerHeight, innerWidth } = useWindowSize();
+  const [size, setSize] = useState({ w: INIT, h: INIT });
   const [style, setStyle] = useState({});
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(previews.length > 1 ? true : false);
-  // const editorRef: LegacyRef<Editor> = useRef(null);
 
   const handleSize = (ratio: string) => {
     if (ratio === "1/1") {
-      setWidth((prev) => (prev === INIT ? prev : INIT));
-      setHeight((prev) => (prev === INIT ? prev : INIT));
+      setSize({ w: INIT, h: INIT });
     } else if (ratio === "4/5") {
-      const nextWidth = INIT * 0.8;
-      setWidth((prev) => (prev === nextWidth ? prev : nextWidth));
-      setHeight((prev) => (prev === INIT ? prev : INIT));
+      setSize({ w: INIT * 0.8, h: INIT });
     } else {
-      const nextHeight = INIT * 0.5625;
-      setWidth((prev) => (prev === INIT ? prev : INIT));
-      setHeight((prev) => (prev === nextHeight ? prev : nextHeight));
+      setSize({ w: INIT, h: INIT * 0.5625 });
     }
   };
 
-  const handleStyle = (ratio: string, innerHeight: number) => {
-    let maxWidth = innerHeight * 0.8;
-    let maxHeight = innerHeight * 0.8;
-
-    if (ratio === "4/5") {
-      maxWidth = innerHeight * 0.8 * 0.8;
-    }
-    if (ratio === "16/9") {
-      maxHeight = innerHeight * 0.8 * 0.5625;
-    }
+  const handleStyle = (
+    ratio: string,
+    innerHeight: number,
+    innerWidth: number
+  ) => {
+    let maxWidth = Math.min(innerHeight * 0.8, innerWidth);
+    let maxHeight = maxWidth;
+    if (ratio === "4/5") maxWidth *= 0.8;
+    if (ratio === "16/9") maxHeight *= 0.5625;
     setStyle({ maxWidth, maxHeight });
   };
 
@@ -68,8 +60,11 @@ function EditorSlide({
 
   useEffect(() => {
     handleSize(ratio);
-    handleStyle(ratio, innerHeight);
-  }, [ratio, innerHeight]);
+  }, [ratio]);
+
+  useEffect(() => {
+    handleStyle(ratio, innerHeight, innerWidth);
+  }, [ratio, innerHeight, innerWidth]);
 
   useEffect(() => {
     if (index) setHasLeft(true);
@@ -104,8 +99,8 @@ function EditorSlide({
         {previews.map((url, i) => (
           <div key={i} className={styles.slideItem}>
             <Editor
-              width={width}
-              height={height}
+              width={size.w}
+              height={size.h}
               image={url}
               border={[0, 0]}
               style={style}

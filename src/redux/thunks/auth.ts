@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Auth from "../../api/Auth";
-import { SigninReqData } from "../../types";
+import type { SigninReqData } from "../../types";
 
 export const signin = createAsyncThunk(
   "auth/signin",
@@ -8,7 +8,8 @@ export const signin = createAsyncThunk(
     try {
       return await Auth.signin(arg);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );
@@ -19,7 +20,8 @@ export const signout = createAsyncThunk(
     try {
       return await Auth.signout();
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
     }
   }
 );

@@ -23,11 +23,7 @@ function CommentList({ postId }: CommentListProps) {
 
   const handleLoad = useCallback(
     async (options: GetCommentsReqData) => {
-      try {
-        await dispatch(getComments(options));
-      } catch (error: any) {
-        alert(error.message);
-      }
+      await dispatch(getComments(options));
     },
     [dispatch]
   );

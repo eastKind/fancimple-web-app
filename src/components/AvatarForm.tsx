@@ -39,21 +39,16 @@ function AvatarForm({ user }: AvatarFormProps) {
   const handleCancel = () => initialize();
 
   const handleSubmit = () => {
-    try {
-      if (!editorRef.current) return;
-      const canvas = editorRef.current.getImageScaledToCanvas();
-      canvas.toBlob(async (blob) => {
-        if (!blob) return;
-        const formData = new FormData();
-        formData.append("photo", blob);
-        formData.append("key", `${user.photoUrl.match(/(?<=com\/).*/)}`);
-        await dispatch(editPhoto(formData));
-      });
-    } catch (error: any) {
-      alert(error.message);
-    } finally {
-      initialize();
-    }
+    if (!editorRef.current) return;
+    const canvas = editorRef.current.getImageScaledToCanvas();
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      const formData = new FormData();
+      formData.append("photo", blob);
+      formData.append("key", `${user.photoUrl.match(/(?<=com\/).*/)}`);
+      await dispatch(editPhoto(formData));
+    });
+    initialize();
   };
 
   useEffect(() => {
@@ -61,7 +56,7 @@ function AvatarForm({ user }: AvatarFormProps) {
   }, [file]);
 
   return (
-    <form className={styles.avatarForm}>
+    <form className={styles.avatarForm} title="프로필 사진 변경">
       <label htmlFor="file">
         <Avatar photo={photoUrl} name={name} className={styles.avatar} />
       </label>
