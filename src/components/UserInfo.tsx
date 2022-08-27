@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { UserData } from "../types";
+import React, { MouseEvent, useState } from "react";
+import { Link } from "react-router-dom";
+import type { UserData } from "../types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
 import useFollowState from "../hooks/useFollowState";
-import AvatarForm from "./AvatarForm";
 import Avatar from "./Avatar";
 import Modal from "./Modal";
 import Button from "./Button";
@@ -24,12 +24,12 @@ function UserInfo({ user, isMe }: UserInfoProps) {
 
   const handleModal = () => setModalOpen((prev) => !prev);
 
-  const handleClickFollow = async () => {
+  const handleFollow = async () => {
     setIsFollowed((prev) => !prev);
     await dispatch(follow({ userId: user._id, isFollowed }));
   };
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (e: MouseEvent) => {
     const { id } = e.target as HTMLSpanElement;
     if (!id) return;
     setSelectedList(id);
@@ -38,25 +38,21 @@ function UserInfo({ user, isMe }: UserInfoProps) {
 
   return (
     <div className={styles.container}>
-      {isMe ? (
-        <AvatarForm user={user} />
-      ) : (
-        <Avatar
-          photo={user.photoUrl}
-          name={user.name}
-          className={styles.avatar}
-        />
-      )}
+      <Avatar
+        photo={user.photoUrl}
+        name={user.name}
+        className={styles.avatar}
+      />
       <div className={styles.infoContainer}>
         <div className={styles.header}>
           <p className={styles.name}>{user.name}</p>
           {isMe ? (
             <div className={styles.editBtn}>
-              <span className="material-symbols-rounded">edit</span>
+              <Link to="/account">프로필 편집</Link>
             </div>
           ) : (
             <Button
-              onClick={handleClickFollow}
+              onClick={handleFollow}
               className={styles.followBtn}
               variant="inverse"
               disabled={loading}
@@ -70,6 +66,7 @@ function UserInfo({ user, isMe }: UserInfoProps) {
           <span id="follower">팔로워 {user.followers.length}</span>
           <span id="follow">팔로우 {user.followings.length}</span>
         </div>
+        <p className={styles.desc}>{user.desc}</p>
       </div>
       <Modal isOpen={modalOpen} onClose={handleModal}>
         <UserList

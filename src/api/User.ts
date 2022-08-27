@@ -7,6 +7,7 @@ import type {
   GetUsersResData,
   SignupReqData,
   BookmarkReqData,
+  EditPWReqData,
   UserData,
   MyData,
 } from "../types";
@@ -58,6 +59,20 @@ export default class User {
   public static async editPhoto(reqData: FormData): Promise<string> {
     const response = await axiosInstance.patch("/user/photo", reqData);
     return response.data.photoUrl;
+  }
+
+  public static async editName(reqData: string): Promise<string> {
+    const response = await axiosInstance.patch("/user/name", { name: reqData });
+    return response.data.name;
+  }
+
+  public static async editDesc(reqData: string): Promise<string> {
+    const response = await axiosInstance.patch("/user/desc", { desc: reqData });
+    return response.data.desc;
+  }
+
+  public static async editPassword(reqData: EditPWReqData): Promise<void> {
+    await axiosInstance.patch("/user/password", reqData);
   }
 
   public static async follow(reqData: FollowReqData): Promise<void> {

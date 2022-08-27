@@ -42,8 +42,12 @@ function SignInForm() {
     e.preventDefault();
     const isPass = handleValidate();
     if (isPass) {
-      await dispatch(signin(values));
-      navigate("/");
+      try {
+        await dispatch(signin(values)).unwrap();
+        navigate("/");
+      } catch (error: any) {
+        if (error.status === 400) alert(error.data);
+      }
     }
   };
 

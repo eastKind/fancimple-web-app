@@ -41,6 +41,11 @@ export type BookmarkReqData = {
   isMarked: boolean;
 };
 
+export type EditPWReqData = {
+  current: string;
+  next: string;
+};
+
 //// Post
 export type GetPostsReqData = {
   cursor: string;
@@ -127,6 +132,7 @@ export type CommentData = {
 export type UserData = {
   _id: string;
   name: string;
+  desc: string;
   photoUrl: string;
   followers: string[];
   followings: string[];

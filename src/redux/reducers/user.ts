@@ -1,5 +1,5 @@
 import { createSlice, AnyAction } from "@reduxjs/toolkit";
-import { getUser, getMe, editPhoto } from "../thunks/user";
+import { getUser, getMe, editPhoto, editName, editDesc } from "../thunks/user";
 import type { UserData, MyData, Error } from "../../types";
 import photo from "../../essets/images/person.png";
 
@@ -23,6 +23,7 @@ interface UserState {
 const INIT_USER = {
   _id: "",
   name: "",
+  desc: "",
   photoUrl: photo,
   followers: [],
   followings: [],
@@ -56,6 +57,12 @@ export const userSlice = createSlice({
       })
       .addCase(editPhoto.fulfilled, (state, action) => {
         state.me.photoUrl = action.payload;
+      })
+      .addCase(editName.fulfilled, (state, action) => {
+        state.me.name = action.payload;
+      })
+      .addCase(editDesc.fulfilled, (state, action) => {
+        state.me.desc = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

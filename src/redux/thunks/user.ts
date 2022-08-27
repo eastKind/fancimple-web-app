@@ -5,6 +5,7 @@ import type {
   SignupReqData,
   FollowReqData,
   BookmarkReqData,
+  EditPWReqData,
 } from "../../types";
 
 export const signup = createAsyncThunk(
@@ -48,6 +49,42 @@ export const editPhoto = createAsyncThunk(
   async (reqData: FormData, { rejectWithValue }) => {
     try {
       return await User.editPhoto(reqData);
+    } catch (error: any) {
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
+    }
+  }
+);
+
+export const editName = createAsyncThunk(
+  "user/editName",
+  async (reqData: string, { rejectWithValue }) => {
+    try {
+      return await User.editName(reqData);
+    } catch (error: any) {
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
+    }
+  }
+);
+
+export const editDesc = createAsyncThunk(
+  "user/editDesc",
+  async (reqData: string, { rejectWithValue }) => {
+    try {
+      return await User.editDesc(reqData);
+    } catch (error: any) {
+      const { status, data } = error.response;
+      return rejectWithValue({ status, data });
+    }
+  }
+);
+
+export const editPassword = createAsyncThunk(
+  "user/editPassword",
+  async (reqData: EditPWReqData, { rejectWithValue }) => {
+    try {
+      return await User.editPassword(reqData);
     } catch (error: any) {
       const { status, data } = error.response;
       return rejectWithValue({ status, data });
