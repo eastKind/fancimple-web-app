@@ -2,6 +2,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 27px;
+
+  @media screen and (max-width: 768px) {
+    & {
+      grid-gap: 5px;
+    }
+  }
 }
 
 .spinner {

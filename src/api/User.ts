@@ -75,11 +75,13 @@ export default class User {
     await axiosInstance.patch("/user/password", reqData);
   }
 
-  public static async follow(reqData: FollowReqData): Promise<void> {
-    await axiosInstance.patch("/user/follow", reqData);
+  public static async follow(reqData: FollowReqData): Promise<string[]> {
+    const response = await axiosInstance.patch("/user/follow", reqData);
+    return response.data.followings;
   }
 
-  public static async bookmark(reqData: BookmarkReqData): Promise<void> {
-    await axiosInstance.patch("/user/bookmark", reqData);
+  public static async bookmark(reqData: BookmarkReqData): Promise<string[]> {
+    const response = await axiosInstance.patch("/user/bookmark", reqData);
+    return response.data.bookmarks;
   }
 }

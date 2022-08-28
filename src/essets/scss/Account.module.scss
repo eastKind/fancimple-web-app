@@ -1,8 +1,9 @@
 .container {
   margin-top: 40px;
+  padding: 30px;
   border: 1px solid rgba($black, 0.3);
   border-radius: 10px;
-  padding: 30px;
+  position: relative;
   background-color: #fff;
   box-shadow: $box-shadow;
 
@@ -11,6 +12,11 @@
     outline: none;
     border: 1px solid rgba($black, 0.4);
     border-radius: 4px;
+  }
+
+  .cautions {
+    color: $red;
+    font-size: 0.9rem;
   }
 
   .profileSection {
@@ -60,8 +66,10 @@
     .header {
       margin: 0 0 10px;
 
-      h3 {
-        margin: 0;
+      .head {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-right: 5px;
       }
     }
 
@@ -93,5 +101,15 @@
     .submitBtn {
       text-align: end;
     }
+  }
+
+  .spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(black, 0.3);
+    border-radius: 10px;
   }
 }

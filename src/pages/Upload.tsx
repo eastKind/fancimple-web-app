@@ -16,6 +16,12 @@ function Upload() {
   const { loading } = useAppSelector((state) => state.post);
   const dispatch = useAppDispatch();
 
+  const initialize = () => {
+    setImages([]);
+    setRatio("1/1");
+    setTexts("");
+  };
+
   const handleImageEdit = (nextRatio: string) => {
     setRatio(nextRatio);
   };
@@ -43,6 +49,7 @@ function Upload() {
   useEffect(() => {
     switch (steps) {
       case 0:
+        initialize();
         setIndicator("게시물 생성");
         break;
       case 1:

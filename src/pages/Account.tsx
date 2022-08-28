@@ -6,12 +6,13 @@ import React, {
   useCallback,
 } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { validate, validatePw } from "../utils/validate";
+import { validate } from "../utils/validate";
 import { editDesc, editName, editPassword } from "../redux/thunks/user";
 import Container from "../components/Container";
 import AvatarForm from "../components/AvatarForm";
 import Button from "../components/Button";
 import styles from "../essets/scss/Account.module.scss";
+import Spinner from "../components/Spinner";
 
 const INIT_CAUTIONS = {
   name: "",
@@ -37,6 +38,13 @@ function Account() {
     setCautions(INIT_CAUTIONS);
   }, [me]);
 
+  const handleCautions = (key: "name" | "password", value: string) => {
+    setCautions((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
   const handleChange = (e: ChangeEvent) => {
     const { type, name, value } = e.target as HTMLInputElement;
     if (type === "password") {
@@ -52,24 +60,24 @@ function Account() {
     }
   };
 
-  const handleBlurName = async (e: FocusEvent) => {
-    const { name, value } = e.target as HTMLInputElement;
-    const caution = validate(name, value);
-    if (!caution[name]) {
+  const handleBlurName = async () => {
+    if (me.name === profile.name) return;
+    const caution = validate("name", profile.name).name;
+    if (!caution) {
       try {
-        await dispatch(editName(value)).unwrap();
+        await dispatch(editName(profile.name)).unwrap();
       } catch (error: any) {
         alert(error.data);
-        return initialize();
+        initialize();
       }
+    } else {
+      initialize();
+      handleCautions("name", caution);
     }
-    setCautions((prev) => ({
-      ...prev,
-      ...caution,
-    }));
   };
 
   const handleBlurDesc = async () => {
+    if (me.desc === profile.desc) return;
     try {
       await dispatch(editDesc(profile.desc)).unwrap();
     } catch (error: any) {
@@ -78,24 +86,35 @@ function Account() {
   };
 
   const handleSubmit = async () => {
-    // const { current, next, confirm } = password;
-    // const caution = validate("password", next);
-    // // caution.password = validatePw(next, confirm).password2;
-    // // if (!current) caution.password = "현재 비밀번호를 입력해주세요.";
-    // if (!caution.password) {
-    //   try {
-    //     await dispatch(editPassword({ current, next })).unwrap();
-    //   } catch (error: any) {
-    //     alert(error.data);
-    //   } finally {
-    //     initialize();
-    //   }
-    // } else {
-    //   setCautions((prev) => ({
-    //     ...prev,
-    //     ...caution,
-    //   }));
-    // }
+    const { current, next, confirm } = password;
+    let caution = "";
+    const hasEmpty = Object.values({ current, next, confirm }).some(
+      (value) => value === ""
+    );
+    if (hasEmpty) {
+      caution = "모든 칸을 입력해주세요.";
+      return handleCautions("password", caution);
+    }
+    if (current === next) {
+      caution = "현재 비밀번호와 다르게 입력해주세요.";
+      return handleCautions("password", caution);
+    }
+    caution = validate("password", next).password;
+    if (caution) {
+      return handleCautions("password", caution);
+    }
+    if (next !== confirm) {
+      caution = "비밀번호 확인이 일치하지 않습니다.";
+      return handleCautions("password", caution);
+    }
+    try {
+      await dispatch(editPassword({ current, next })).unwrap();
+      alert("비밀번호가 변경 되었습니다.");
+    } catch (error: any) {
+      if (error.status === 400) alert(error.data);
+    } finally {
+      initialize();
+    }
   };
 
   useEffect(() => {
@@ -132,7 +151,7 @@ function Account() {
         </div>
         <div className={styles.passwordSection}>
           <div className={styles.header}>
-            <h3>비밀번호 변경</h3>
+            <span className={styles.head}>비밀번호 변경</span>
             {cautions.password && (
               <span className={styles.cautions}>{cautions.password}</span>
             )}
@@ -161,9 +180,16 @@ function Account() {
             />
           </div>
           <div className={styles.submitBtn}>
-            <Button onClick={handleSubmit}>비밀번호 변경</Button>
+            <Button onClick={handleSubmit} disabled={loading}>
+              비밀번호 변경
+            </Button>
           </div>
         </div>
+        {loading && (
+          <div className={styles.spinner}>
+            <Spinner size="30px" variant="inverse" />
+          </div>
+        )}
       </div>
     </Container>
   );

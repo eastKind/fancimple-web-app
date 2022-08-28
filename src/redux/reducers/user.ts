@@ -1,5 +1,13 @@
 import { createSlice, AnyAction } from "@reduxjs/toolkit";
-import { getUser, getMe, editPhoto, editName, editDesc } from "../thunks/user";
+import {
+  getUser,
+  getMe,
+  editPhoto,
+  editName,
+  editDesc,
+  follow,
+  bookmark,
+} from "../thunks/user";
 import type { UserData, MyData, Error } from "../../types";
 import photo from "../../essets/images/person.png";
 
@@ -63,6 +71,12 @@ export const userSlice = createSlice({
       })
       .addCase(editDesc.fulfilled, (state, action) => {
         state.me.desc = action.payload;
+      })
+      .addCase(follow.fulfilled, (state, action) => {
+        state.me.followings = action.payload;
+      })
+      .addCase(bookmark.fulfilled, (state, action) => {
+        state.me.bookmarks = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;

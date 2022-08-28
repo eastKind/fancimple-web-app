@@ -23,6 +23,11 @@ function ImageEditor({
   const [index, setIndex] = useState(0);
   const [previews, setPreviews] = useState<string[]>([]);
 
+  const initialize = () => {
+    setFiles([]);
+    setPreviews([]);
+  };
+
   const handleDelete = (deleteIdx: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== deleteIdx));
     setPreviews((prev) => prev.filter((_, i) => i !== deleteIdx));
@@ -56,6 +61,10 @@ function ImageEditor({
   useEffect(() => {
     if (files.length === 0) setSteps(0);
   }, [files, setSteps]);
+
+  useEffect(() => {
+    if (steps === 0) initialize();
+  }, [steps]);
 
   return (
     <div className={styles.container}>

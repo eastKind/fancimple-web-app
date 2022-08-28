@@ -46,6 +46,13 @@
       }
     }
 
+    .desc {
+      margin: 0;
+      // max-width: 80%;
+      // max-height: 74px;
+      // overflow: auto;
+    }
+
     > :not(:last-child) {
       margin-bottom: 10px;
     }
