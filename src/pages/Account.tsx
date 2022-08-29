@@ -134,6 +134,7 @@ function Account() {
               className={styles.name}
               onChange={handleChange}
               onBlur={handleBlurName}
+              autoComplete="off"
             />
             {cautions.name && (
               <span className={styles.cautions}>{cautions.name}</span>

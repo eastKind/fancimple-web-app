@@ -17,6 +17,7 @@ function SignIn() {
         <span>아직 회원이 아니신가요? </span>
         <Link to="/signup">회원가입 하기</Link>
       </div>
+      <p className={styles.test}>email: test@naver.com / pw: test1234</p>
       <SignInForm />
       <div className={styles.find}>
         <Link to="/">비밀번호 찾기</Link>
