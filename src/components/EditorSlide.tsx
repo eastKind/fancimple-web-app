@@ -5,6 +5,7 @@ import useWindowSize from "../hooks/useWindowSize";
 import styles from "../essets/scss/EditorSlide.module.scss";
 
 const INIT = 1080;
+const MARGIN = 20 * 2;
 
 interface EditorSlideProps {
   steps: number;
@@ -44,7 +45,7 @@ function EditorSlide({
     innerHeight: number,
     innerWidth: number
   ) => {
-    let maxWidth = Math.min(innerHeight * 0.8, innerWidth);
+    let maxWidth = Math.min(innerHeight * 0.8, innerWidth - MARGIN);
     let maxHeight = maxWidth;
     if (ratio === "4/5") maxWidth *= 0.8;
     if (ratio === "16/9") maxHeight *= 0.5625;
