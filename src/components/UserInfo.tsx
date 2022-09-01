@@ -7,7 +7,7 @@ import useFollowState from "../hooks/useFollowState";
 import Avatar from "./Avatar";
 import Modal from "./Modal";
 import Button from "./Button";
-import UserList from "./UserList";
+import FollowList from "./FollowList";
 import styles from "../essets/scss/UserInfo.module.scss";
 
 interface UserInfoProps {
@@ -69,7 +69,7 @@ function UserInfo({ user, isMe }: UserInfoProps) {
         <p className={styles.desc}>{user.desc}</p>
       </div>
       <Modal isOpen={modalOpen} onClose={handleModal}>
-        <UserList
+        <FollowList
           userId={user._id}
           selectedList={selectedList}
           onClose={handleModal}

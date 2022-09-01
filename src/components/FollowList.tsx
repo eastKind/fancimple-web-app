@@ -10,24 +10,26 @@ import classNames from "classnames";
 import UserAPI from "../api/User";
 import type { User, GetUsersReqData, Error } from "../types";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import useAsync from "../hooks/useAsync";
 import Avatar from "./Avatar";
 import Spinner from "./Spinner";
-import styles from "../essets/scss/UserList.module.scss";
+import styles from "../essets/scss/FollowList.module.scss";
 
-interface UserListProps {
+interface FollowListProps {
   userId: string;
   selectedList: string;
   onClose: () => void;
 }
 
-function UserList({ userId, selectedList, onClose }: UserListProps) {
+function FollowList({ userId, selectedList, onClose }: FollowListProps) {
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
   const [hasNext, setHasNext] = useState(false);
   const [cursor, setCursor] = useState("");
   const targetRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useInfiniteScroll(targetRef);
+  const [loading, error, getUsersAsync] = useAsync(
+    selectedList === "follow" ? UserAPI.getFollowings : UserAPI.getFollowers
+  );
 
   const handleClick = (e: MouseEvent) => {
     const { tagName } = e.target as HTMLElement;
@@ -36,27 +38,15 @@ function UserList({ userId, selectedList, onClose }: UserListProps) {
 
   const handleLoad = useCallback(
     async (options: GetUsersReqData) => {
-      try {
-        setError(null);
-        setLoading(true);
-        const { users: nextUsers, hasNext } =
-          selectedList === "follow"
-            ? await UserAPI.getFollowings(options)
-            : await UserAPI.getFollowers(options);
-        const nextCursor =
-          nextUsers.length > 0 ? nextUsers[nextUsers.length - 1]._id : "";
-        if (options.cursor) setUsers((prev) => [...prev, ...nextUsers]);
-        else setUsers(nextUsers);
-        setHasNext(hasNext);
-        setCursor(nextCursor);
-      } catch (error: any) {
-        const { status, data } = error.response;
-        setError({ status, data });
-      } finally {
-        setLoading(false);
-      }
+      const { users: nextUsers, hasNext } = await getUsersAsync(options);
+      const nextCursor =
+        nextUsers.length > 0 ? nextUsers[nextUsers.length - 1]._id : "";
+      if (options.cursor) setUsers((prev) => [...prev, ...nextUsers]);
+      else setUsers(nextUsers);
+      setHasNext(hasNext);
+      setCursor(nextCursor);
     },
-    [selectedList]
+    [getUsersAsync]
   );
 
   useEffect(() => {
@@ -97,4 +87,4 @@ function UserList({ userId, selectedList, onClose }: UserListProps) {
   );
 }
 
-export default UserList;
+export default FollowList;
