@@ -36,7 +36,7 @@ export const getUser = createAsyncThunk(
   "user/getUser",
   async (reqData: GetUserReqData, { rejectWithValue }) => {
     try {
-      return await User.getOther(reqData);
+      return await User.getUser(reqData);
     } catch (error: any) {
       const { status, data } = error.response;
       return rejectWithValue({ status, data });

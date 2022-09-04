@@ -39,7 +39,7 @@ function Confirm({
         </div>
         <div className={styles.btns} onClick={handleClick}>
           <Button id="confirm" className={styles.btn} disabled={loading}>
-            {loading ? <Spinner size="16.8px" variant="inverse" /> : "확인"}
+            {loading ? <Spinner size={18} variant="inverse" /> : "확인"}
           </Button>
           <Button variant="inverse" className={styles.btn}>
             취소

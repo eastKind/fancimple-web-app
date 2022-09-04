@@ -86,7 +86,7 @@ function SignInForm() {
         )}
       </div>
       <Button type="submit" disabled={loading} className={styles.btn}>
-        {loading ? <Spinner size="21.6px" variant="inverse" /> : "로그인"}
+        {loading ? <Spinner size={21.6} variant="inverse" /> : "로그인"}
       </Button>
     </form>
   );

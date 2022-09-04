@@ -1,25 +1,8 @@
 .container {
-  max-width: 800px;
-  margin-top: 50px;
-  display: flex;
-  flex-direction: row;
+  max-width: 476px;
 
-  .postList {
-    max-width: 476px;
-    margin: 0 20px 0 0;
-  }
-
-  .search {
+  .searchBar {
     width: 100%;
-    max-width: 476px;
-  }
-
-  @media screen and (max-width: 945px) {
-    flex-direction: column-reverse;
-    align-items: center;
-
-    .postList {
-      margin: 20px 0 0;
-    }
+    margin: 20px 0;
   }
 }

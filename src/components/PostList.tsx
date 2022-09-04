@@ -46,14 +46,14 @@ function PostList() {
       </ul>
       {loading && posts.length === 0 && (
         <div className={styles.spinner}>
-          <Spinner size="45px" />
+          <Spinner size={45} />
         </div>
       )}
       <div
         className={classNames(styles.observer, hasNext && styles.show)}
         ref={targetRef}
       >
-        {loading && <Spinner size="45px" />}
+        {loading && <Spinner size={45} />}
       </div>
     </>
   );

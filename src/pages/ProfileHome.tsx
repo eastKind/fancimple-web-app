@@ -46,14 +46,14 @@ function ProfileHome() {
       </div>
       {loading && posts.length === 0 && (
         <div className={styles.spinner}>
-          <Spinner size="30px" />
+          <Spinner size={36} />
         </div>
       )}
       <div
         className={classNames(styles.observer, hasNext && styles.show)}
         ref={targetRef}
       >
-        {loading && <Spinner size="30px" />}
+        {loading && <Spinner size={36} />}
       </div>
     </>
   );

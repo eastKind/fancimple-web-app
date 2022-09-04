@@ -188,7 +188,7 @@ function Account() {
         </div>
         {loading && (
           <div className={styles.spinner}>
-            <Spinner size="30px" variant="inverse" />
+            <Spinner size={36} variant="inverse" />
           </div>
         )}
       </div>

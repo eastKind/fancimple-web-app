@@ -1,3 +1,4 @@
+import type { User, GetFollowReqData } from "../types";
 import React, {
   useState,
   useRef,
@@ -7,29 +8,27 @@ import React, {
 } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import UserAPI from "../api/User";
-import type { User, GetUsersReqData, Error } from "../types";
+import API from "../api/User";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import useAsync from "../hooks/useAsync";
+import getNextCursor from "../utils/getNextCursor";
 import Avatar from "./Avatar";
 import Spinner from "./Spinner";
-import styles from "../essets/scss/FollowList.module.scss";
+import styles from "../essets/scss/UserList.module.scss";
 
-interface FollowListProps {
+interface UserListProps {
   userId: string;
-  selectedList: string;
+  type: string;
   onClose: () => void;
 }
 
-function FollowList({ userId, selectedList, onClose }: FollowListProps) {
+function UserList({ userId, type, onClose }: UserListProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [hasNext, setHasNext] = useState(false);
   const [cursor, setCursor] = useState("");
   const targetRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useInfiniteScroll(targetRef);
-  const [loading, error, getUsersAsync] = useAsync(
-    selectedList === "follow" ? UserAPI.getFollowings : UserAPI.getFollowers
-  );
+  const [loading, error, getFollowAsync] = useAsync(API.getFollow);
 
   const handleClick = (e: MouseEvent) => {
     const { tagName } = e.target as HTMLElement;
@@ -37,32 +36,34 @@ function FollowList({ userId, selectedList, onClose }: FollowListProps) {
   };
 
   const handleLoad = useCallback(
-    async (options: GetUsersReqData) => {
-      const { users: nextUsers, hasNext } = await getUsersAsync(options);
-      const nextCursor =
-        nextUsers.length > 0 ? nextUsers[nextUsers.length - 1]._id : "";
-      if (options.cursor) setUsers((prev) => [...prev, ...nextUsers]);
-      else setUsers(nextUsers);
+    async (options: GetFollowReqData) => {
+      const { users, hasNext } = await getFollowAsync(options);
+      if (options.cursor) {
+        setUsers((prev) => [...prev, ...users]);
+      } else {
+        setUsers(users);
+      }
+      const nextCursor = getNextCursor(users);
       setHasNext(hasNext);
       setCursor(nextCursor);
     },
-    [getUsersAsync]
+    [getFollowAsync]
   );
 
   useEffect(() => {
-    handleLoad({ userId, cursor: "", limit: 10 });
-  }, [userId, handleLoad]);
+    handleLoad({ userId, type, cursor: "", limit: 10 });
+  }, [userId, type, handleLoad]);
 
   useEffect(() => {
     if (isIntersecting && hasNext) {
-      handleLoad({ userId, cursor, limit: 10 });
+      handleLoad({ userId, type, cursor, limit: 10 });
     }
-  }, [isIntersecting, hasNext, userId, cursor, handleLoad]);
+  }, [isIntersecting, hasNext, userId, type, cursor, handleLoad]);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        {selectedList === "follow" ? "팔로잉" : "팔로워"}
+        {type === "follow" ? "팔로잉" : "팔로워"}
       </div>
       <ul className={styles.list} onClick={handleClick}>
         {users.map((user) => (
@@ -75,16 +76,16 @@ function FollowList({ userId, selectedList, onClose }: FollowListProps) {
             </Link>
           </li>
         ))}
-        {loading && users.length === 0 && <Spinner size="30px" />}
+        {loading && users.length === 0 && <Spinner size={27} />}
         <div
           className={classNames(styles.observer, hasNext && styles.show)}
           ref={targetRef}
         >
-          {loading && <Spinner size="30px" />}
+          {loading && <Spinner size={27} />}
         </div>
       </ul>
     </div>
   );
 }
 
-export default FollowList;
+export default UserList;

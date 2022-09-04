@@ -21,8 +21,15 @@ export type GetUserReqData = {
 };
 
 export type GetUsersReqData = {
+  keyword: string;
+  cursor: string;
+  limit: number;
+};
+
+export type GetFollowReqData = {
   userId: string;
   cursor: string;
+  type: string;
   limit: number;
 };
 
@@ -111,6 +118,7 @@ export interface User {
   _id: string;
   name: string;
   photoUrl: string;
+  desc: string;
 }
 
 export interface Image {

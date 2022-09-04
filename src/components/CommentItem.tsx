@@ -73,7 +73,7 @@ function CommentItem({ comment }: ListItemProps) {
       </div>
       {isDeleting && (
         <div className={styles.spinner}>
-          <Spinner size="18px" />
+          <Spinner size={18} />
         </div>
       )}
     </div>

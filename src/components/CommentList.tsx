@@ -46,12 +46,12 @@ function CommentList({ postId }: CommentListProps) {
           <CommentItem comment={comment} />
         </li>
       ))}
-      {loading && comments.length === 0 && <Spinner size="24px" />}
+      {loading && comments.length === 0 && <Spinner size={27} />}
       <div
         className={classNames(styles.observer, hasNext && styles.show)}
         ref={targetRef}
       >
-        {loading && <Spinner size="24px" />}
+        {loading && <Spinner size={27} />}
       </div>
     </ul>
   );

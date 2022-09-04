@@ -24,8 +24,8 @@ function isRejectedAction(action: AnyAction) {
 interface UserState {
   loading: boolean;
   error: Error | null;
-  me: MyData;
   user: UserData;
+  me: MyData;
 }
 
 const INIT_USER = {
@@ -37,20 +37,21 @@ const INIT_USER = {
   followings: [],
   postCount: 0,
 };
-const INIT_ME = { ...INIT_USER, bookmarks: [] };
 
 const initialState: UserState = {
   loading: false,
   error: null,
-  me: INIT_ME,
   user: INIT_USER,
+  me: { ...INIT_USER, bookmarks: [] },
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    initMe: () => initialState,
+    init: (state) => {
+      state = initialState;
+    },
     initUser: (state) => {
       state.user = initialState.user;
     },
@@ -92,6 +93,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { initMe, initUser } = userSlice.actions;
+export const { init, initUser } = userSlice.actions;
 
 export default userSlice.reducer;

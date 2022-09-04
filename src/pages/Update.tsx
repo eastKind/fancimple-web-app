@@ -55,7 +55,7 @@ function Update({ post, onCancel }: UpdateProps) {
         {isDone ? (
           <div className={styles.imgSection}>
             {loading ? (
-              <Spinner size="60px" />
+              <Spinner size={63} />
             ) : (
               <div className={styles.done}>게시물 수정이 완료되었습니다.</div>
             )}

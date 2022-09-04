@@ -1,3 +1,4 @@
+import type { CommentData, Error } from "../../types";
 import { createSlice, AnyAction } from "@reduxjs/toolkit";
 import {
   getComments,
@@ -5,7 +6,7 @@ import {
   deleteComment,
   likesComment,
 } from "../thunks/comment";
-import type { CommentData, Error } from "../../types";
+import getNextCursor from "../../utils/getNextCursor";
 
 function isPendingAction(action: AnyAction) {
   return /^comment\/.*\/pending$/.test(action.type);
@@ -50,8 +51,7 @@ export const commentSlice = createSlice({
           state.comments = comments;
         }
         state.hasNext = hasNext;
-        state.cursor =
-          comments.length > 0 ? comments[comments.length - 1]._id : "";
+        state.cursor = getNextCursor(comments);
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.comments.unshift(action.payload);

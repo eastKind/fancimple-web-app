@@ -1,9 +1,11 @@
 import axiosInstance from "./axios";
 import type {
+  User as UserType,
   ValidateReqData,
   FollowReqData,
   GetUserReqData,
   GetUsersReqData,
+  GetFollowReqData,
   GetUsersResData,
   SignupReqData,
   BookmarkReqData,
@@ -27,31 +29,30 @@ export default class User {
     return response.data.user;
   }
 
-  public static async getOther({ userId }: GetUserReqData): Promise<UserData> {
+  public static async getUser({ userId }: GetUserReqData): Promise<UserData> {
     const response = await axiosInstance.get(`/user/${userId}`);
     return response.data.user;
   }
 
-  public static async getFollowers({
-    userId,
+  public static async getUsers({
+    keyword,
     cursor,
     limit,
   }: GetUsersReqData): Promise<GetUsersResData> {
-    const query = `cursor=${cursor}&limit=${limit}`;
-    const response = await axiosInstance.get(
-      `/user/followers/${userId}?${query}`
-    );
+    const query = `keyword=${keyword}&cursor=${cursor}&limit=${limit}`;
+    const response = await axiosInstance.get(`/user?${query}`);
     return response.data;
   }
 
-  public static async getFollowings({
+  public static async getFollow({
     userId,
+    type,
     cursor,
     limit,
-  }: GetUsersReqData): Promise<GetUsersResData> {
+  }: GetFollowReqData): Promise<GetUsersResData> {
     const query = `cursor=${cursor}&limit=${limit}`;
     const response = await axiosInstance.get(
-      `/user/followings/${userId}?${query}`
+      `/user/${type}/${userId}?${query}`
     );
     return response.data;
   }
@@ -83,5 +84,20 @@ export default class User {
   public static async bookmark(reqData: BookmarkReqData): Promise<string[]> {
     const response = await axiosInstance.patch("/user/bookmark", reqData);
     return response.data.bookmarks;
+  }
+
+  public static async getHistories(): Promise<UserType[]> {
+    const response = await axiosInstance.get("/user/history/search");
+    return response.data.histories;
+  }
+
+  public static async postHistories(reqData: string): Promise<void> {
+    await axiosInstance.post("/user/history/search", {
+      userId: reqData,
+    });
+  }
+
+  public static async clearHistories(): Promise<void> {
+    await axiosInstance.delete("/user/history/search");
   }
 }

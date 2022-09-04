@@ -30,7 +30,7 @@ function CommentForm({ postId }: CommentFormProps) {
     <form className={styles.form} onSubmit={handleSubmit}>
       {isSubmitting ? (
         <div className={styles.spinner}>
-          <Spinner size="18px" />
+          <Spinner size={18} />
         </div>
       ) : (
         <textarea value={value} onChange={handleChange} />

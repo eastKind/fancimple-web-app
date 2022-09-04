@@ -87,7 +87,7 @@ function Upload() {
       <div className={styles.body}>
         <div className={styles.imgSection}>
           {loading ? (
-            <Spinner size="60px" />
+            <Spinner size={63} />
           ) : (
             <ImageEditor
               steps={steps}

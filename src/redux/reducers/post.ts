@@ -1,3 +1,4 @@
+import type { PostData, Error } from "../../types";
 import { createSlice, AnyAction } from "@reduxjs/toolkit";
 import {
   getPosts,
@@ -6,7 +7,7 @@ import {
   updatePost,
   likesPost,
 } from "../thunks/post";
-import type { PostData, Error } from "../../types";
+import getNextCursor from "../../utils/getNextCursor";
 
 function isPendingAction(action: AnyAction) {
   return /^post\/.*\/pending$/.test(action.type);
@@ -51,7 +52,7 @@ export const postSlice = createSlice({
           state.posts = posts;
         }
         state.hasNext = hasNext;
-        state.cursor = posts.length > 0 ? posts[posts.length - 1]._id : "";
+        state.cursor = getNextCursor(posts);
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts.unshift(action.payload);

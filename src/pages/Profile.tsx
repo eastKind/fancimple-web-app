@@ -66,7 +66,7 @@ function Profile() {
           <div className={styles.userInfo}>
             {loading && !user._id ? (
               <div className={styles.spinner}>
-                <Spinner size="30px" />
+                <Spinner size={27} />
               </div>
             ) : (
               <UserInfo user={user} isMe={isMe} />

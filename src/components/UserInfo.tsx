@@ -7,7 +7,7 @@ import useFollowState from "../hooks/useFollowState";
 import Avatar from "./Avatar";
 import Modal from "./Modal";
 import Button from "./Button";
-import FollowList from "./FollowList";
+import UserList from "./UserList";
 import styles from "../essets/scss/UserInfo.module.scss";
 
 interface UserInfoProps {
@@ -18,8 +18,8 @@ interface UserInfoProps {
 function UserInfo({ user, isMe }: UserInfoProps) {
   const { loading } = useAppSelector((state) => state.user);
   const { isFollowed, setIsFollowed } = useFollowState(user._id);
-  const [selectedList, setSelectedList] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [listType, setListType] = useState("");
   const dispatch = useAppDispatch();
 
   const handleModal = () => setModalOpen((prev) => !prev);
@@ -31,9 +31,10 @@ function UserInfo({ user, isMe }: UserInfoProps) {
 
   const handleClick = (e: MouseEvent) => {
     const { id } = e.target as HTMLSpanElement;
-    if (!id) return;
-    setSelectedList(id);
-    handleModal();
+    if (id) {
+      setListType(id);
+      handleModal();
+    }
   };
 
   return (
@@ -63,17 +64,13 @@ function UserInfo({ user, isMe }: UserInfoProps) {
         </div>
         <div className={styles.counts} onClick={handleClick}>
           <span>게시물 {user.postCount}</span>
-          <span id="follower">팔로워 {user.followers.length}</span>
-          <span id="follow">팔로우 {user.followings.length}</span>
+          <span id="followers">팔로워 {user.followers.length}</span>
+          <span id="followings">팔로우 {user.followings.length}</span>
         </div>
         <p className={styles.desc}>{user.desc}</p>
       </div>
       <Modal isOpen={modalOpen} onClose={handleModal}>
-        <FollowList
-          userId={user._id}
-          selectedList={selectedList}
-          onClose={handleModal}
-        />
+        <UserList userId={user._id} type={listType} onClose={handleModal} />
       </Modal>
     </div>
   );

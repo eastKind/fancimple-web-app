@@ -1,0 +1,38 @@
+.list {
+  width: 100%;
+  height: 300px;
+  padding-top: 10px;
+  overflow: auto;
+
+  .listItem {
+    padding: 5px 10px;
+
+    &:hover {
+      background-color: $bg-color;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+
+      .texts {
+        margin-left: 10px;
+
+        .desc {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
+  .empty {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+  }
+}
