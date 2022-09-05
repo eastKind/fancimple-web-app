@@ -1,18 +1,21 @@
 import React, { useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import Button from "./Button";
 import styles from "../essets/scss/CommentForm.module.scss";
 import { createComment } from "../redux/thunks/comment";
 import Spinner from "./Spinner";
+import { useNavigate } from "react-router-dom";
 
 interface CommentFormProps {
   postId: string;
 }
 
 function CommentForm({ postId }: CommentFormProps) {
+  const { sessionId } = useAppSelector((state) => state.auth);
   const [value, setValue] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +36,12 @@ function CommentForm({ postId }: CommentFormProps) {
           <Spinner size={18} />
         </div>
       ) : (
-        <textarea value={value} onChange={handleChange} />
+        <textarea
+          placeholder={sessionId ? "댓글을 입력해주세요." : "로그인 해주세요."}
+          value={value}
+          onChange={handleChange}
+          onClick={sessionId ? undefined : () => navigate("/signin")}
+        />
       )}
 
       <Button type="submit" disabled={isSubmitting}>

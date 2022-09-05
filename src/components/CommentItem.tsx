@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useLikeState from "../hooks/useLikeState";
 import useIsMe from "../hooks/useIsMe";
 import { deleteComment, likesComment } from "../redux/thunks/comment";
@@ -17,9 +17,11 @@ interface ListItemProps {
 
 function CommentItem({ comment }: ListItemProps) {
   const { _id, postId, writer, contents, createdAt, likeUsers } = comment;
+  const { sessionId } = useAppSelector((state) => state.auth);
   const [isDeleting, setIsDeleting] = useState(false);
   const { isLiked, setIsLiked } = useLikeState(likeUsers);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isMe = useIsMe(writer._id);
 
   const handleDeleteClick = async () => {
@@ -29,6 +31,10 @@ function CommentItem({ comment }: ListItemProps) {
   };
 
   const handleLikesClick = async () => {
+    if (!sessionId) {
+      alert("로그인이 필요한 서비스입니다.");
+      return navigate("/signin");
+    }
     setIsLiked((prev) => !prev);
     await dispatch(likesComment({ commentId: _id, isLiked }));
   };

@@ -12,7 +12,9 @@ function SingUp() {
 
   return (
     <div className={styles.container}>
-      <img src={logo} alt="fancimple" className={styles.logo} />
+      <Link to="/" className={styles.logo}>
+        <img src={logo} alt="fancimple" />
+      </Link>
       <div className={styles.signin}>
         <span>이미 회원이신가요? </span>
         <Link to="/signin">로그인 하기</Link>

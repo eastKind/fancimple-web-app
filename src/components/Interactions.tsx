@@ -1,5 +1,6 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useLikeState from "../hooks/useLikeState";
 import useMarkState from "../hooks/useMarkState";
@@ -17,10 +18,21 @@ function Interactions({ post, onComment }: InteractionsProps) {
   const { _id, likeUsers } = post;
   const { isLiked, setIsLiked } = useLikeState(likeUsers);
   const { isMarked, setIsMarked } = useMarkState(_id);
+  const { sessionId } = useAppSelector((state) => state.auth);
   const { loading } = useAppSelector((state) => state.post);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleComment = () => onComment();
+  const handleClick = (e: MouseEvent) => {
+    if (!sessionId) {
+      alert("로그인이 필요한 서비스입니다.");
+      return navigate("/signin");
+    }
+    const { id } = e.target as HTMLSpanElement;
+    if (id === "likes") handleLikes();
+    else if (id === "bookmark") handleBookmark();
+    else onComment();
+  };
 
   const handleLikes = async () => {
     if (loading) return;
@@ -35,9 +47,9 @@ function Interactions({ post, onComment }: InteractionsProps) {
   };
 
   return (
-    <div className={styles.interactions}>
+    <div className={styles.interactions} onClick={handleClick}>
       <span
-        onClick={handleLikes}
+        id="likes"
         className={classNames(
           "material-symbols-rounded",
           isLiked && styles.liked
@@ -45,15 +57,15 @@ function Interactions({ post, onComment }: InteractionsProps) {
       >
         favorite
       </span>
-      <span className="material-symbols-rounded" onClick={handleComment}>
+      <span id="comment" className="material-symbols-rounded">
         mode_comment
       </span>
       <span
+        id="bookmark"
         className={classNames(
           "material-symbols-rounded",
           isMarked && styles.marked
         )}
-        onClick={handleBookmark}
       >
         bookmark
       </span>

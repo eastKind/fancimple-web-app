@@ -43,6 +43,11 @@ export type FollowReqData = {
   isFollowed: boolean;
 };
 
+export type FollowResData = {
+  followings: string[];
+  followers: string[];
+};
+
 export type BookmarkReqData = {
   postId: string;
   isMarked: boolean;

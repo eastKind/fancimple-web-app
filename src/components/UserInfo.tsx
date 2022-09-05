@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { UserData } from "../types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
@@ -16,15 +16,21 @@ interface UserInfoProps {
 }
 
 function UserInfo({ user, isMe }: UserInfoProps) {
+  const { sessionId } = useAppSelector((state) => state.auth);
   const { loading } = useAppSelector((state) => state.user);
   const { isFollowed, setIsFollowed } = useFollowState(user._id);
   const [modalOpen, setModalOpen] = useState(false);
   const [listType, setListType] = useState("");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleModal = () => setModalOpen((prev) => !prev);
 
   const handleFollow = async () => {
+    if (!sessionId) {
+      alert("로그인이 필요한 서비스입니다.");
+      return navigate("/signin");
+    }
     setIsFollowed((prev) => !prev);
     await dispatch(follow({ userId: user._id, isFollowed }));
   };

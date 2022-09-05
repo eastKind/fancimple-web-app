@@ -16,6 +16,7 @@ import DropDown from "./DropDown";
 import Spinner from "./Spinner";
 import SearchList from "./SearchList";
 import styles from "../essets/scss/SearchBar.module.scss";
+import { useAppSelector } from "../redux/hooks";
 
 const LIMIT = 10;
 
@@ -24,6 +25,7 @@ interface SearchBarProps {
 }
 
 function SearchBar({ className }: SearchBarProps) {
+  const { sessionId } = useAppSelector((state) => state.auth);
   const [users, setUsers] = useState<User[]>([]);
   const [histories, setHistories] = useState<User[]>([]);
   const [keyword, setKeyword] = useState("");
@@ -96,8 +98,9 @@ function SearchBar({ className }: SearchBarProps) {
   }, [isIntersecting, hasNext, keyword, cursor, getSearch]);
 
   useEffect(() => {
+    if (!sessionId) return;
     getHistories();
-  }, []);
+  }, [sessionId]);
 
   return (
     <div className={classNames(styles.container, className)}>

@@ -3,6 +3,7 @@ import type {
   User as UserType,
   ValidateReqData,
   FollowReqData,
+  FollowResData,
   GetUserReqData,
   GetUsersReqData,
   GetFollowReqData,
@@ -76,9 +77,9 @@ export default class User {
     await axiosInstance.patch("/user/password", reqData);
   }
 
-  public static async follow(reqData: FollowReqData): Promise<string[]> {
+  public static async follow(reqData: FollowReqData): Promise<FollowResData> {
     const response = await axiosInstance.patch("/user/follow", reqData);
-    return response.data.followings;
+    return response.data;
   }
 
   public static async bookmark(reqData: BookmarkReqData): Promise<string[]> {

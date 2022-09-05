@@ -12,7 +12,9 @@ function SignIn() {
 
   return (
     <div className={styles.container}>
-      <img src={logo} alt="fancimple" className={styles.logo} />
+      <Link to="/" className={styles.logo}>
+        <img src={logo} alt="fancimple" />
+      </Link>
       <div className={styles.signup}>
         <span>아직 회원이 아니신가요? </span>
         <Link to="/signup">회원가입 하기</Link>

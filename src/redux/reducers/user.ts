@@ -38,19 +38,21 @@ const INIT_USER = {
   postCount: 0,
 };
 
+const INIT_ME = { ...INIT_USER, bookmarks: [] };
+
 const initialState: UserState = {
   loading: false,
   error: null,
   user: INIT_USER,
-  me: { ...INIT_USER, bookmarks: [] },
+  me: INIT_ME,
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    init: (state) => {
-      state = initialState;
+    initMe: (state) => {
+      state.me = initialState.me;
     },
     initUser: (state) => {
       state.user = initialState.user;
@@ -74,7 +76,9 @@ export const userSlice = createSlice({
         state.me.desc = action.payload;
       })
       .addCase(follow.fulfilled, (state, action) => {
-        state.me.followings = action.payload;
+        const { followings, followers } = action.payload;
+        state.me.followings = followings;
+        state.user.followers = followers;
       })
       .addCase(bookmark.fulfilled, (state, action) => {
         state.me.bookmarks = action.payload;
@@ -93,6 +97,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { init, initUser } = userSlice.actions;
+export const { initMe, initUser } = userSlice.actions;
 
 export default userSlice.reducer;

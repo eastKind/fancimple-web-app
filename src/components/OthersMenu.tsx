@@ -1,10 +1,11 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { follow } from "../redux/thunks/user";
 import { PostData } from "../types";
 import DropDown from "./DropDown";
 import styles from "../essets/scss/PostMenu.module.scss";
 import useFollowState from "../hooks/useFollowState";
+import { useNavigate } from "react-router-dom";
 
 interface OthersMenuProps {
   post: PostData;
@@ -14,12 +15,18 @@ interface OthersMenuProps {
 
 function OthersMenu({ post, isDropped, setDrop }: OthersMenuProps) {
   const { writer } = post;
+  const { sessionId } = useAppSelector((state) => state.auth);
   const { isFollowed, setIsFollowed } = useFollowState(writer._id);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleDrop = () => setDrop((prev) => !prev);
 
   const handleClickFollow = async () => {
+    if (!sessionId) {
+      alert("로그인이 필요한 서비스입니다.");
+      return navigate("/signin");
+    }
     setIsFollowed((prev) => !prev);
     await dispatch(follow({ userId: writer._id, isFollowed }));
   };

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signout } from "../redux/thunks/auth";
-import { init } from "../redux/reducers/user";
+import { initMe } from "../redux/reducers/user";
 import Container from "./Container";
 import Modal from "./Modal";
 import Avatar from "./Avatar";
@@ -19,10 +19,18 @@ interface NavProps {
 function Nav({ className }: NavProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [drop, setDrop] = useState(false);
+  const { sessionId } = useAppSelector((state) => state.auth);
   const { me } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleModal = () => setModalOpen((prev) => !prev);
+  const handleUpload = () => {
+    if (!sessionId) {
+      alert("로그인이 필요한 서비스입니다.");
+      return navigate("/signin");
+    }
+    setModalOpen((prev) => !prev);
+  };
 
   const handleDrop = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -31,7 +39,7 @@ function Nav({ className }: NavProps) {
 
   const handleLogout = async () => {
     await dispatch(signout());
-    dispatch(init());
+    dispatch(initMe());
   };
 
   return (
@@ -53,7 +61,7 @@ function Nav({ className }: NavProps) {
               </span>
             </Link>
           </li>
-          <li onClick={handleModal}>
+          <li onClick={handleUpload}>
             <span
               className={classNames("material-symbols-rounded", styles.symbols)}
             >
@@ -63,22 +71,33 @@ function Nav({ className }: NavProps) {
           <li onClick={handleDrop} className={styles.user}>
             <Avatar photo={me.photoUrl} name={me.name} />
             <DropDown isDropped={drop} setDrop={setDrop}>
-              <ul className={styles.userMenu} onClick={handleDrop}>
-                <li>
-                  <Link to={`/${me._id}/post`}>프로필</Link>
-                </li>
-                <li>
-                  <Link to={`/${me._id}/bookmark`}>북마크</Link>
-                </li>
-                <li onClick={handleLogout}>
-                  <span>로그아웃</span>
-                </li>
-              </ul>
+              {sessionId ? (
+                <ul className={styles.userMenu} onClick={handleDrop}>
+                  <li>
+                    <Link to={`/${me._id}/post`}>프로필</Link>
+                  </li>
+                  <li>
+                    <Link to={`/${me._id}/bookmark`}>북마크</Link>
+                  </li>
+                  <li onClick={handleLogout}>
+                    <span>로그아웃</span>
+                  </li>
+                </ul>
+              ) : (
+                <ul className={styles.userMenu} onClick={handleDrop}>
+                  <li>
+                    <Link to={`/signin`}>로그인</Link>
+                  </li>
+                  <li>
+                    <Link to={`/signup`}>회원가입</Link>
+                  </li>
+                </ul>
+              )}
             </DropDown>
           </li>
         </ul>
       </Container>
-      <Modal isOpen={modalOpen} onClose={handleModal}>
+      <Modal isOpen={modalOpen} onClose={handleUpload}>
         <Upload />
       </Modal>
     </div>
