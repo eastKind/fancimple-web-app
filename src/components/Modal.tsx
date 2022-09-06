@@ -7,9 +7,10 @@ interface ModalProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  className?: string;
 }
 
-function Modal({ children, isOpen, onClose }: ModalProps) {
+function Modal({ children, isOpen, onClose, className }: ModalProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ function Modal({ children, isOpen, onClose }: ModalProps) {
   return (
     <Portal>
       {isOpen && (
-        <div ref={ref} className={styles.container}>
+        <div ref={ref} className={classNames(styles.container, className)}>
           {children}
           <span
             className={classNames("material-symbols-rounded", styles.symbol)}

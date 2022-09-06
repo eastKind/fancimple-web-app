@@ -8,6 +8,11 @@
     justify-content: space-between;
     align-items: center;
 
+    .symbols {
+      font-size: 30px;
+      color: #fff;
+    }
+
     .logo {
       display: block;
       height: 30px;
@@ -17,63 +22,92 @@
       }
     }
 
+    .search {
+      width: 300px;
+      position: relative;
+
+      .searchList {
+        width: 350px;
+        height: 300px;
+        position: absolute;
+        top: 30px + 15px;
+        left: calc(50% - 175px);
+        border: 1px solid rgba($black, 0.2);
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: $box-shadow;
+        z-index: 2;
+
+        &::after {
+          content: "";
+          width: 12px;
+          height: 12px;
+          display: block;
+          position: absolute;
+          top: -7px;
+          left: 50%;
+          background-color: #fff;
+          transform: rotate(45deg);
+          border-top: 1px solid rgba($black, 0.2);
+          border-left: 1px solid rgba($black, 0.2);
+        }
+      }
+    }
+
     .menu {
       display: flex;
       align-items: center;
       margin: 0;
       padding: 0;
 
-      li {
+      > li {
+        height: 30px;
         cursor: pointer;
-
-        .symbols {
-          display: block;
-          font-size: 2.3rem;
-          color: #fff;
-        }
       }
 
       > :not(:last-child) {
         margin-right: 15px;
       }
     }
+  }
+}
 
-    .user {
-      position: relative;
+.searchModal {
+  width: 300px;
+  background-color: #fff;
+  border-radius: 5px;
+  overflow: hidden;
 
-      .userMenu {
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        top: calc(100% + 10px);
-        right: 0;
-        background-color: #fff;
-        border-radius: 10px;
-        border: 1px solid rgba($black, 0.3);
-        box-shadow: $box-shadow;
-        overflow: hidden;
-        z-index: 1;
+  .searchBar {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba($black, 0.3);
+  }
 
-        li {
-          font-family: $gmarket-sans;
-          word-break: keep-all;
-          text-align: center;
-          cursor: pointer;
+  .list {
+    height: 350px;
+  }
+}
 
-          > * {
-            display: block;
-            padding: 15px 20px;
-          }
+@media screen and (max-width: 768px) {
+  .searchBtn {
+    display: block;
+  }
 
-          &:hover {
-            background-color: #f4f4f4;
-          }
-        }
+  .search,
+  .homeBtn,
+  .uploadBtn {
+    display: none;
+  }
+}
 
-        > :not(:last-child) {
-          border-bottom: 1px solid rgba($black, 0.3);
-        }
-      }
-    }
+@media screen and (min-width: 769px) {
+  .searchBtn {
+    display: none;
+  }
+
+  .search,
+  .homeBtn,
+  .uploadBtn {
+    display: block;
   }
 }

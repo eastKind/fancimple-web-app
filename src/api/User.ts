@@ -92,10 +92,11 @@ export default class User {
     return response.data.histories;
   }
 
-  public static async postHistories(reqData: string): Promise<void> {
-    await axiosInstance.post("/user/history/search", {
+  public static async postHistories(reqData: string): Promise<UserType[]> {
+    const response = await axiosInstance.post("/user/history/search", {
       userId: reqData,
     });
+    return response.data.histories;
   }
 
   public static async clearHistories(): Promise<void> {
