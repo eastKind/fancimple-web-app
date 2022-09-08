@@ -63,7 +63,7 @@ function UserList({ userId, type, onClose }: UserListProps) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        {type === "follow" ? "팔로잉" : "팔로워"}
+        {type === "followings" ? "팔로잉" : "팔로워"}
       </div>
       <ul className={styles.list} onClick={handleClick}>
         {users.map((user) => (

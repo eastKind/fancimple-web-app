@@ -1,7 +1,12 @@
 .nav {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
   padding: 15px 0;
   background-color: #454545;
   box-shadow: $box-shadow;
+  z-index: 8;
 
   .container {
     display: flex;
@@ -23,16 +28,17 @@
     }
 
     .search {
-      width: 300px;
-      position: relative;
+      .searchBar {
+        width: 250px;
+      }
 
       .searchList {
         width: 350px;
         height: 300px;
         position: absolute;
-        top: 30px + 15px;
+        top: 15px;
         left: calc(50% - 175px);
-        border: 1px solid rgba($black, 0.2);
+        border: 1px solid rgba($black, 0.3);
         border-radius: 5px;
         background-color: #fff;
         box-shadow: $box-shadow;
@@ -48,8 +54,8 @@
           left: 50%;
           background-color: #fff;
           transform: rotate(45deg);
-          border-top: 1px solid rgba($black, 0.2);
-          border-left: 1px solid rgba($black, 0.2);
+          border-top: 1px solid rgba($black, 0.3);
+          border-left: 1px solid rgba($black, 0.3);
         }
       }
     }
@@ -59,6 +65,40 @@
       align-items: center;
       margin: 0;
       padding: 0;
+
+      .userMenu {
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        border: 1px solid rgba($black, 0.3);
+        box-shadow: $box-shadow;
+        overflow: hidden;
+        z-index: 1;
+
+        li {
+          font-family: $gmarket-sans;
+          word-break: keep-all;
+          text-align: center;
+          cursor: pointer;
+
+          > * {
+            display: block;
+            padding: 15px 20px;
+          }
+
+          &:hover {
+            background-color: #f4f4f4;
+          }
+        }
+
+        > :not(:last-child) {
+          border-bottom: 1px solid rgba($black, 0.3);
+        }
+      }
 
       > li {
         height: 30px;
@@ -72,19 +112,18 @@
   }
 }
 
-.searchModal {
-  width: 300px;
-  background-color: #fff;
-  border-radius: 5px;
-  overflow: hidden;
+.offcanvas {
+  display: flex;
+  flex-direction: column;
 
   .searchBar {
-    padding: 10px 0;
+    padding: 10px;
     border-bottom: 1px solid rgba($black, 0.3);
   }
 
-  .list {
-    height: 350px;
+  .searchList {
+    flex-grow: 1;
+    min-width: 300px;
   }
 }
 
@@ -94,8 +133,7 @@
   }
 
   .search,
-  .homeBtn,
-  .uploadBtn {
+  .toFoot {
     display: none;
   }
 }
@@ -105,9 +143,7 @@
     display: none;
   }
 
-  .search,
-  .homeBtn,
-  .uploadBtn {
+  .toFoot {
     display: block;
   }
 }

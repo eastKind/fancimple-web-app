@@ -1,12 +1,15 @@
 import React, { useRef, Dispatch, SetStateAction, useEffect } from "react";
+import classNames from "classnames";
+import styles from "../essets/scss/Dropdown.module.scss";
 
 interface DropDownProps {
   children: React.ReactNode;
   isDropped: boolean;
   setDrop: Dispatch<SetStateAction<boolean>>;
+  className?: string;
 }
 
-function DropDown({ children, isDropped, setDrop }: DropDownProps) {
+function DropDown({ children, isDropped, setDrop, className }: DropDownProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,7 +25,11 @@ function DropDown({ children, isDropped, setDrop }: DropDownProps) {
     };
   }, [isDropped, setDrop]);
 
-  return <div ref={ref}>{isDropped && children}</div>;
+  return (
+    <div ref={ref} className={classNames(styles.container, className)}>
+      {isDropped && children}
+    </div>
+  );
 }
 
 export default DropDown;

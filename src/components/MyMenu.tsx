@@ -32,18 +32,10 @@ function MyMenu({ post, isDropped, setDrop }: MyMenuProps) {
     <>
       <DropDown isDropped={isDropped} setDrop={setDrop}>
         <ul className={styles.list} onClick={handleDrop}>
-          <li onClick={handleConfirm}>
-            <span>삭제하기</span>
-          </li>
-          <li onClick={handleModal}>
-            <span>수정하기</span>
-          </li>
-          <li>
-            <span>좋아요 숨기기</span>
-          </li>
-          <li>
-            <span>댓글 숨기기</span>
-          </li>
+          <li onClick={handleConfirm}>삭제하기</li>
+          <li onClick={handleModal}>수정하기</li>
+          <li>좋아요 숨기기</li>
+          <li>댓글 숨기기</li>
         </ul>
       </DropDown>
       <Confirm

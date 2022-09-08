@@ -34,5 +34,18 @@ ul {
 }
 
 .body {
+  padding-top: 60px;
   flex-grow: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .footer {
+    display: none;
+  }
 }

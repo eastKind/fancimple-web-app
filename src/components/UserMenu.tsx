@@ -1,58 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import { signout } from "../redux/thunks/auth";
-import { initMe } from "../redux/reducers/user";
+import { useAppSelector } from "../redux/hooks";
 import Avatar from "./Avatar";
-import DropDown from "./DropDown";
 import styles from "../essets/scss/UserMenu.module.scss";
 
-function UserMenu() {
-  const [drop, setDrop] = useState(false);
+interface UserMenuProps {
+  onUpload: () => void;
+  onSignout: () => void;
+}
+
+function UserMenu({ onUpload, onSignout }: UserMenuProps) {
   const { sessionId } = useAppSelector((state) => state.auth);
   const { me } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
-
-  const handleDrop = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setDrop((prev) => !prev);
-  };
-
-  const handleLogout = async () => {
-    await dispatch(signout());
-    dispatch(initMe());
-  };
 
   return (
-    <div className={styles.container}>
-      <Avatar photo={me.photoUrl} name={me.name} onClick={handleDrop} />
-      <DropDown isDropped={drop} setDrop={setDrop}>
-        <ul className={styles.userMenu} onClick={handleDrop}>
-          {sessionId ? (
-            <>
-              <li>
-                <Link to={`/${me._id}/post`}>프로필</Link>
-              </li>
-              <li>
-                <Link to={`/${me._id}/bookmark`}>북마크</Link>
-              </li>
-              <li onClick={handleLogout}>
-                <span>로그아웃</span>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link to={`/signin`}>로그인</Link>
-              </li>
-              <li>
-                <Link to={`/signup`}>회원가입</Link>
-              </li>
-            </>
-          )}
-        </ul>
-      </DropDown>
-    </div>
+    <>
+      <div className={styles.header}>
+        <Avatar photo={me.photoUrl} name={me.name} width="100px" />
+        <span className={styles.name}>{me.name}</span>
+        <Link to={`/${me._id}/post`} className={styles.profileBtn}>
+          프로필
+        </Link>
+      </div>
+      <ul className={styles.menu}>
+        {sessionId ? (
+          <>
+            <li onClick={() => onUpload()}>게시물 등록</li>
+            <li>메세지 보내기</li>
+            <li onClick={() => onSignout()}>로그아웃</li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Link to="/signin">로그인</Link>
+            </li>
+            <li>
+              <Link to="/signup">회원가입</Link>
+            </li>
+          </>
+        )}
+      </ul>
+    </>
   );
 }
 

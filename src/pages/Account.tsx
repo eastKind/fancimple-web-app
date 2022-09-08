@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  FocusEvent,
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
+import React, { ChangeEvent, useEffect, useState, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { validate } from "../utils/validate";
 import { editDesc, editName, editPassword } from "../redux/thunks/user";

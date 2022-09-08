@@ -2,7 +2,7 @@
   padding: 0;
   margin: 0;
   position: absolute;
-  top: 100%;
+  top: 10px;
   right: 0;
   background-color: #fff;
   border-radius: 10px;
@@ -12,15 +12,17 @@
   z-index: 10;
 
   li {
+    width: 140px;
+    padding: 15px 20px;
+    // word-break: keep-all;
     font-family: $gmarket-sans;
-    word-break: keep-all;
     text-align: center;
     cursor: pointer;
 
-    > * {
-      display: block;
-      padding: 15px 20px;
-    }
+    // > * {
+    //   display: block;
+    //   padding: 15px 20px;
+    // }
 
     &:hover {
       background-color: #f4f4f4;

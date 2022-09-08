@@ -5,6 +5,7 @@ import { getMe } from "../redux/thunks/user";
 import Nav from "./Nav";
 import styles from "../essets/scss/App.module.scss";
 import "../essets/scss/App.font.scss";
+import Footer from "./Footer";
 
 function App() {
   const { sessionId } = useAppSelector((state) => state.auth);
@@ -25,6 +26,7 @@ function App() {
       <div className={styles.body}>
         <Outlet />
       </div>
+      <Footer className={styles.footer} />
     </>
   );
 }

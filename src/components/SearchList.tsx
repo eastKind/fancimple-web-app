@@ -18,9 +18,16 @@ interface SearchListProps {
   onClear: () => void;
   onDrop?: () => void;
   onModal?: () => void;
+  className?: string;
 }
 
-function SearchList({ keyword, onClear, onDrop, onModal }: SearchListProps) {
+function SearchList({
+  keyword,
+  onClear,
+  onDrop,
+  onModal,
+  className,
+}: SearchListProps) {
   const { result, histories, loading, hasNext, cursor } = useAppSelector(
     (state) => state.search
   );
@@ -56,7 +63,7 @@ function SearchList({ keyword, onClear, onDrop, onModal }: SearchListProps) {
   }, [isIntersecting, hasNext, keyword, cursor, loadResult]);
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)}>
       {!keyword && (
         <div className={styles.historyHeader}>
           <span>최근 검색 기록</span>
