@@ -5,7 +5,7 @@
   .historyHeader {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 10px 10px 0;
 
     > :nth-child(1) {
       font-size: 1.1rem;
@@ -19,6 +19,7 @@
   }
 
   .list {
+    padding-top: 10px;
     flex-grow: 1;
     overflow: auto;
 

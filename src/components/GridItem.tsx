@@ -1,7 +1,9 @@
+import type { PostData } from "../types";
 import React, { useState } from "react";
 import classNames from "classnames";
-import { PostData } from "../types";
+import useWindowSize from "../hooks/useWindowSize";
 import Modal from "./Modal";
+import Detail from "./Detail";
 import Post from "../pages/Post";
 import styles from "../essets/scss/GridItem.module.scss";
 
@@ -11,6 +13,7 @@ interface GridItemProps {
 
 function GridItem({ post }: GridItemProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const { innerWidth } = useWindowSize();
 
   const handleModal = () => setModalOpen((prev) => !prev);
 
@@ -34,7 +37,7 @@ function GridItem({ post }: GridItemProps) {
         </div>
       </div>
       <Modal isOpen={modalOpen} onClose={handleModal}>
-        <Post post={post} />
+        {innerWidth > 768 ? <Post post={post} /> : <Detail post={post} />}
       </Modal>
     </>
   );

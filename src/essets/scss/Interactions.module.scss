@@ -1,4 +1,4 @@
-.interactions {
+.container {
   span {
     font-size: 2rem;
     cursor: pointer;
@@ -6,7 +6,7 @@
 
   .liked {
     font-variation-settings: "FILL" 1;
-    color: $red;
+    color: $red !important;
   }
 
   .marked {
@@ -19,5 +19,9 @@
 
   :last-child {
     float: right;
+  }
+
+  &.inverse span {
+    color: #fff;
   }
 }

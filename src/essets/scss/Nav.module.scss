@@ -16,6 +16,7 @@
     .symbols {
       font-size: 30px;
       color: #fff;
+      cursor: pointer;
     }
 
     .logo {
@@ -83,7 +84,6 @@
           font-family: $gmarket-sans;
           word-break: keep-all;
           text-align: center;
-          cursor: pointer;
 
           > * {
             display: block;

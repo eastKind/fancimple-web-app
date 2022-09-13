@@ -9,12 +9,15 @@ import styles from "../essets/scss/PostHeader.module.scss";
 
 interface PostHeaderProps {
   post: PostData;
+  variant?: "inverse";
 }
 
-function PostHeader({ post }: PostHeaderProps) {
+function PostHeader({ post, variant }: PostHeaderProps) {
   const { writer } = post;
   const [drop, setDrop] = useState(false);
   const isMe = useIsMe(writer._id);
+
+  const style = variant ? { color: "#fff" } : {};
 
   const handleDrop = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -27,10 +30,16 @@ function PostHeader({ post }: PostHeaderProps) {
         <Avatar photo={writer.photoUrl} name={writer.name} />
       </Link>
       <Link to={`/${writer._id}/post`}>
-        <span className={styles.name}>{writer.name}</span>
+        <span className={styles.name} style={style}>
+          {writer.name}
+        </span>
       </Link>
       <div className={styles.moreBtn}>
-        <span onClick={handleDrop} className="material-symbols-rounded">
+        <span
+          onClick={handleDrop}
+          className="material-symbols-rounded"
+          style={style}
+        >
           more_horiz
         </span>
       </div>

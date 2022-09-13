@@ -12,9 +12,10 @@ import styles from "../essets/scss/Interactions.module.scss";
 interface InteractionsProps {
   post: PostData;
   onComment: () => void;
+  variant?: "inverse";
 }
 
-function Interactions({ post, onComment }: InteractionsProps) {
+function Interactions({ post, onComment, variant }: InteractionsProps) {
   const { _id, likeUsers } = post;
   const { isLiked, setIsLiked } = useLikeState(likeUsers);
   const { isMarked, setIsMarked } = useMarkState(_id);
@@ -47,7 +48,10 @@ function Interactions({ post, onComment }: InteractionsProps) {
   };
 
   return (
-    <div className={styles.interactions} onClick={handleClick}>
+    <div
+      className={classNames(styles.container, variant && styles[variant])}
+      onClick={handleClick}
+    >
       <span
         id="likes"
         className={classNames(
